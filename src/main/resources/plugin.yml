@@ -2,5 +2,5 @@ name: HelpOPTB
 version: '${project.version}'
 main: pl.techbrat.spigot.helpop.HelpOPTB
 authors: [ TechBrat ]
-description: ddesc
+description: Simple plugin for reporting issues.
 website: techbrat.pl

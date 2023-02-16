@@ -8,7 +8,9 @@ incorrect_use: "&cYou have to type issue! &7/helpop message"
 no_admins: "&cThere is no administration on the server currently :/."
 
 #Display information on the screen to admins (title/subtitle)
-screen_information: false
+screen_information: true
+screen_title: "&cNew report from &6<player>&c!"
+screen_subtitle: "&f<message>"
 
 #Permissions configuration
 permissions:

@@ -14,6 +14,7 @@ public final class HelpOPTB extends JavaPlugin {
         instance = this;
         getLogger().log(Level.INFO, "Starting plugin...");
         saveDefaultConfig();
+        new ConfigData();
         getCommand("helpop").setExecutor(new HelpOPCommand());
     }
 

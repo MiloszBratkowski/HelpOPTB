@@ -7,23 +7,17 @@ incorrect_use: "&cYou have to type issue! &7/helpop message"
 #Information to player when nobody of administrations is on the server. (only if history of messages is disabled)
 no_admins: "&cThere is no administration on the server currently :/."
 
+#Information to player when message was sent
+feedback: "&7Your message was sent to administration!"
+
 #Display information on the screen to admins (title/subtitle). Admin must have permission!
 screen_information: true
 screen_title: "&cNew report from &6<player>&c!"
 screen_subtitle: "&f<message>"
 
-#Permissions configuration
-permissions:
-  reporting: helpop.report
-  no_permission_reporting: "&cYou don't have permissions to use this command!"
-
-  receiving: helpop.receive
-
-  screen_receiving: helpop.screen
-
-  check_solved: helpop.check
-  messages_history: helpop.history
-  no_permission_admin: "&cYou don't have permissions to use this command!"
+#No permissions messages
+no_permission_player: "&cYou don't have permissions to use this command!"
+no_permission_admin: "&cYou don't have permissions to use this command!"
 
 
 #History of messages, this option add features:

@@ -21,8 +21,8 @@ public class HelpOPCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("incorrect_use")));
             return true;
         }
-        if (!sender.hasPermission(config.getPerms("reporting"))) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("no_permission_reporting")));
+        if (!sender.hasPermission(config.getPerms("report"))) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("no_permission_player")));
         } else {
             StringBuilder message = new StringBuilder();
             for (String word :args) {

@@ -13,7 +13,7 @@ public class Report {
     public Report(Player player, String message) {
         ArrayList<Player> admins = new ArrayList<>();
         for (Player loopPlayer : Bukkit.getOnlinePlayers()) {
-            if (loopPlayer.hasPermission(config.getPerms("receiving"))) admins.add(loopPlayer);
+            if (loopPlayer.hasPermission(config.getPerms("receive"))) admins.add(loopPlayer);
         }
         if(admins.size() == 0) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("no_admins")));
@@ -40,9 +40,11 @@ public class Report {
 
         for (Player admin : admins) {
             admin.sendMessage(chatmessage);
-            if(config.isScreenEnabled() && admin.hasPermission(config.getPerms("screen_receiving"))) {
-                player.sendTitle(titlemessage, subtitlemessage);
+            if(config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
+                admin.sendTitle(titlemessage, subtitlemessage);
             }
-        };
+        }
+
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("feedback")));
     }
 }

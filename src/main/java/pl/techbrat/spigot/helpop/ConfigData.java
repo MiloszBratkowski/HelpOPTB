@@ -25,16 +25,18 @@ public class ConfigData {
         instance = this;
 
         FileConfiguration config = HelpOPTB.getInstance().getConfig();
-        perms.put("reporting", config.getString("permissions.reporting")); //+
-        perms.put("receiving", config.getString("permissions.receiving")); //+
-        perms.put("screen_receiving", config.getString("permissions.screen_receiving")); //++
-        perms.put("check_solved", config.getString("permissions.check_solved"));
-        perms.put("messages_history", config.getString("permissions.messages_history"));
+        perms.put("report", "helpoptb.report"); //+
+        perms.put("receive", "helpoptb.receive"); //+
+        perms.put("receive.screen", "helpoptb.receive.screen"); //++
+        perms.put("check", "helpoptb.check");
+        perms.put("history", "helpoptb.history");
+        perms.put("reload", "helpoptb.reload");
 
-        infos.put("no_permission_reporting", config.getString("permissions.no_permission_reporting"));
-        infos.put("no_permission_admin", config.getString("permissions.no_permission_admin"));
+        infos.put("no_permission_player", config.getString("no_permission_player"));
+        infos.put("no_permission_admin", config.getString("no_permission_admin"));
         infos.put("incorrect_use", config.getString("incorrect_use")); //+
         infos.put("no_admins", config.getString("no_admins")); //+
+        infos.put("feedback", config.getString("feedback")); //+
 
         styles.put("admin_message_format", config.getString("admin_message_format")); //+
         styles.put("screen_title", config.getString("screen_title")); //+

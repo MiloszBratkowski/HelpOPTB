@@ -8,3 +8,4 @@ commands:
   helpop:
     description: Main command to use
     usage: /helpop message
+    permission: helpoptb.command

@@ -1,10 +1,23 @@
 # HelpOPTB
 
+
 ## Description
 Simple spigot plugin
 This plugin allows players to communicate with the administration via direct messages.
 To send a message, the player must have the appropriate permissions (*helpoptb.command* and *helpoptb.report*).
 Messages are sent using the */helpop message* command.
+
+### JAVA 11+ IS REQUIRED (IF YOU WANT TO USE DATABASE)
+
+## Commands
+- **/helpop *message*** - sending message to administration.
+- **/helpop check** - marking reports as resolved.
+- **/helpop history** - displaying history of reports.
+- **/helpop clear_all** - deleting all reports from database.
+- **/helpop clear_solved** - deleting solved reports from database.
+- **/helpop reload** - reloading configuration file.
+
+**Warning!** To use history of reports and checking solved, you have to set option *enable_history: true* in configuration file and type database's information.
 
 ## Permissions
 ###### Players and administration
@@ -15,17 +28,13 @@ Messages are sent using the */helpop message* command.
 - **helpoptb.receive** - displaying messages on chat.
 - **helpoptb.receive.screen** - displaying messages on the screen (title with subtitle).
 ###### Administration | commands
-- **helpoptb.check** - using */helpop check*.
-- **helpoptb.history** - using */helpop history*.
-- **helpoptb.reload** - using */helpop reload*.
+- **helpoptb.command.check** - using */helpop check*.
+- **helpoptb.command.history** - using */helpop history*.
+- **helpoptb.command.clear.all** - using */helpop clear_all*.
+- **helpoptb.command.clear.solved** - using */helpop clear_solved*.
+- **helpoptb.command.reload** - using */helpop reload*.
 
-## Commands
-- **/helpop *message*** - sending message to administration.
-- **/helpop check** - marking reports as resolved.
-- **/helpop history** - displaying history of reports.
-- **/helpop reload** - reloading configuration file.
-
-**Waring!** To using history of reports and checking solved you have to set option *enable_history: true* in configuration file and type database's information.
+**Warning!** If player doesn't have permission to use admin commands (check, history, clear_* and reload), after execute one of these arguments it will send a report with this content.
 
 ## Configuration file
 ````
@@ -42,7 +51,10 @@ screen_title: "&cNew report from &6<player>&c!"
 screen_subtitle: "&f<message>"
 
 no_permission_player: "&cYou don't have permissions to use this command!"
-no_permission_admin: "&cYou don't have permissions to use this command!"
+
+config_reloaded: "&aConfig has reloaded!"
+history: "&7History of messages <site>/<all_sites>:"
+check_report: "&7Report solved!"
 
 enable_history: false
 database:

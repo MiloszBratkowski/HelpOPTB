@@ -13,8 +13,13 @@ public class HelpOPTBAPI {
     }
 
     public boolean sendReport(Player sender, String message) {
+        return sendReport(sender, message, true);
+    }
+
+    public boolean sendReport(Player sender, String message, Boolean feedback) {
         if (Report.getAdministration().size() > 1) {
-            new Report(sender, message);
+            Report report = new Report(sender, message);
+            report.sendReport(feedback);
             return true;
         } else return false;
     }

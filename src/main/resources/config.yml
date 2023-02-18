@@ -15,19 +15,22 @@ screen_information: true
 screen_title: "&cNew report from &6<player>&c!"
 screen_subtitle: "&f<message>"
 
-#No permissions messages
+#No permissions message
 no_permission_player: "&cYou don't have permissions to use this command!"
-no_permission_admin: "&cYou don't have permissions to use this command!"
 
+#Admin feedback messages
+config_reloaded: "&aConfig has reloaded!"
+history: "&7History of messages <site>/<all_sites>:"
+check_report: "&7Report solved!"
 
 #History of messages, this option add features:
 # 1) if the administration solves the problem, it can mark the report as solved
 # 2) history of messages
 # 3) receiving messages sent during the absence of the administration on the server, after entering
-enable_history: false
+enable_history: true
 database:
   #Avaiable databases: SQLite, MySQL.
-  type: sqlite
+  type: mysql
   table: helpop
 
   #If you use SQLite, you can set file's name.
@@ -37,6 +40,6 @@ database:
   host: localhost
   port: 3306
   database: helpop
-  username: helpop
+  username: root
   password: ''
   ssl: false

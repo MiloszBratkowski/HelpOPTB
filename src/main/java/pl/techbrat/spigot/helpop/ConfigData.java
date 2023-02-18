@@ -3,10 +3,12 @@ package pl.techbrat.spigot.helpop;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class ConfigData {
-    private static ConfigData instance;
+    private static final HelpOPTB plugin = HelpOPTB.getInstance();
 
+    private static ConfigData instance;
     public static ConfigData getInstance() {
         return instance;
     }
@@ -22,21 +24,29 @@ public class ConfigData {
 
 
     public ConfigData() {
+        plugin.getLogger().log(Level.INFO, "Loading config file...");
+
         instance = this;
 
+
+        plugin.reloadConfig();
         FileConfiguration config = HelpOPTB.getInstance().getConfig();
         perms.put("report", "helpoptb.report"); //+
         perms.put("receive", "helpoptb.receive"); //+
-        perms.put("receive.screen", "helpoptb.receive.screen"); //++
-        perms.put("check", "helpoptb.check");
-        perms.put("history", "helpoptb.history");
-        perms.put("reload", "helpoptb.reload");
+        perms.put("receive.screen", "helpoptb.receive.screen"); //+
+        perms.put("check", "helpoptb.command.check");
+        perms.put("history", "helpoptb.command.history");
+        perms.put("reload", "helpoptb.command.reload");
 
         infos.put("no_permission_player", config.getString("no_permission_player"));
         infos.put("no_permission_admin", config.getString("no_permission_admin"));
         infos.put("incorrect_use", config.getString("incorrect_use")); //+
         infos.put("no_admins", config.getString("no_admins")); //+
         infos.put("feedback", config.getString("feedback")); //+
+        infos.put("history", config.getString("history")); //+
+        infos.put("check_report", config.getString("check_report")); //+
+        infos.put("config_reloaded", config.getString("config_reloaded"));
+        infos.put("disabled_database", "&cTo use history of reports you have to set enable_history: true in config.yml."); //+
 
         styles.put("admin_message_format", config.getString("admin_message_format")); //+
         styles.put("screen_title", config.getString("screen_title")); //+
@@ -47,13 +57,15 @@ public class ConfigData {
 
         databaseParams.put("type", config.getString("database.type"));
         databaseParams.put("table", config.getString("database.table"));
-        databaseParams.put("filename", config.getString("filename.type"));
-        databaseParams.put("host", config.getString("host.type"));
-        databaseParams.put("port", config.getString("port.type"));
-        databaseParams.put("database", config.getString("database.type"));
-        databaseParams.put("username", config.getString("username.type"));
-        databaseParams.put("password", config.getString("password.type"));
-        databaseParams.put("ssl", config.getString("ssl.type"));
+        databaseParams.put("filename", config.getString("database.filename"));
+        databaseParams.put("host", config.getString("database.host"));
+        databaseParams.put("port", config.getString("database.port"));
+        databaseParams.put("database", config.getString("database.database"));
+        databaseParams.put("username", config.getString("database.username"));
+        databaseParams.put("password", config.getString("database.password"));
+        databaseParams.put("ssl", config.getString("database.ssl"));
+
+        plugin.getLogger().log(Level.INFO, "Config file loaded.");
     }
 
     public String getDatabaseParams(String value) {

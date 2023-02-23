@@ -62,7 +62,7 @@ public class Database {
         plugin.getLogger().log(Level.INFO, "Connecting to database...");
         if(connection != null && !connection.isClosed()) return false;
         if(type.equals("MYSQL")) {
-            connection = DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+database+"?useSSL="+ssl, username, password);
+            connection = DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+database+"?autoReconnect=true&useSSL="+ssl, username, password);
         } else {
             connection = DriverManager.getConnection("jdbc:sqlite:"+plugin.getDataFolder()+"/"+filename);
         }

@@ -18,8 +18,8 @@ public final class HelpOPTB extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
         new ConfigData();
-
         new Functions();
+        new DatabaseReportManager();
         new HelpOPTBAPI();
         getCommand("helpop").setExecutor(new HelpOPCommand());
 

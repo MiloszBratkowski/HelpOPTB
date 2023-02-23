@@ -5,10 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import pl.techbrat.spigot.helpop.ConfigData;
-import pl.techbrat.spigot.helpop.Database;
-import pl.techbrat.spigot.helpop.Functions;
-import pl.techbrat.spigot.helpop.Report;
+import pl.techbrat.spigot.helpop.*;
 
 import javax.xml.crypto.Data;
 
@@ -53,8 +50,8 @@ public class HelpOPCommand implements CommandExecutor {
                     return true;
                 }
                 int id = Integer.parseInt(args[1]);
-                //TODO global hashmap with reports to identify them by id (hashmap's key)
-                sender.sendMessage("check ");
+                DatabaseReportManager.getInstance().getReport(id).solveReport(sender.getName());
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("check_report")));
             }
             return true;
         }

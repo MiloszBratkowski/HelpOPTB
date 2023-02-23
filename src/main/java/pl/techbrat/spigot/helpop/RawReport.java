@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class RawReport {
@@ -20,7 +21,6 @@ public class RawReport {
     private String solved;
 
     private final ConfigData config = ConfigData.getInstance();
-
 
 
 
@@ -91,7 +91,8 @@ public class RawReport {
         }
     }
 
-    void solveReport(Player admin) {
-        Database.getInstance().update("UPDATE "+config.getDatabaseParams("table")+" SET solved = '"+admin.getName()+"' WHERE id = "+id+";");
+    public void solveReport(String admin) {
+        solved = admin;
+        Database.getInstance().update("UPDATE "+config.getDatabaseParams("table")+" SET solved = '"+solved+"' WHERE id = "+id+";");
     }
 }

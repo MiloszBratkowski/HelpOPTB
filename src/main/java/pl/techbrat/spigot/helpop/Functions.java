@@ -27,9 +27,11 @@ public class Functions {
         ConfigData configData = ConfigData.getInstance();
         String title = configData.getInfos("history").replace("<page>", Integer.toString(page)).replace("<all_pages>", Integer.toString(getNumbersOfPages(0))).replace("<amount>", Integer.toString(getNumberOfReports(0)));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', title));
-        for (RawReport report : reportsFromDatabase(0, (page-1)*LIMIT, LIMIT)) {
+        for (RawReport report : DatabaseReportManager.getInstance().reportsFromDatabase(0, (page-1)*LIMIT, LIMIT)) {
             TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', ConfigData.getInstance().getInfos("history_element").
-                    replace("<solved>", report.isSolved()?"&a"+report.getSolved():"&c✘").
+                    replace("<id>", Integer.toString(report.getId())).
+                    replace("<solved>", report.isSolved()?"&a✔":"&c✘").
+                    replace("<solve_admin>", report.isSolved()?"&a"+report.getSolved():"&c✘").
                     replace("<date>", report.getDate()).
                     replace("<player>", report.getPlayerName()).
                     replace("<message>", report.getMessage())));
@@ -37,7 +39,7 @@ public class Functions {
                 message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getInfos("solve_admin").replace("<player>", report.getSolved()))).create()));
             } else {
                 message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getInfos("click_solve"))).create()));
-                message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop check " + report.getId()));
+                message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop check "+report.getId()));
             }
             sender.spigot().sendMessage(message);
         }
@@ -69,22 +71,7 @@ public class Functions {
         return (int)Math.ceil(getNumberOfReports(type)*1.0/LIMIT);
     }
 
-    private ArrayList<RawReport> reportsFromDatabase(int type, int first, int limit) {
-        ArrayList<RawReport> reports = new ArrayList<>();
-        String query = "SELECT * FROM "+Database.getInstance().getTable()+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+" ORDER BY date DESC LIMIT "+first+", "+limit+";";
-        try {
-            ResultSet result = Database.getInstance().execute(query);
-            RawReport report;
-            while (result.next()) {
-                report = new RawReport(Bukkit.getOfflinePlayer(result.getString("player_uuid")), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"));
-                report.setId(result.getInt("id"));
-                reports.add(report);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return reports;
-    }
+
 
     public boolean isInteger(String string) {
         try {

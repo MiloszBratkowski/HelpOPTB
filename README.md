@@ -11,10 +11,11 @@ Messages are sent using the */helpop message* command.
 
 ## Commands
 - **/helpop *message*** - sending message to administration.
-- **/helpop check** - marking reports as resolved.
+- **/helpop check** - marking reports as solved.
 - **/helpop history** - displaying history of reports.
 - **/helpop clear_all** - deleting all reports from database.
 - **/helpop clear_solved** - deleting solved reports from database.
+- **/helpop help** - displaying all commands.
 - **/helpop reload** - reloading configuration file.
 
 **Warning!** To use history of reports and checking solved, you have to set option *enable_history: true* in configuration file and type database's information.
@@ -32,6 +33,7 @@ Messages are sent using the */helpop message* command.
 - **helpoptb.command.history** - using */helpop history*.
 - **helpoptb.command.clear.all** - using */helpop clear_all*.
 - **helpoptb.command.clear.solved** - using */helpop clear_solved*.
+- **helpoptb.command.help** - using */helpop help*.
 - **helpoptb.command.reload** - using */helpop reload*.
 
 **Warning!** If player doesn't have permission to use admin commands (check, history, clear_* and reload), after execute one of these arguments it will send a report with this content.

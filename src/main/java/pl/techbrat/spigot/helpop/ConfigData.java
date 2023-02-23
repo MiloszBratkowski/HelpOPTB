@@ -37,6 +37,7 @@ public class ConfigData {
         perms.put("check", "helpoptb.command.check");
         perms.put("history", "helpoptb.command.history");
         perms.put("reload", "helpoptb.command.reload");
+        perms.put("help", "helpoptb.command.help");
 
         infos.put("no_permission_player", config.getString("no_permission_player"));
         infos.put("no_permission_admin", config.getString("no_permission_admin"));

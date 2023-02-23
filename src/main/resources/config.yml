@@ -20,7 +20,7 @@ no_permission_player: "&cYou don't have permissions to use this command!"
 
 #Admin feedback messages
 config_reloaded: "&aConfig has reloaded!"
-history: "&7History of messages <site>/<all_sites>:"
+history: "&7History of messages <page>/<all_pages>: (<amount>)"
 check_report: "&7Report solved!"
 
 #History of messages, this option add features:

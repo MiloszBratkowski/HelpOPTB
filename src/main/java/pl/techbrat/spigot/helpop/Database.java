@@ -31,7 +31,7 @@ public class Database {
         }
     }
 
-    private String type, filename, host, database, username, password;
+    private String type, filename, host, database, username, password, table;
     private int port;
     private boolean ssl;
     private Connection connection;
@@ -44,6 +44,7 @@ public class Database {
             this.host = config.getDatabaseParams("host");
             this.port = Integer.parseInt(config.getDatabaseParams("port"));
             this.database = config.getDatabaseParams("database");
+            this.table = config.getDatabaseParams("table");
             this.username = config.getDatabaseParams("username");
             this.password = config.getDatabaseParams("password");
             this.ssl = Boolean.parseBoolean(config.getDatabaseParams("host"));
@@ -84,7 +85,7 @@ public class Database {
             Files.copy(plugin.getResource("database/"+this.type+"_table.structure"), file.toPath());
             String query = Files.readString(file.toPath());
             file.delete();
-            query = query.replaceAll("%tableName%", ConfigData.getInstance().getDatabaseParams("table"));
+            query = query.replaceAll("%tableName%", table);
             update(query);
             plugin.getLogger().log(Level.INFO, "If table wasn't exist, it has been created.");
         } catch (Exception e) {
@@ -94,6 +95,9 @@ public class Database {
 
     public String getType() {
         return type;
+    }
+    public String getTable() {
+        return table;
     }
 
     public ResultSet execute(String query) {

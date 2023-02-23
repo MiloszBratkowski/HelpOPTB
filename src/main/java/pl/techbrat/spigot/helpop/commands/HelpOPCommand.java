@@ -22,11 +22,15 @@ public class HelpOPCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("incorrect_use")));
             return true;
         }
+        if(sender.hasPermission(config.getPerms("help")) && args[0].equals("help")) {
+            Functions.getInstance().displayHelp(sender);
+            return true;
+        }
         if (sender.hasPermission(config.getPerms("history")) && args[0].equals("history")) {
             if(!config.isDatabaseEnabled()) sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("disabled_database")));
             else {
                 sender.sendMessage((((Player)sender).getUniqueId()).toString());
-                Functions.getInstance().displayHistory(sender, 1);
+                Functions.getInstance().displayHistory(sender, 0, 1);
             }
             return true;
         }

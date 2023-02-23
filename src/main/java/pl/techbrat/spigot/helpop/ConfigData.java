@@ -35,16 +35,22 @@ public class ConfigData {
         perms.put("receive", "helpoptb.receive"); //+
         perms.put("receive.screen", "helpoptb.receive.screen"); //+
         perms.put("check", "helpoptb.command.check");
-        perms.put("history", "helpoptb.command.history");
+        perms.put("history", "helpoptb.command.history"); //+
+        perms.put("clear.all", "helpoptb.command.clear.all");
+        perms.put("clear.solved", "helpoptb.command.clear.solved");
         perms.put("reload", "helpoptb.command.reload");
-        perms.put("help", "helpoptb.command.help");
+        perms.put("help", "helpoptb.command.help"); //+
 
-        infos.put("no_permission_player", config.getString("no_permission_player"));
-        infos.put("no_permission_admin", config.getString("no_permission_admin"));
+        infos.put("no_permission_player", config.getString("no_permission_player")); //+
         infos.put("incorrect_use", config.getString("incorrect_use")); //+
         infos.put("no_admins", config.getString("no_admins")); //+
         infos.put("feedback", config.getString("feedback")); //+
         infos.put("history", config.getString("history")); //+
+        infos.put("click_solve", config.getString("click_solve")); //+
+        infos.put("history_element", config.getString("history_element")); //+
+        infos.put("page_rage", config.getString("page_rage")); //+
+        infos.put("check_type_id", config.getString("check_type_id")); //+
+        infos.put("solve_admin", config.getString("solve_admin")); //+
         infos.put("check_report", config.getString("check_report")); //+
         infos.put("config_reloaded", config.getString("config_reloaded"));
         infos.put("disabled_database", "&cTo use history of reports you have to set enable_history: true in config.yml."); //+

@@ -78,11 +78,11 @@ public class ConfigData {
         plugin.getLogger().log(Level.INFO, "Config file loaded.");
     }
 
-    public String getDatabaseParams(String value) {
+    protected String getDatabaseParams(String value) {
         return databaseParams.get(value);
     }
 
-    public String getStyles(String value) {
+    protected String getStyles(String value) {
         return styles.get(value);
     }
 
@@ -98,7 +98,7 @@ public class ConfigData {
         return databaseEnabled;
     }
 
-    public boolean isScreenEnabled() {
+    protected boolean isScreenEnabled() {
         return screenEnabled;
     }
 

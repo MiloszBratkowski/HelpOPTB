@@ -52,6 +52,54 @@ public class DatabaseReportManager {
         return prototype.values();
     }
 
+    /*
+    protected RawReport reportFromDataBase(int id) {
+        RawReport report = null;
+        String query = "SELECT * FROM "+Database.getInstance().getTable()+" WHERE id = "+id+";";
+        try {
+            ResultSet result = Database.getInstance().execute(query);
+            if (result.next()) {
+                report = new RawReport(Bukkit.getOfflinePlayer(result.getString("player_uuid")), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"));
+                report.setId(result.getInt("id"));
+                reports.put(id, report);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return report;
+    }
+     */
+
+    public boolean softSolve(int id, String admin) {
+        if (containsId(id)) {
+            getReport(id).solveReport(admin);
+            return true;
+        }
+        try {
+            if (Database.getInstance().execute("SELECT id FROM " + ConfigData.getInstance().getDatabaseParams("table") + " WHERE id = " + id + ";").next()) {
+                Database.getInstance().update("UPDATE " + ConfigData.getInstance().getDatabaseParams("table") + " SET solved = '" + admin + "' WHERE id = " + id + ";");
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /*
+    public boolean softDelete(int id) {
+        try {
+            if (Database.getInstance().execute("SELECT id FROM "+ConfigData.getInstance().getDatabaseParams("table")+" WHERE id = "+id+";").next()) {
+                Database.getInstance().update("DELETE FROM "+ConfigData.getInstance().getDatabaseParams("table")+" WHERE id = "+id+";");
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+     */
+
     public RawReport getReport(int id) {
         return reports.get(id);
     }
@@ -60,7 +108,7 @@ public class DatabaseReportManager {
         return reports.containsKey(id);
     }
 
-    public Collection<RawReport> getReports() {
+    protected Collection<RawReport> getReports() {
         return reports.values();
     }
 

@@ -7,9 +7,6 @@ import org.bukkit.entity.Player;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Objects;
 
 public class RawReport {
 
@@ -24,10 +21,10 @@ public class RawReport {
 
 
 
-    public RawReport(Player player, String message) {
+    protected RawReport(Player player, String message) {
         this(player, player.getName(), message, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), "-1");
     }
-    public RawReport(OfflinePlayer player, String playerName, String message, String date, String solved) {
+    protected RawReport(OfflinePlayer player, String playerName, String message, String date, String solved) {
         this.player = player;
         this.playerName = playerName;
         this.message = message;
@@ -35,7 +32,7 @@ public class RawReport {
         this.solved = solved;
     }
 
-    public void setId(int id) {
+    protected void setId(int id) {
         this.id = id;
     }
 
@@ -50,30 +47,30 @@ public class RawReport {
         return ChatColor.translateAlternateColorCodes('&', config.getStyles("screen_subtitle").replace("<message>", message).replace("<player>", player.getName()));
     }
 
-    public int getId() {
+    protected int getId() {
         return id;
     }
 
-    public OfflinePlayer getOfflinePlayer() {
+    protected OfflinePlayer getOfflinePlayer() {
         return player;
     }
 
-    public String getPlayerName() {
+    protected String getPlayerName() {
         return playerName;
     }
 
-    public String getSolved() {
+    protected String getSolved() {
         return solved;
     }
     public boolean isSolved() {
         return !solved.equals("-1");
     }
 
-    public String getMessage() {
+    protected String getMessage() {
         return message;
     }
 
-    public String getDate() {
+    protected String getDate() {
         return date;
     }
 

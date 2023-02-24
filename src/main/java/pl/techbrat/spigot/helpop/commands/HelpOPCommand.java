@@ -54,9 +54,14 @@ public class HelpOPCommand implements CommandExecutor {
             }
             int id = Integer.parseInt(args[1]);
             if (!DatabaseReportManager.getInstance().containsId(id)) {
+                if (DatabaseReportManager.getInstance().softSolve(id, sender.getName())) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("check_report")));
+                    return true;
+                }
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("incorrect_report_id")));
                 return true;
             }
+
             if (DatabaseReportManager.getInstance().getReport(id).isSolved()) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("report_is_solved")));
                 return true;

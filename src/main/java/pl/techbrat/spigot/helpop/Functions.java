@@ -4,12 +4,10 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
 public class Functions {
     private static Functions instance;
@@ -19,7 +17,7 @@ public class Functions {
 
     private static final int LIMIT = 10; //Number of reports on the one page
 
-    public Functions() {
+    protected Functions() {
         instance = this;
     }
 
@@ -55,7 +53,7 @@ public class Functions {
     }
 
     //types: 0 - all, 1 - unsolved, 2 - solved
-    private int getNumberOfReports(int type) {
+    protected int getNumberOfReports(int type) {
         String query = "SELECT COUNT(id) FROM "+Database.getInstance().getTable()+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+";";
         try {
             ResultSet result = Database.getInstance().execute(query);

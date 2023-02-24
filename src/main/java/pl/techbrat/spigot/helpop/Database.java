@@ -9,7 +9,7 @@ public class Database {
     private static final HelpOPTB plugin = HelpOPTB.getInstance();
 
     private static Database instance;
-    public static Database getInstance() {
+    protected static Database getInstance() {
         return instance;
     }
 
@@ -34,7 +34,7 @@ public class Database {
     private Connection connection;
     private Statement statement;
 
-    public Database(String type, boolean closeLastCon) throws SQLException {
+    protected Database(String type, boolean closeLastCon) throws SQLException {
         this.type = type;
         ConfigData config = ConfigData.getInstance();
         this.table = config.getDatabaseParams("table");
@@ -90,14 +90,11 @@ public class Database {
         };
     }
 
-    public String getType() {
-        return type;
-    }
-    public String getTable() {
+    protected String getTable() {
         return table;
     }
 
-    public ResultSet execute(String query) {
+    protected ResultSet execute(String query) {
         try {
             return statement.executeQuery(query);
         } catch (SQLException e) {
@@ -108,7 +105,7 @@ public class Database {
     }
 
     //Funkcja od wykonywania update w bazie danych
-    public int update(String query) {
+    protected int update(String query) {
         try {
             return statement.executeUpdate(query);
         } catch (SQLException e) {

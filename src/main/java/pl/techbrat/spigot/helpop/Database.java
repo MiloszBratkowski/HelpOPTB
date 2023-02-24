@@ -1,9 +1,6 @@
 package pl.techbrat.spigot.helpop;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.*;
 import java.util.logging.Level;
@@ -40,11 +37,11 @@ public class Database {
     public Database(String type, boolean closeLastCon) throws SQLException {
         this.type = type;
         ConfigData config = ConfigData.getInstance();
+        this.table = config.getDatabaseParams("table");
         if(type.equalsIgnoreCase("MYSQL")) {
             this.host = config.getDatabaseParams("host");
             this.port = Integer.parseInt(config.getDatabaseParams("port"));
             this.database = config.getDatabaseParams("database");
-            this.table = config.getDatabaseParams("table");
             this.username = config.getDatabaseParams("username");
             this.password = config.getDatabaseParams("password");
             this.ssl = Boolean.parseBoolean(config.getDatabaseParams("host"));

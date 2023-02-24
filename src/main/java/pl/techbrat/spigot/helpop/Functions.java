@@ -17,7 +17,7 @@ public class Functions {
         return instance;
     }
 
-    private static final int LIMIT = 5; //Number of reports on the one page
+    private static final int LIMIT = 10; //Number of reports on the one page
 
     public Functions() {
         instance = this;
@@ -46,12 +46,12 @@ public class Functions {
     }
 
     public void displayHelp(CommandSender sender) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aHelpOP&2TB &7all commands:"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d/helpop check &7- marking reports as solved,"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d/helpop history <page> &7- displaying history of reports,"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d/helpop clear_all &7- deleting all reports from database,"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d/helpop clear_solved &7- deleting solved reports from database,"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d/helpop reload &7- reloading configuration file."));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&2HelpOP&bTB &7all commands:"));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop check <id> &7- marking reports as solved,"));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop history [page] &7- displaying history of reports,"));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop clear_all &7- deleting all reports from database,"));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop clear_solved &7- deleting solved reports from database,"));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop reload &7- reloading configuration file."));
     }
 
     //types: 0 - all, 1 - unsolved, 2 - solved

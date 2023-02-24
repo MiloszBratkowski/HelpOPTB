@@ -6,17 +6,19 @@
 
     <groupId>pl.techbrat.spigot</groupId>
     <artifactId>helpop</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>HelpOPTB</name>
 
-    <description>ddesc</description>
+    <description>
+        Simple and modern Spigot plugin to help your players message online staff for help. This plugin allows players to communicate with the administration via direct messages.
+    </description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>1.11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>techbrat.pl</url>
+    <url>https://github.com/MiloszBratkowski/HelpOPTB</url>
 
     <build>
         <plugins>

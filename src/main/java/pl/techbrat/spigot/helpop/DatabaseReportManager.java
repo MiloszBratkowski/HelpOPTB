@@ -3,11 +3,9 @@ package pl.techbrat.spigot.helpop;
 import org.bukkit.Bukkit;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
-public class DatabaseReportManager { //TODO IN THE FUTURE
+public class DatabaseReportManager {
     private final HashMap<Integer, RawReport> reports = new HashMap<>();
     private static DatabaseReportManager instance;
 
@@ -35,8 +33,9 @@ public class DatabaseReportManager { //TODO IN THE FUTURE
     }
     */
 
+    //types: 0 - all, 1 - unsolved, 2 - solved
     protected Collection<RawReport> reportsFromDatabase(int type, int first, int limit) {
-        HashMap<Integer, RawReport> prototype = new HashMap<>();
+        LinkedHashMap<Integer, RawReport> prototype = new LinkedHashMap<>();
         String query = "SELECT * FROM "+Database.getInstance().getTable()+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+" ORDER BY date DESC LIMIT "+first+", "+limit+";";
         try {
             ResultSet result = Database.getInstance().execute(query);
@@ -57,7 +56,25 @@ public class DatabaseReportManager { //TODO IN THE FUTURE
         return reports.get(id);
     }
 
+    public boolean containsId(int id) {
+        return reports.containsKey(id);
+    }
+
     public Collection<RawReport> getReports() {
         return reports.values();
+    }
+
+    //types: 0 - all, 1 - unsolved, 2 - solved
+    public void clearReports(int type) {
+        Database.getInstance().update("DELETE FROM "+ConfigData.getInstance().getDatabaseParams("table")+" "+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+";");
+        if (type==0) reports.clear();
+        else {
+            for(Iterator<Map.Entry<Integer, RawReport>> it = reports.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<Integer, RawReport> entry = it.next();
+                if(type==1 && !reports.get(entry.getKey()).isSolved()) it.remove();
+                else if(type==2 && reports.get(entry.getKey()).isSolved()) it.remove();
+            }
+        }
+
     }
 }

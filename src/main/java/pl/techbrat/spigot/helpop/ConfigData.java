@@ -52,6 +52,9 @@ public class ConfigData {
         infos.put("check_type_id", config.getString("check_type_id")); //+
         infos.put("solve_admin", config.getString("solve_admin")); //+
         infos.put("check_report", config.getString("check_report")); //+
+        infos.put("clearing_reports", config.getString("clearing_reports")); //+
+        infos.put("report_is_solved", config.getString("report_is_solved")); //+
+        infos.put("incorrect_report_id", config.getString("incorrect_report_id")); //+
         infos.put("config_reloaded", config.getString("config_reloaded"));
         infos.put("disabled_database", "&cTo use history of reports you have to set enable_history: true in config.yml."); //+
 

@@ -2,7 +2,7 @@
 
 
 ## Description
-Simple spigot plugin
+Simple and modern Spigot plugin to help your players message online staff for help.
 This plugin allows players to communicate with the administration via direct messages.
 To send a message, the player must have the appropriate permissions (*helpoptb.command* and *helpoptb.report*).
 Messages are sent using the */helpop message* command.

@@ -39,36 +39,32 @@ Messages are sent using the */helpop message* command.
 **Warning!** If player doesn't have permission to use admin commands (check, history, clear_* and reload), after execute one of these arguments it will send a report with this content.
 
 ## Configuration file
+###### For latest plugin version!
 ````
-admin_message_format: "&7[&cHelpOP&7] &6<player>&7: &f<message>"
-
-incorrect_use: "&cYou have to type issue! &7/helpop message"
-
-no_admins: "&cThere is no administration on the server currently :/."
-
-feedback: "&7Your message was sent to administration!"
-
+#Display information on the screen to admins (title/subtitle). Admin must have permission!
 screen_information: true
-screen_title: "&cNew report from &6<player>&c!"
-screen_subtitle: "&f<message>"
 
-no_permission_player: "&cYou don't have permissions to use this command!"
+#Sending reports with no any administrator on the server.
+send_without_admin: true
 
-config_reloaded: "&aConfig has reloaded!"
-history: "&7History of messages <site>/<all_sites>:"
-check_report: "&7Report solved!"
-
-enable_history: false
+#History of messages, this option add features:
+# 1) if the administration solves the problem, can mark the report as solved
+# 2) history of messages
+# 3) receiving messages sent during the absence of the administration on the server, after entering
+enable_history: true
 database:
-  type: sqlite
+  #Avaiable databases: SQLite, MySQL (recommended).
+  type: mysql
   table: helpop
 
+  #If you use SQLite, you can set file's name.
   filename: database.db
 
+  #If you use MySQL, you have to set database parameters.
   host: localhost
   port: 3306
   database: helpop
-  username: helpop
+  username: root
   password: ''
   ssl: false
 ````

@@ -15,7 +15,7 @@ public class Database {
 
     public static void load() {
         ConfigData config = ConfigData.getInstance();
-        String type = config.getDatabaseParams("type");
+        String type = config.getDatabaseParams("type").toLowerCase();
         plugin.getLogger().log(Level.INFO, "Loading database... (type: "+type+")");
         try {
             new Database(type.toUpperCase(), true);

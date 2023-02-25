@@ -37,14 +37,14 @@ public class RawReport {
     }
 
     protected String customizeChatMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getStyles("admin_message_format").replace("<message>", message).replace("<player>", player.getName()));
+        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.report_format").replace("<message>", message).replace("<player>", player.getName()));
     }
     protected String customizeTitleMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getStyles("screen_title").replace("<message>", message).replace("<player>", player.getName()));
+        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_title").replace("<message>", message).replace("<player>", player.getName()));
     }
 
     protected String customizeSubtitleMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getStyles("screen_subtitle").replace("<message>", message).replace("<player>", player.getName()));
+        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_subtitle").replace("<message>", message).replace("<player>", player.getName()));
     }
 
     protected int getId() {

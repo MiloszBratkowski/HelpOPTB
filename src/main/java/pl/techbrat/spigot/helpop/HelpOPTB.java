@@ -15,8 +15,6 @@ public final class HelpOPTB extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        getConfig().options().copyDefaults(true);
-        saveConfig();
         new ConfigData();
         new Functions();
         new DatabaseReportManager();

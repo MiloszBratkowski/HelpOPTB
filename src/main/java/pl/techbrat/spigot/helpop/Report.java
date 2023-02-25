@@ -15,8 +15,8 @@ public class Report extends RawReport {
 
     public void sendReport(Boolean feedback) {
         ArrayList<Player> admins = getAdministration();
-        if(admins.size() == 0) {
-            getOfflinePlayer().getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("no_admins")));
+        if(admins.size() == 0 && !config.isSendingWithoutAdmin()) {
+            getOfflinePlayer().getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.no_admins")));
         } else {
             for (Player admin : admins) {
                 admin.sendMessage(customizeChatMessage());
@@ -24,7 +24,7 @@ public class Report extends RawReport {
                     admin.sendTitle(customizeTitleMessage(), customizeSubtitleMessage());
                 }
             }
-            if (feedback) getOfflinePlayer().getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("feedback")));
+            if (feedback) getOfflinePlayer().getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.feedback")));
             if (config.isDatabaseEnabled()) saveReport();
         }
     }

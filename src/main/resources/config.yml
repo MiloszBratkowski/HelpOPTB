@@ -1,46 +1,17 @@
-#This is configuration of style of messages
-admin_message_format: "&7[&cHelpOP&7] &6<player>&7: &f<message>"
-
-#Message to player after badly use
-incorrect_use: "&cYou have to type issue! &7/helpop message"
-
-#Information to player when nobody of administrations is on the server. (only if history of messages is disabled)
-no_admins: "&cThere is no administration on the server currently :/."
-
-#Information to player when message was sent
-feedback: "&7Your message was sent to administration!"
-
 #Display information on the screen to admins (title/subtitle). Admin must have permission!
 screen_information: true
-screen_title: "&cNew report from &6<player>&c!"
-screen_subtitle: "&f<message>"
 
-#No permissions message
-no_permission_player: "&cYou don't have permissions to use this command!"
-
-#Admin feedback messages
-config_reloaded: "&aConfig has reloaded!"
-history: "&7History of messages <page>/<all_pages>: (<amount>)"
-history_element: "<solved> &8[<id>] &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solve_admin>, <date>, <player>, <message>
-page_rage: "&cPlease type page number from 1 to <all_pages>."
-
-click_solve: "&aClick to solve report!"
-check_report: "&7Report solved!"
-solve_admin: "&7Solved by &a<player>&7."
-check_type_id: "&cPlease type id of report."
-incorrect_report_id: "&cIncorrect id of report."
-report_is_solved: "&cThis report has been solved."
-
-clearing_reports: "&7Reports deleted!"
+#Sending reports with no any administrator on the server.
+send_without_admin: true
 
 #History of messages, this option add features:
-# 1) if the administration solves the problem, it can mark the report as solved
+# 1) if the administration solves the problem, can mark the report as solved
 # 2) history of messages
 # 3) receiving messages sent during the absence of the administration on the server, after entering
 enable_history: true
 database:
-  #Avaiable databases: SQLite, MySQL.
-  type: sqlite
+  #Avaiable databases: SQLite, MySQL (recommended).
+  type: mysql
   table: helpop
 
   #If you use SQLite, you can set file's name.

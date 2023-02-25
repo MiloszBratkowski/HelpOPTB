@@ -23,10 +23,10 @@ public class Functions {
 
     public void displayHistory(CommandSender sender, int type, Integer page) {
         ConfigData configData = ConfigData.getInstance();
-        String title = configData.getInfos("history").replace("<page>", Integer.toString(page)).replace("<all_pages>", Integer.toString(getNumbersOfPages(0))).replace("<amount>", Integer.toString(getNumberOfReports(0)));
+        String title = configData.getMsg("admins.commands.history.title").replace("<page>", Integer.toString(page)).replace("<all_pages>", Integer.toString(getNumbersOfPages(0))).replace("<amount>", Integer.toString(getNumberOfReports(0)));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', title));
         for (RawReport report : DatabaseReportManager.getInstance().reportsFromDatabase(0, (page-1)*LIMIT, LIMIT)) {
-            TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', ConfigData.getInstance().getInfos("history_element").
+            TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', ConfigData.getInstance().getMsg("admins.commands.history.element").
                     replace("<id>", Integer.toString(report.getId())).
                     replace("<solved>", report.isSolved()?"&a✔":"&c✘").
                     replace("<solve_admin>", report.isSolved()?"&a"+report.getSolved():"&c✘").
@@ -34,9 +34,9 @@ public class Functions {
                     replace("<player>", report.getPlayerName()).
                     replace("<message>", report.getMessage())));
             if(report.isSolved()) {
-                message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getInfos("solve_admin").replace("<player>", report.getSolved()))).create()));
+                message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getMsg("admins.commands.history.hover_solve").replace("<player>", report.getSolved()))).create()));
             } else {
-                message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getInfos("click_solve"))).create()));
+                message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getMsg("admins.commands.history.click_solve"))).create()));
                 message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop check "+report.getId()));
             }
             sender.spigot().sendMessage(message);
@@ -44,12 +44,7 @@ public class Functions {
     }
 
     public void displayHelp(CommandSender sender) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&2HelpOP&bTB &7all commands:"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop check <id> &7- marking reports as solved,"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop history [page] &7- displaying history of reports,"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop clear_all &7- deleting all reports from database,"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop clear_solved &7- deleting solved reports from database,"));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/helpop reload &7- reloading configuration file."));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ConfigData.getInstance().getMsg("admins.commands.help")));
     }
 
     //types: 0 - all, 1 - unsolved, 2 - solved

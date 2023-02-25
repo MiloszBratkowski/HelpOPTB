@@ -1,7 +1,10 @@
 package pl.techbrat.spigot.helpop;
 
+import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.logging.Level;
 
@@ -14,23 +17,20 @@ public class ConfigData {
     }
 
     private final HashMap<String, String> perms = new HashMap<>();
-    private final HashMap<String, String> infos = new HashMap<>();
-    private final HashMap<String, String> styles = new HashMap<>();
+    private HashMap<String, Object> messages = new HashMap<>();
 
-    private final boolean screenEnabled;
-    private final boolean databaseEnabled;
+    private HashMap<String, Object> config = new HashMap<>();
 
     private final HashMap<String, String> databaseParams = new HashMap<>();
 
 
     public ConfigData() {
-        plugin.getLogger().log(Level.INFO, "Loading config file...");
-
         instance = this;
 
+        createConfigs(false);
 
-        plugin.reloadConfig();
-        FileConfiguration config = HelpOPTB.getInstance().getConfig();
+        plugin.getLogger().log(Level.INFO, "Loading config file...");
+
         perms.put("report", "helpoptb.report"); //+
         perms.put("receive", "helpoptb.receive"); //+
         perms.put("receive.screen", "helpoptb.receive.screen"); //+
@@ -41,53 +41,22 @@ public class ConfigData {
         perms.put("reload", "helpoptb.command.reload");
         perms.put("help", "helpoptb.command.help"); //+
 
-        infos.put("no_permission_player", config.getString("no_permission_player")); //+
-        infos.put("incorrect_use", config.getString("incorrect_use")); //+
-        infos.put("no_admins", config.getString("no_admins")); //+
-        infos.put("feedback", config.getString("feedback")); //+
-        infos.put("history", config.getString("history")); //+
-        infos.put("click_solve", config.getString("click_solve")); //+
-        infos.put("history_element", config.getString("history_element")); //+
-        infos.put("page_rage", config.getString("page_rage")); //+
-        infos.put("check_type_id", config.getString("check_type_id")); //+
-        infos.put("solve_admin", config.getString("solve_admin")); //+
-        infos.put("check_report", config.getString("check_report")); //+
-        infos.put("clearing_reports", config.getString("clearing_reports")); //+
-        infos.put("report_is_solved", config.getString("report_is_solved")); //+
-        infos.put("incorrect_report_id", config.getString("incorrect_report_id")); //+
-        infos.put("config_reloaded", config.getString("config_reloaded"));
-        infos.put("disabled_database", "&cTo use history of reports you have to set enable_history: true in config.yml."); //+
+        File messagesFile = new File(plugin.getDataFolder()+"/messages.yml");
+        messages = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(messagesFile).getConfigurationSection("").getValues(true);
+        messages.put("disabled_database", "&cTo use history of reports you have to set enable_history: true in config.yml.");
 
-        styles.put("admin_message_format", config.getString("admin_message_format")); //+
-        styles.put("screen_title", config.getString("screen_title")); //+
-        styles.put("screen_subtitle", config.getString("screen_subtitle")); //+
-
-        screenEnabled = config.getBoolean("screen_information"); //+
-        databaseEnabled = config.getBoolean("enable_history"); //+
-
-        databaseParams.put("type", config.getString("database.type"));
-        databaseParams.put("table", config.getString("database.table"));
-        databaseParams.put("filename", config.getString("database.filename"));
-        databaseParams.put("host", config.getString("database.host"));
-        databaseParams.put("port", config.getString("database.port"));
-        databaseParams.put("database", config.getString("database.database"));
-        databaseParams.put("username", config.getString("database.username"));
-        databaseParams.put("password", config.getString("database.password"));
-        databaseParams.put("ssl", config.getString("database.ssl"));
+        File configFile = new File(plugin.getDataFolder()+"/config.yml");
+        config = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(configFile).getConfigurationSection("").getValues(true);
 
         plugin.getLogger().log(Level.INFO, "Config file loaded.");
     }
 
     protected String getDatabaseParams(String value) {
-        return databaseParams.get(value);
+        return config.get("database."+value).toString();
     }
 
-    protected String getStyles(String value) {
-        return styles.get(value);
-    }
-
-    public String getInfos(String value) {
-        return infos.get(value);
+    public String getMsg(String value) {
+        return (value.contains("admins.commands")?"&7[&2HelpOP&bTB&7] ":"")+messages.get(value).toString().replace("<prefix>", messages.get("prefix").toString());
     }
 
     public String getPerms(String value) {
@@ -95,12 +64,29 @@ public class ConfigData {
     }
 
     public boolean isDatabaseEnabled() {
-        return databaseEnabled;
+        return (boolean) config.get("enable_history");
     }
 
     protected boolean isScreenEnabled() {
-        return screenEnabled;
+        return (boolean) config.get("screen_information");
     }
 
+    protected boolean isSendingWithoutAdmin() {
+        return (boolean) config.get("send_without_admin");
+    }
+
+    private void createConfigs(boolean forceCopy) {
+        String[] files = {"config.yml", "messages.yml"};
+        for (String element : files) {
+            File file = new File(plugin.getDataFolder()+"/"+element);
+            if (!file.isFile() || forceCopy) {
+                try {
+                    plugin.getLogger().log(Level.INFO, "Creating "+element+" ...");
+                    FileUtils.copyInputStreamToFile(plugin.getResource(element), file);
+                    plugin.getLogger().log(Level.INFO, "File "+element+" created");
+                } catch (Exception e) {e.printStackTrace(); plugin.stopPlugin();}
+            }
+        }
+    }
 
 }

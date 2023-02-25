@@ -7,16 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.*;
 
-import javax.xml.crypto.Data;
-
 public class HelpOPCommand implements CommandExecutor {
-
-    private final ConfigData config = ConfigData.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        ConfigData config = ConfigData.getInstance();
         if(args.length < 1) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("incorrect_use")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.incorrect_use")));
             return true;
         }
         if(sender.hasPermission(config.getPerms("help")) && args[0].equals("help")) {
@@ -25,7 +22,7 @@ public class HelpOPCommand implements CommandExecutor {
         }
         if (sender.hasPermission(config.getPerms("history")) && args[0].equals("history")) {
             if(!config.isDatabaseEnabled()) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("disabled_database")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("disabled_database")));
                 return true;
             }
             final int TYPE = 0; //TODO in the future to implement
@@ -35,7 +32,7 @@ public class HelpOPCommand implements CommandExecutor {
                     page = Integer.parseInt(args[1]);
                     final int all_pages = Functions.getInstance().getNumbersOfPages(TYPE);
                     if (page <= 0 || page > all_pages) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("page_rage").replace("<all_pages>", Integer.toString(all_pages))));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.history.page_rage").replace("<all_pages>", Integer.toString(all_pages))));
                         return true;
                     }
                 }
@@ -45,56 +42,57 @@ public class HelpOPCommand implements CommandExecutor {
         }
         if (sender.hasPermission(config.getPerms("check")) && args[0].equals("check")) {
             if(!config.isDatabaseEnabled()) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("disabled_database")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("disabled_database")));
                 return true;
             }
             if (args.length<2 || !Functions.getInstance().isInteger(args[1])) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("check_type_id")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.check.type_id")));
                 return true;
             }
             int id = Integer.parseInt(args[1]);
             if (!DatabaseReportManager.getInstance().containsId(id)) {
                 if (DatabaseReportManager.getInstance().softSolve(id, sender.getName())) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("check_report")));
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.check.solved")));
                     return true;
                 }
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("incorrect_report_id")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.check.incorrect_id")));
                 return true;
             }
 
             if (DatabaseReportManager.getInstance().getReport(id).isSolved()) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("report_is_solved")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.check.is_solved")));
                 return true;
             }
             DatabaseReportManager.getInstance().getReport(id).solveReport(sender.getName());
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("check_report")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.check.solved")));
             return true;
         }
         if (sender.hasPermission(config.getPerms("clear.all")) && args[0].equals("clear_all")) {
             if(!config.isDatabaseEnabled()) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("disabled_database")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("disabled_database")));
                 return true;
             }
             DatabaseReportManager.getInstance().clearReports(0);
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("clearing_reports")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.clear")));
             return true;
         }
         if (sender.hasPermission(config.getPerms("clear.solved")) && args[0].equals("clear_solved")) {
             if(!config.isDatabaseEnabled()) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("disabled_database")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("disabled_database")));
                 return true;
             }
             DatabaseReportManager.getInstance().clearReports(2);
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("clearing_reports")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.clear")));
             return true;
         }
         if (sender.hasPermission(config.getPerms("reload")) && args[0].equals("reload")) {
             new ConfigData();
             if (ConfigData.getInstance().isDatabaseEnabled()) Database.load();
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.reload")));
             return true;
         }
         if (!sender.hasPermission(config.getPerms("report"))) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getInfos("no_permission_player")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("no_permission")));
         } else {
             StringBuilder message = new StringBuilder();
             for (String word : args) {

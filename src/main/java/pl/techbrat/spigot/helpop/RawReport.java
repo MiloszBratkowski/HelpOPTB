@@ -12,7 +12,7 @@ public class RawReport {
 
     private int id;
     private final String message;
-    protected final OfflinePlayer player;
+    private final String uuid;
     private final String playerName;
     private final String date;
     private String solved;
@@ -22,10 +22,10 @@ public class RawReport {
 
 
     protected RawReport(Player player, String message) {
-        this(player, player.getName(), message, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), "-1");
+        this(player.getUniqueId().toString(), player.getName(), message, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), "-1");
     }
-    protected RawReport(OfflinePlayer player, String playerName, String message, String date, String solved) {
-        this.player = player;
+    protected RawReport(String uuid, String playerName, String message, String date, String solved) {
+        this.uuid = uuid;
         this.playerName = playerName;
         this.message = message;
         this.date = date;
@@ -37,23 +37,23 @@ public class RawReport {
     }
 
     protected String customizeChatMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.report_format").replace("<message>", message).replace("<player>", player.getName()));
+        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.report_format").replace("<message>", message).replace("<player>", playerName));
     }
     protected String customizeTitleMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_title").replace("<message>", message).replace("<player>", player.getName()));
+        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_title").replace("<message>", message).replace("<player>", playerName));
     }
 
     protected String customizeSubtitleMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_subtitle").replace("<message>", message).replace("<player>", player.getName()));
+        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_subtitle").replace("<message>", message).replace("<player>", playerName));
     }
 
     protected int getId() {
         return id;
     }
 
-    protected OfflinePlayer getOfflinePlayer() {
+    /*protected OfflinePlayer getOfflinePlayer() {
         return player;
-    }
+    }*/
 
     protected String getPlayerName() {
         return playerName;
@@ -78,7 +78,7 @@ public class RawReport {
     void saveReport() {
         Database.getInstance()
                 .update("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
-                        "VALUES (NULL, '"+player.getName()+"', '"+player.getUniqueId()+"', '"+message+"', '-1', '"+date+"');");
+                        "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message+"', '-1', '"+date+"');");
         try {
             ResultSet result = Database.getInstance().execute("SELECT id FROM " + config.getDatabaseParams("table") + " WHERE date = '" + date + "' AND message = '" + message + "';");
             result.next();

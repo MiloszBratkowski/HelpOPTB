@@ -41,7 +41,7 @@ public class DatabaseReportManager {
             ResultSet result = Database.getInstance().execute(query);
             RawReport report;
             while (result.next()) {
-                report = new RawReport(Bukkit.getOfflinePlayer(result.getString("player_uuid")), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"));
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"));
                 report.setId(result.getInt("id"));
                 prototype.put(result.getInt("id"), report);
             }

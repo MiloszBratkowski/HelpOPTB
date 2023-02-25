@@ -34,7 +34,7 @@ public class Database {
     private Connection connection;
     private Statement statement;
 
-    protected Database(String type, boolean closeLastCon) throws SQLException {
+    protected Database(String type, boolean closeLastCon) throws Exception {
         this.type = type;
         ConfigData config = ConfigData.getInstance();
         this.table = config.getDatabaseParams("table");
@@ -55,12 +55,13 @@ public class Database {
         createTable();
     }
 
-    private boolean connect() throws SQLException {
+    private boolean connect() throws SQLException, ClassNotFoundException {
         plugin.getLogger().log(Level.INFO, "Connecting to database...");
         if(connection != null && !connection.isClosed()) return false;
         if(type.equals("MYSQL")) {
             connection = DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+database+"?autoReconnect=true&useSSL="+ssl, username, password);
         } else {
+            Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:"+plugin.getDataFolder()+"/"+filename);
         }
         statement = connection.createStatement();

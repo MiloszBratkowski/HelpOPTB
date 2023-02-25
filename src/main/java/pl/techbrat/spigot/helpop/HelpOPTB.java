@@ -12,9 +12,12 @@ public final class HelpOPTB extends JavaPlugin {
         return instance;
     }
 
+    private int mainIntVersion;
+
     @Override
     public void onEnable() {
         instance = this;
+        mainIntVersion = Integer.parseInt(getServer().getBukkitVersion().split("\\.")[1].split("-")[0]);
         new ConfigData();
         new Functions();
         new DatabaseReportManager();
@@ -34,5 +37,9 @@ public final class HelpOPTB extends JavaPlugin {
 
     public void stopPlugin() {
         this.getServer().getPluginManager().disablePlugin(this);
+    }
+
+    public int getVersionSymbol() {
+        return mainIntVersion;
     }
 }

@@ -26,20 +26,25 @@ public class Functions {
         String title = configData.getMsg("admins.commands.history.title").replace("<page>", Integer.toString(page)).replace("<all_pages>", Integer.toString(getNumbersOfPages(0))).replace("<amount>", Integer.toString(getNumberOfReports(0)));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', title));
         for (RawReport report : DatabaseReportManager.getInstance().reportsFromDatabase(0, (page-1)*LIMIT, LIMIT)) {
-            TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', ConfigData.getInstance().getMsg("admins.commands.history.element").
+            String messageOld = ChatColor.translateAlternateColorCodes('&', ConfigData.getInstance().getMsg("admins.commands.history.element").
                     replace("<id>", Integer.toString(report.getId())).
                     replace("<solved>", report.isSolved()?"&a✔":"&c✘").
                     replace("<solve_admin>", report.isSolved()?"&a"+report.getSolved():"&c✘").
                     replace("<date>", report.getDate()).
                     replace("<player>", report.getPlayerName()).
-                    replace("<message>", report.getMessage())));
-            if(report.isSolved()) {
-                message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getMsg("admins.commands.history.hover_solve").replace("<player>", report.getSolved()))).create()));
+                    replace("<message>", report.getMessage()));
+            if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
+                TextComponent message = new TextComponent(messageOld);
+                if (report.isSolved()) {
+                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getMsg("admins.commands.history.hover_solve").replace("<player>", report.getSolved()))).create()));
+                } else {
+                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getMsg("admins.commands.history.click_solve"))).create()));
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop check " + report.getId()));
+                }
+                sender.spigot().sendMessage(message);
             } else {
-                message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getMsg("admins.commands.history.click_solve"))).create()));
-                message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop check "+report.getId()));
+                sender.sendMessage(messageOld);
             }
-            sender.spigot().sendMessage(message);
         }
     }
 

@@ -109,7 +109,10 @@ public class DatabaseReportManager {
         if (!ConfigData.getInstance().isDatabaseEnabled()) {
             throw new DatabaseDisabledException("Database (history of reports) is disabled!");
         }
-        return reports.get(id);
+        if (reports.containsKey(id)) return reports.get(id);
+        else {
+            return reportFromDataBase(id);
+        }
     }
 
     public boolean containsId(int id) throws DatabaseDisabledException {

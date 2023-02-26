@@ -23,9 +23,9 @@ public class Functions {
 
     public void displayHistory(CommandSender sender, int type, Integer page) throws DatabaseDisabledException {
         ConfigData configData = ConfigData.getInstance();
-        String title = configData.getMsg("admins.commands.history.title").replace("<page>", Integer.toString(page)).replace("<all_pages>", Integer.toString(getNumbersOfPages(0))).replace("<amount>", Integer.toString(getNumberOfReports(0)));
+        String title = configData.getMsg("admins.commands.history.title").replace("<page>", Integer.toString(page)).replace("<all_pages>", Integer.toString(getNumbersOfPages(type))).replace("<amount>", Integer.toString(getNumberOfReports(type)));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', title));
-        for (RawReport report : DatabaseReportManager.getInstance().reportsFromDatabase(0, (page-1)*LIMIT, LIMIT)) {
+        for (RawReport report : DatabaseReportManager.getInstance().reportsFromDatabase(type, (page-1)*LIMIT, LIMIT)) {
             String messageOld = ChatColor.translateAlternateColorCodes('&', ConfigData.getInstance().getMsg("admins.commands.history.element").
                     replace("<id>", Integer.toString(report.getId())).
                     replace("<solved>", report.isSolved()?"&a✔":"&c✘").

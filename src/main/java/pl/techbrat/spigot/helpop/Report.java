@@ -7,13 +7,13 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 
 public class Report extends RawReport {
-    private ConfigData config = ConfigData.getInstance();
 
     public Report(Player player, String message) {
         super(player, message);
     }
 
     public void sendReport(Boolean feedback) {
+        ConfigData config = ConfigData.getInstance();
         ArrayList<Player> admins = getAdministration();
         if(admins.size() == 0 && !config.isSendingWithoutAdmin()) {
             Bukkit.getPlayer(getPlayerName()).sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.no_admins")));

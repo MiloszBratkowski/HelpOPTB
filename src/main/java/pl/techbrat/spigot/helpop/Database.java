@@ -28,7 +28,13 @@ public class Database {
         }
     }
 
-    private String type, filename, host, database, username, password, table;
+    private final String type;
+    private String filename;
+    private String host;
+    private String database;
+    private String username;
+    private String password;
+    private final String table;
     private int port;
     private boolean ssl;
     private Connection connection;
@@ -55,9 +61,9 @@ public class Database {
         createTable();
     }
 
-    private boolean connect() throws SQLException, ClassNotFoundException {
+    private void connect() throws SQLException, ClassNotFoundException {
         plugin.getLogger().log(Level.INFO, "Connecting to database...");
-        if(connection != null && !connection.isClosed()) return false;
+        if(connection != null && !connection.isClosed()) return;
         if(type.equals("MYSQL")) {
             connection = DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+database+"?autoReconnect=true&useSSL="+ssl, username, password);
         } else {
@@ -66,7 +72,6 @@ public class Database {
         }
         statement = connection.createStatement();
         plugin.getLogger().log(Level.INFO, "Database connected.");
-        return true;
     }
 
     private void checkConnect() {
@@ -88,7 +93,7 @@ public class Database {
             plugin.getLogger().log(Level.INFO, "If table wasn't exist, it has been created.");
         } catch (Exception e) {
             e.printStackTrace();
-        };
+        }
     }
 
     protected String getTable() {
@@ -106,13 +111,12 @@ public class Database {
     }
 
     //Funkcja od wykonywania update w bazie danych
-    protected int update(String query) {
+    protected void update(String query) {
         try {
-            return statement.executeUpdate(query);
+            statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
             plugin.stopPlugin();
-            return -1;
         }
     }
 }

@@ -1,7 +1,6 @@
 package pl.techbrat.spigot.helpop;
 
 import org.apache.commons.io.FileUtils;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -20,8 +19,6 @@ public class ConfigData {
     private HashMap<String, Object> messages = new HashMap<>();
 
     private HashMap<String, Object> config = new HashMap<>();
-
-    private final HashMap<String, String> databaseParams = new HashMap<>();
 
 
     public ConfigData() {

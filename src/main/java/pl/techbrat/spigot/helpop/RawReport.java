@@ -1,7 +1,6 @@
 package pl.techbrat.spigot.helpop;
 
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;

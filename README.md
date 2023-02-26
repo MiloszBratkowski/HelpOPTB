@@ -51,7 +51,7 @@ send_without_admin: true
 # 1) if the administration solves the problem, can mark the report as solved
 # 2) history of messages
 # 3) receiving messages sent during the absence of the administration on the server, after entering
-enable_history: true
+enable_history: false
 database:
   #Avaiable databases: SQLite, MySQL (recommended).
   type: mysql

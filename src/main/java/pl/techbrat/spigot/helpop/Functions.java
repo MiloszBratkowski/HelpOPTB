@@ -21,7 +21,7 @@ public class Functions {
         instance = this;
     }
 
-    public void displayHistory(CommandSender sender, int type, Integer page) {
+    public void displayHistory(CommandSender sender, int type, Integer page) throws DatabaseDisabledException {
         ConfigData configData = ConfigData.getInstance();
         String title = configData.getMsg("admins.commands.history.title").replace("<page>", Integer.toString(page)).replace("<all_pages>", Integer.toString(getNumbersOfPages(0))).replace("<amount>", Integer.toString(getNumberOfReports(0)));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', title));

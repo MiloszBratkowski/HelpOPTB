@@ -1,7 +1,5 @@
 package pl.techbrat.spigot.helpop;
 
-import org.bukkit.Bukkit;
-
 import java.sql.ResultSet;
 import java.util.*;
 
@@ -34,7 +32,10 @@ public class DatabaseReportManager {
     */
 
     //types: 0 - all, 1 - unsolved, 2 - solved
-    protected Collection<RawReport> reportsFromDatabase(int type, int first, int limit) {
+    protected Collection<RawReport> reportsFromDatabase(int type, int first, int limit) throws DatabaseDisabledException {
+        if (!ConfigData.getInstance().isDatabaseEnabled()) {
+            throw new DatabaseDisabledException("Database (history of reports) is disabled!");
+        }
         LinkedHashMap<Integer, RawReport> prototype = new LinkedHashMap<>();
         String query = "SELECT * FROM "+Database.getInstance().getTable()+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+" ORDER BY date DESC LIMIT "+first+", "+limit+";";
         try {
@@ -52,14 +53,16 @@ public class DatabaseReportManager {
         return prototype.values();
     }
 
-    /*
-    protected RawReport reportFromDataBase(int id) {
+    protected RawReport reportFromDataBase(int id) throws DatabaseDisabledException {
+        if (!ConfigData.getInstance().isDatabaseEnabled()) {
+            throw new DatabaseDisabledException("Database (history of reports) is disabled!");
+        }
         RawReport report = null;
         String query = "SELECT * FROM "+Database.getInstance().getTable()+" WHERE id = "+id+";";
         try {
             ResultSet result = Database.getInstance().execute(query);
             if (result.next()) {
-                report = new RawReport(Bukkit.getOfflinePlayer(result.getString("player_uuid")), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"));
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"));
                 report.setId(result.getInt("id"));
                 reports.put(id, report);
             }
@@ -68,9 +71,11 @@ public class DatabaseReportManager {
         }
         return report;
     }
-     */
 
-    public boolean softSolve(int id, String admin) {
+    public boolean softSolve(int id, String admin) throws DatabaseDisabledException {
+        if (!ConfigData.getInstance().isDatabaseEnabled()) {
+            throw new DatabaseDisabledException("Database (history of reports) is disabled!");
+        }
         if (containsId(id)) {
             getReport(id).solveReport(admin);
             return true;
@@ -100,20 +105,37 @@ public class DatabaseReportManager {
     }
      */
 
-    public RawReport getReport(int id) {
+    public RawReport getReport(int id) throws DatabaseDisabledException {
+        if (!ConfigData.getInstance().isDatabaseEnabled()) {
+            throw new DatabaseDisabledException("Database (history of reports) is disabled!");
+        }
         return reports.get(id);
     }
 
-    public boolean containsId(int id) {
-        return reports.containsKey(id);
+    public boolean containsId(int id) throws DatabaseDisabledException {
+        if (!ConfigData.getInstance().isDatabaseEnabled()) {
+            throw new DatabaseDisabledException("Database (history of reports) is disabled!");
+        }
+        if (reports.containsKey(id)) return true;
+        else {
+            reportFromDataBase(id);
+            return reports.containsKey(id);
+        }
+
     }
 
-    protected Collection<RawReport> getReports() {
+    protected Collection<RawReport> getReports() throws DatabaseDisabledException {
+        if (!ConfigData.getInstance().isDatabaseEnabled()) {
+            throw new DatabaseDisabledException("Database (history of reports) is disabled!");
+        }
         return reports.values();
     }
 
     //types: 0 - all, 1 - unsolved, 2 - solved
-    public void clearReports(int type) {
+    public void clearReports(int type) throws DatabaseDisabledException {
+        if (!ConfigData.getInstance().isDatabaseEnabled()) {
+            throw new DatabaseDisabledException("Database (history of reports) is disabled!");
+        }
         Database.getInstance().update("DELETE FROM "+ConfigData.getInstance().getDatabaseParams("table")+" "+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+";");
         if (type==0) reports.clear();
         else {

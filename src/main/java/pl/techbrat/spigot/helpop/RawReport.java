@@ -55,22 +55,22 @@ public class RawReport {
         return player;
     }*/
 
-    protected String getPlayerName() {
+    public String getPlayerName() {
         return playerName;
     }
 
-    protected String getSolved() {
+    public String getSolved() {
         return solved;
     }
     public boolean isSolved() {
         return !solved.equals("-1");
     }
 
-    protected String getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    protected String getDate() {
+    public String getDate() {
         return date;
     }
 

@@ -1,5 +1,9 @@
 package pl.techbrat.spigot.helpop.commands;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -99,6 +103,14 @@ public class HelpOPCommand implements CommandExecutor {
                 for (String word : args) {
                     message.append(word).append(" ");
                 }
+
+                ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                out.writeUTF("Message");
+                out.writeUTF("minekosik");
+                out.writeUTF("Congrats!");
+
+                ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "BungeeCord", out.toByteArray());
+
                 Report report = new Report((Player) sender, message.toString());
                 report.sendReport(true);
             }

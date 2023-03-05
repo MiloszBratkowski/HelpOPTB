@@ -68,6 +68,10 @@ public class ConfigData {
         return (boolean) config.get("screen_information");
     }
 
+    public boolean isBungeeEnabled() {
+        return (boolean) config.get("enable_bungee");
+    }
+
     protected boolean isSendingWithoutAdmin() {
         return (boolean) config.get("send_without_admin");
     }

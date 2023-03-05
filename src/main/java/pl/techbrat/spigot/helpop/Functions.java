@@ -80,4 +80,16 @@ public class Functions {
         }
     }
 
+    public void registerBungeeChannel() {
+        HelpOPTB plugin = HelpOPTB.getInstance();
+        plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "techbrat:channel");
+        plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, "techbrat:channel", new BungeeReceiver());
+    }
+
+    public void unregisterBungeeChannel() {
+        HelpOPTB plugin = HelpOPTB.getInstance();
+        plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin, "techbrat:channel");
+        plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin, "techbrat:channel");
+    }
+
 }

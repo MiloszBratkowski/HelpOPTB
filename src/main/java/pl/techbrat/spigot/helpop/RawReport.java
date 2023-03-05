@@ -1,11 +1,16 @@
 package pl.techbrat.spigot.helpop;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class RawReport {
 
@@ -50,9 +55,9 @@ public class RawReport {
         return id;
     }
 
-    /*protected OfflinePlayer getOfflinePlayer() {
-        return player;
-    }*/
+    public Player getPlayer() {
+        return Bukkit.getPlayer(UUID.fromString(uuid));
+    }
 
     public String getPlayerName() {
         return playerName;
@@ -90,5 +95,19 @@ public class RawReport {
     public void solveReport(String admin) {
         solved = admin;
         Database.getInstance().update("UPDATE "+config.getDatabaseParams("table")+" SET solved = '"+solved+"' WHERE id = "+id+";");
+    }
+
+    void sendToBungee() {
+        ByteArrayDataOutput packet = ByteStreams.newDataOutput();
+        packet.writeUTF("helpoptb");
+        packet.writeUTF(HelpOPTB.getInstance().getServer().getIp()+":"+HelpOPTB.getInstance().getServer().getPort());
+        packet.writeUTF(Integer.toString(id));
+        packet.writeUTF(message);
+        packet.writeUTF(uuid);
+        packet.writeUTF(playerName);
+        packet.writeUTF(date);
+        packet.writeUTF(solved);
+        getPlayer().sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
+
     }
 }

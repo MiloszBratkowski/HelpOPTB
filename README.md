@@ -38,6 +38,10 @@ Messages are sent using the */helpop message* command.
 
 **Warning!** If player doesn't have permission to use admin commands (check, history, clear_* and reload), after execute one of these arguments it will send a report with this content.
 
+## BungeeCord messaging
+First of all download library: [BungeeChannelTB](https://www.spigotmc.org/resources/bungeechanneltb.108382/).
+To enable BungeeCord messaging set option *enable_bungee: true* in config.yml.
+
 ## Configuration file
 ###### For latest plugin version!
 ````
@@ -67,4 +71,9 @@ database:
   username: root
   password: ''
   ssl: false
+  
+#This option enabling use this plugin on all bungee servers.
+#When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
+#WARNING! THAT FEATURE REQUIRES "BungeeChannelTB" PLUGIN!
+enable_bungee: true
 ````

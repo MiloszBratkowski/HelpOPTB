@@ -1,15 +1,14 @@
 package pl.techbrat.spigot.helpop.commands;
 
-import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.*;
+
 
 public class HelpOPCommand implements CommandExecutor {
 
@@ -91,8 +90,11 @@ public class HelpOPCommand implements CommandExecutor {
                 return true;
             }
             if (sender.hasPermission(config.getPerms("reload")) && args[0].equals("reload")) {
+                Functions.getInstance().unregisterBungeeChannel();
                 new ConfigData();
                 if (ConfigData.getInstance().isDatabaseEnabled()) Database.load();
+                if (ConfigData.getInstance().isBungeeEnabled()) Functions.getInstance().registerBungeeChannel();
+
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.reload")));
                 return true;
             }
@@ -104,15 +106,8 @@ public class HelpOPCommand implements CommandExecutor {
                     message.append(word).append(" ");
                 }
 
-                ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                out.writeUTF("Message");
-                out.writeUTF("minekosik");
-                out.writeUTF("Congrats!");
-
-                ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "BungeeCord", out.toByteArray());
-
                 Report report = new Report((Player) sender, message.toString());
-                report.sendReport(true);
+                report.sendReport(true, true);
             }
             return true;
         } catch (Exception e) {

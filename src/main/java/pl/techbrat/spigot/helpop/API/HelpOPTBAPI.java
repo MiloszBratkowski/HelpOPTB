@@ -25,7 +25,7 @@ public class HelpOPTBAPI {
     public boolean sendReport(Player sender, String message, Boolean feedback) {
         if (Report.getAdministration().size() > 1) {
             Report report = new Report(sender, message);
-            report.sendReport(feedback);
+            report.sendReport(feedback, true);
             return true;
         } else return false;
     }

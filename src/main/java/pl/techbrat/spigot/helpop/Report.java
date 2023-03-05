@@ -12,21 +12,22 @@ public class Report extends RawReport {
         super(player, message);
     }
 
-    public void sendReport(Boolean feedback) {
+    public void sendReport(Boolean feedback, Boolean saveInDB) {
         ConfigData config = ConfigData.getInstance();
         ArrayList<Player> admins = getAdministration();
         if(admins.size() == 0 && !config.isSendingWithoutAdmin()) {
             Bukkit.getPlayer(getPlayerName()).sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.no_admins")));
-        } else {
-            for (Player admin : admins) {
-                admin.sendMessage(customizeChatMessage());
-                if(config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
-                    admin.sendTitle(customizeTitleMessage(), customizeSubtitleMessage());
-                }
-            }
-            if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.feedback")));
-            if (config.isDatabaseEnabled()) saveReport();
+            return;
         }
+        for (Player admin : admins) {
+            admin.sendMessage(customizeChatMessage());
+            if(config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
+                admin.sendTitle(customizeTitleMessage(), customizeSubtitleMessage());
+            }
+        }
+        if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.feedback")));
+        if (config.isBungeeEnabled()) sendToBungee();
+        if (config.isDatabaseEnabled() && saveInDB) saveReport();
     }
 
     public static ArrayList<Player> getAdministration() {

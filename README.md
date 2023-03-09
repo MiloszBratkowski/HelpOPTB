@@ -28,6 +28,8 @@ Messages are sent using the */helpop message* command.
 ###### Administration | receiving messages
 - **helpoptb.receive** - displaying messages on chat.
 - **helpoptb.receive.screen** - displaying messages on the screen (title with subtitle).
+###### Administration | BungeeCord functionality
+- **helpoptb.move** - Moving to bungee server after click on message.
 ###### Administration | commands
 - **helpoptb.command.check** - using */helpop check*.
 - **helpoptb.command.history** - using */helpop history*.
@@ -72,9 +74,64 @@ database:
   username: root
   password: ''
   ssl: false
-  
+
 #This option enabling use this plugin on all bungee servers.
 #When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
 #WARNING! THAT FEATURE REQUIRES "BungeeChannelTB" PLUGIN!
-enable_bungee: true
+enable_bungee: false
+````
+## Messages
+###### For latest plugin version!
+````
+#This is configuration file of style of messages.
+
+#Prefix placeholder
+prefix: "&7[&cHelpOP&7]"
+
+#No permissions message:
+no_permission: "<prefix> &cYou don't have permissions to use this command!"
+
+players:
+  #Message to player after badly use:
+  incorrect_use: "<prefix> &cYou have to type issue! &7/helpop message"
+
+  #Information to player when nobody of administrations is on the server. (only if history of messages is disabled):
+  no_admins: "<prefix> &cThere is no administration on the server currently :/."
+
+  #Information to player when message was sent:
+  feedback: "<prefix> &7Your message was sent to administration!"
+
+admins:
+  reports:
+    #Format of messages on the admin's chat:
+    report_format: "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>"
+
+    #Display information on the screen to admins (title/subtitle). Admin must have permission!:
+    screen_title: "&cNew report from &6<player>&c!"
+    screen_subtitle: "&7(&3<server>&7) &f<message>"
+
+    #Hover label on the chat message sent to another bungee server
+    bungee_send: "&aClick to join that server!"
+
+  commands:
+    reload: "&aConfig has reloaded!"
+    history:
+      title: "&7History of messages <page>/<all_pages>: (<amount>)"
+      element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solve_admin>, <date>, <player>, <message>, <server>
+      page_rage: "&cPlease type page number from 1 to <all_pages>."
+      click_solve: "&aClick to solve report!"
+      hover_solve: "&7Solved by &a<player>&7."
+    check:
+      solved: "&7Report solved!"
+      type_id: "&cPlease type id of report."
+      incorrect_id: "&cIncorrect id of report."
+      is_solved: "&cThis report has been solved."
+    clear: "&7Reports deleted!"
+    help: |
+      &7All commands:
+      &e/helpop check <id> &7- marking reports as solved,
+      &e/helpop history [page] &7- displaying history of reports,
+      &e/helpop clear_all &7- deleting all reports from database,
+      &e/helpop clear_solved &7- deleting solved reports from database,
+      &e/helpop reload &7- reloading configuration file.
 ````

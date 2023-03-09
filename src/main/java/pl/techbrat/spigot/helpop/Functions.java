@@ -1,11 +1,15 @@
 package pl.techbrat.spigot.helpop;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 
@@ -32,8 +36,9 @@ public class Functions {
                     replace("<solve_admin>", report.isSolved()?"&a"+report.getSolved():"&c✘").
                     replace("<date>", report.getDate()).
                     replace("<player>", report.getPlayerName()).
+                    replace("<server>", report.getServerName()).
                     replace("<message>", report.getMessage()));
-            if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
+            if (HelpOPTB.getInstance().getVersionSymbol() >= 12 && sender.hasPermission(configData.getPerms("check"))) {
                 TextComponent message = new TextComponent(messageOld);
                 if (report.isSolved()) {
                     message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getMsg("admins.commands.history.hover_solve").replace("<player>", report.getSolved()))).create()));
@@ -82,14 +87,25 @@ public class Functions {
 
     public void registerBungeeChannel() {
         HelpOPTB plugin = HelpOPTB.getInstance();
+        BungeeReceiver receiver = new BungeeReceiver();
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "techbrat:channel");
-        plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, "techbrat:channel", new BungeeReceiver());
+        plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, "techbrat:channel", receiver);
+        plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
+        plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", receiver);
+        plugin.getServer().getPluginManager().registerEvents(new BungeeServerNameDownloader(), plugin);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            BungeeServerNameDownloader.downloadName(p);
+            break;
+        }
+
     }
 
     public void unregisterBungeeChannel() {
         HelpOPTB plugin = HelpOPTB.getInstance();
         plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin, "techbrat:channel");
         plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin, "techbrat:channel");
+        plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin, "BungeeCord");
+        plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin, "BungeeCord");
     }
 
 }

@@ -2,6 +2,7 @@ package pl.techbrat.spigot.helpop.commands;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,6 +43,26 @@ public class HelpOPCommand implements CommandExecutor {
                     }
                 }
                 Functions.getInstance().displayHistory(sender, TYPE, page);
+                return true;
+            }
+            if (sender.hasPermission(config.getPerms("move")) && args[0].equals("move")) {
+                if (!config.isBungeeEnabled()) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("disabled_bungee")));
+                    return true;
+                }
+                if (args.length < 2 || !Functions.getInstance().isInteger(args[1])) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.check.type_id")));
+                    return true;
+                }
+                int id = Integer.parseInt(args[1]);
+                if (RawReport.getLocalReport(id) == null) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.check.incorrect_id")));
+                    return true;
+                }
+                ByteArrayDataOutput packet = ByteStreams.newDataOutput();
+                packet.writeUTF("Connect");
+                packet.writeUTF(RawReport.getLocalReport(id).getServerName());
+                ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "BungeeCord", packet.toByteArray());
                 return true;
             }
             if (sender.hasPermission(config.getPerms("check")) && args[0].equals("check")) {

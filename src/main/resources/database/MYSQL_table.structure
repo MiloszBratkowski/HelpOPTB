@@ -5,4 +5,5 @@ CREATE TABLE IF NOT EXISTS `%tableName%` (
 `message` VARCHAR(256) NOT NULL,
 `solved` VARCHAR(32) NOT NULL DEFAULT '-1',
 `date` DATETIME NOT NULL,
+`server` VARCHAR(32) NOT NULL,
 PRIMARY KEY (`id`));

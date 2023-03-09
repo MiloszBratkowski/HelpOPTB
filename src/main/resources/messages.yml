@@ -19,17 +19,20 @@ players:
 admins:
   reports:
     #Format of messages on the admin's chat:
-    report_format: "<prefix> &6<player>&7: &f<message>"
+    report_format: "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>"
 
     #Display information on the screen to admins (title/subtitle). Admin must have permission!:
     screen_title: "&cNew report from &6<player>&c!"
-    screen_subtitle: "&f<message>"
+    screen_subtitle: "&7(&3<server>&7) &f<message>"
+
+    #Hover label on the chat message sent to another bungee server
+    bungee_send: "&aClick to join that server!"
 
   commands:
     reload: "&aConfig has reloaded!"
     history:
       title: "&7History of messages <page>/<all_pages>: (<amount>)"
-      element: "<solved> &8[<id>] &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solve_admin>, <date>, <player>, <message>
+      element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solve_admin>, <date>, <player>, <message>, <server>
       page_rage: "&cPlease type page number from 1 to <all_pages>."
       click_solve: "&aClick to solve report!"
       hover_solve: "&7Solved by &a<player>&7."

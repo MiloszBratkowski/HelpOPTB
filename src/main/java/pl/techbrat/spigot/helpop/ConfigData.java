@@ -31,16 +31,18 @@ public class ConfigData {
         perms.put("report", "helpoptb.report"); //+
         perms.put("receive", "helpoptb.receive"); //+
         perms.put("receive.screen", "helpoptb.receive.screen"); //+
+        perms.put("move", "helpoptb.move"); //+
         perms.put("check", "helpoptb.command.check");
         perms.put("history", "helpoptb.command.history"); //+
-        perms.put("clear.all", "helpoptb.command.clear.all");
-        perms.put("clear.solved", "helpoptb.command.clear.solved");
-        perms.put("reload", "helpoptb.command.reload");
+        perms.put("clear.all", "helpoptb.command.clear.all"); //+
+        perms.put("clear.solved", "helpoptb.command.clear.solved"); //+
+        perms.put("reload", "helpoptb.command.reload"); //+
         perms.put("help", "helpoptb.command.help"); //+
 
         File messagesFile = new File(plugin.getDataFolder()+"/messages.yml");
         messages = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(messagesFile).getConfigurationSection("").getValues(true);
         messages.put("disabled_database", "&cTo use history of reports you have to set enable_history: true in config.yml.");
+        messages.put("disabled_bungee", "&cTo use that feature you have to set enable_bungee: true in config.yml");
 
         File configFile = new File(plugin.getDataFolder()+"/config.yml");
         config = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(configFile).getConfigurationSection("").getValues(true);

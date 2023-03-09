@@ -15,22 +15,6 @@ public class DatabaseReportManager {
         return instance;
     }
 
-    /*
-    public void loadreports() {
-        reports.clear();
-        try {
-            ResultSet result = Database.getInstance().execute("SELECT * FROM "+ConfigData.getInstance().getDatabaseParams("table")+";");
-            while (result.next()) {
-                RawReport report = new RawReport(Bukkit.getOfflinePlayer(result.getString("player_uuid")), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"));
-                report.setId(result.getInt("id"));
-                reports.put(result.getInt("id"), report);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    */
-
     //types: 0 - all, 1 - unsolved, 2 - solved
     protected Collection<RawReport> reportsFromDatabase(int type, int first, int limit) throws DatabaseDisabledException {
         if (!ConfigData.getInstance().isDatabaseEnabled()) {
@@ -42,7 +26,7 @@ public class DatabaseReportManager {
             ResultSet result = Database.getInstance().execute(query);
             RawReport report;
             while (result.next()) {
-                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"));
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"));
                 report.setId(result.getInt("id"));
                 prototype.put(result.getInt("id"), report);
             }
@@ -62,7 +46,7 @@ public class DatabaseReportManager {
         try {
             ResultSet result = Database.getInstance().execute(query);
             if (result.next()) {
-                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"));
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"));
                 report.setId(result.getInt("id"));
                 reports.put(id, report);
             }

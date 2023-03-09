@@ -1,13 +1,9 @@
 package pl.techbrat.spigot.helpop;
 
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.messaging.PluginMessageListener;
 import pl.techbrat.spigot.helpop.API.HelpOPTBAPI;
 import pl.techbrat.spigot.helpop.commands.HelpOPCommand;
+import pl.techbrat.spigot.helpop.commands.HelpOPTabCompleter;
 
 import java.util.logging.Level;
 
@@ -27,7 +23,9 @@ public final class HelpOPTB extends JavaPlugin {
         new Functions();
         new DatabaseReportManager();
         new HelpOPTBAPI();
+
         getCommand("helpop").setExecutor(new HelpOPCommand());
+        getCommand("helpop").setTabCompleter(new HelpOPTabCompleter());
 
         if(ConfigData.getInstance().isDatabaseEnabled()) {
             Database.load();

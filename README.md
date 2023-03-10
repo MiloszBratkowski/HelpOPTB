@@ -49,6 +49,7 @@ Remember to receiving reports on other servers, admin must have permission on th
 ###### For latest plugin version!
 ````
 #Display information on the screen to admins (title/subtitle). Admin must have permission!
+#Only for 1.9+ versions!
 screen_information: true
 
 #Sending reports with no any administrator on the server.

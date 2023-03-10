@@ -1,6 +1,7 @@
 package pl.techbrat.spigot.helpop;
 
 import org.apache.commons.io.FileUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -67,7 +68,7 @@ public class ConfigData {
     }
 
     protected boolean isScreenEnabled() {
-        return (boolean) config.get("screen_information");
+        return ((boolean) config.get("screen_information")) && !Bukkit.getBukkitVersion().contains("1.8");
     }
 
     public boolean isBungeeEnabled() {

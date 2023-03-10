@@ -48,7 +48,10 @@ public class RawReport {
     }
 
     protected String customizeChatMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.report_format").replace("<message>", message).replace("<player>", playerName).replace("<server>", serverName));
+        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.report_format").
+                replace("<message>", message).
+                replace("<player>", playerName).
+                replace("<server>", serverName));
     }
     protected String customizeTitleMessage() {
         return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_title").replace("<message>", message).replace("<player>", playerName).replace("<server>", serverName));

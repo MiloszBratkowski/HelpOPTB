@@ -26,7 +26,7 @@ public class BungeeServerNameDownloader implements Listener {
     }
 
     public static String getServerName() {
-        if (ConfigData.getInstance().isBungeeEnabled()) return serverName;
+        if (ConfigData.getInstance().isBungeeEnabled() && serverName != null) return serverName;
         else return Bukkit.getServerName();
     }
 

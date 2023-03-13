@@ -25,6 +25,7 @@ Messages are sent using the */helpop message* command.
 - **helpoptb.command** - **main permission** to use */helpop* command.
 ###### Players
 - **helpoptb.report** - using */helpop message*.
+- **helpoptb.cooldown.*group*** - relating cooldown from config with player.
 ###### Administration | receiving messages
 - **helpoptb.receive** - displaying messages on chat.
 - **helpoptb.receive.screen** - displaying messages on the screen (title with subtitle).
@@ -55,10 +56,19 @@ screen_information: true
 #Sending reports with no any administrator on the server.
 send_without_admin: true
 
+#Time between sending messages, it can be made dependent on permission.
+#The basic permission is "helpoptb.cooldown.normal", IF THE PLAYER DOESN'T HAVE IT, HIS COOLDOWN IS 0 SECONDS.
+#You can make your own time definitions, to refer to them set players permission "helpoptb.cooldown.name",
+#and replace the name with the group name defined below, e.g. vip, sponsor.
+cooldown:
+  normal: 3.0
+  #vip: 1 #Permission: helpoptb.cooldown.vip
+  #sponsor: 0 #Permission: helpoptb.cooldown.sponsor
+
 #History of messages, this option add features:
 # 1) if the administration solves the problem, can mark the report as solved
 # 2) history of messages
-# 3) receiving messages sent during the absence of the administration on the server, after entering
+# 3) receiving messages sent during the absence of the administration on the server
 enable_history: false
 database:
   #Avaiable databases: SQLite, MySQL (recommended).
@@ -80,6 +90,10 @@ database:
 #When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
 #WARNING! THAT FEATURE REQUIRES "BungeeChannelTB" PLUGIN!
 enable_bungee: false
+
+#Server name displaying on messages.
+#If you have bungee mode enabled and want the name to be the same as the bungee server name, type server_name: BUNGEE.
+server_name: this
 ````
 ## Messages
 ###### For latest plugin version!
@@ -101,6 +115,9 @@ players:
 
   #Information to player when message was sent:
   feedback: "<prefix> &7Your message was sent to administration!"
+
+  #Information when a player sends a message too often. Cooldowns can be set by permission in config.yml
+  cooldown: "<prefix> &cWait before send next message!"
 
 admins:
   reports:

@@ -11,8 +11,8 @@ send_without_admin: true
 #and replace the name with the group name defined below, e.g. vip, sponsor.
 cooldown:
   normal: 3.0
-  #vip: 1 #Permisja: helpoptb.cooldown.vip
-  #sponsor: 0 #Permisja: helpoptb.cooldown.sponsor
+  #vip: 1 #Permission: helpoptb.cooldown.vip
+  #sponsor: 0 #Permission: helpoptb.cooldown.sponsor
 
 #History of messages, this option add features:
 # 1) if the administration solves the problem, can mark the report as solved

@@ -10,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.sql.ResultSet;
 
@@ -106,6 +108,7 @@ public class Functions {
         plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin, "techbrat:channel");
         plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin, "BungeeCord");
         plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin, "BungeeCord");
+        HandlerList.unregisterAll(BungeeServerNameDownloader.getInstance());
     }
 
 }

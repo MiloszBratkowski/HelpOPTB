@@ -10,7 +10,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class BungeeServerNameDownloader implements Listener {
 
+    private static BungeeServerNameDownloader instance;
+
     private static String serverName;
+
+    public BungeeServerNameDownloader() {
+        instance = this;
+    }
+
+    public static BungeeServerNameDownloader getInstance() {
+        return instance;
+    }
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
@@ -21,13 +31,15 @@ public class BungeeServerNameDownloader implements Listener {
         }
     }
 
+
     public static void setServerName(String name) {
         serverName = name;
     }
 
     public static String getServerName() {
-        if (ConfigData.getInstance().isBungeeEnabled() && serverName != null) return serverName;
-        else return Bukkit.getServerName();
+        String first = ConfigData.getInstance().getServerNameDeclaration();
+        if (first.equalsIgnoreCase("BUNGEE") && ConfigData.getInstance().isBungeeEnabled() && serverName != null) return serverName;
+        else return first;
     }
 
     public static void downloadName(Player player) {

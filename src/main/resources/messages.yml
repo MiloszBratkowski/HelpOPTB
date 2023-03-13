@@ -16,6 +16,9 @@ players:
   #Information to player when message was sent:
   feedback: "<prefix> &7Your message was sent to administration!"
 
+  #Information when a player sends a message too often. Cooldowns can be set by permission in config.yml
+  cooldown: "<prefix> &cWait before send next message!"
+
 admins:
   reports:
     #Format of messages on the admin's chat:

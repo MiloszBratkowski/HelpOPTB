@@ -113,6 +113,7 @@ public class HelpOPCommand implements CommandExecutor {
             if (sender.hasPermission(config.getPerms("reload")) && args[0].equals("reload")) {
                 Functions.getInstance().unregisterBungeeChannel();
                 new ConfigData();
+                new PlayerData();
                 if (ConfigData.getInstance().isDatabaseEnabled()) Database.load();
                 if (ConfigData.getInstance().isBungeeEnabled()) Functions.getInstance().registerBungeeChannel();
 
@@ -122,13 +123,20 @@ public class HelpOPCommand implements CommandExecutor {
             if (!sender.hasPermission(config.getPerms("report"))) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("no_permission")));
             } else {
-                StringBuilder message = new StringBuilder();
-                for (String word : args) {
-                    message.append(word).append(" ");
-                }
+                PlayerData playerData = PlayerData.getInstance();
+                if (playerData.canSend((Player) sender)) {
+                    playerData.setTimer((Player) sender);
 
-                Report report = new Report((Player) sender, message.toString());
-                report.sendReport(true, true);
+                    StringBuilder message = new StringBuilder();
+                    for (String word : args) {
+                        message.append(word).append(" ");
+                    }
+
+                    Report report = new Report((Player) sender, message.toString());
+                    report.sendReport(true, true);
+                } else {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.cooldown")));
+                }
             }
             return true;
         } catch (Exception e) {

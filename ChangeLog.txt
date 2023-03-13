@@ -1,0 +1,20 @@
+TODO:
+ + add cooldown to messages based on permission
+ - add sounds
+ - add default config and message download
+ + add update checker
+ + add server name typing in config
+
+
+1.2:
+ + fixed server name displaying in BungeeCord mode,
+ + fixed server name displaying in local mode,
+ + added version control for title displaying (1.9+).
+
+1.1:
+ + added BungeeCord support,
+ + small code fixes
+ + added new messages
+
+1.0:
+ + FIRST RELEASE

@@ -5,10 +5,19 @@ screen_information: true
 #Sending reports with no any administrator on the server.
 send_without_admin: true
 
+#Time between sending messages, it can be made dependent on permission.
+#The basic permission is "helpoptb.cooldown.normal", IF THE PLAYER DOESN'T HAVE IT, HIS COOLDOWN IS 0 SECONDS.
+#You can make your own time definitions, to refer to them set players permission "helpoptb.cooldown.name",
+#and replace the name with the group name defined below, e.g. vip, sponsor.
+cooldown:
+  normal: 3.0
+  #vip: 1 #Permisja: helpoptb.cooldown.vip
+  #sponsor: 0 #Permisja: helpoptb.cooldown.sponsor
+
 #History of messages, this option add features:
 # 1) if the administration solves the problem, can mark the report as solved
 # 2) history of messages
-# 3) receiving messages sent during the absence of the administration on the server, after entering
+# 3) receiving messages sent during the absence of the administration on the server
 enable_history: false
 database:
   #Avaiable databases: SQLite, MySQL (recommended).
@@ -30,3 +39,7 @@ database:
 #When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
 #WARNING! THAT FEATURE REQUIRES "BungeeChannelTB" PLUGIN!
 enable_bungee: false
+
+#Server name displaying on messages.
+#If you have bungee mode enabled and want the name to be the same as the bungee server name, type server_name: BUNGEE.
+server_name: this

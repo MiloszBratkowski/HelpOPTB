@@ -5,7 +5,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class ConfigData {
@@ -17,10 +19,11 @@ public class ConfigData {
     }
 
     private final HashMap<String, String> perms = new HashMap<>();
-    private HashMap<String, Object> messages = new HashMap<>();
+    private HashMap<String, Object> messages;
 
-    private HashMap<String, Object> config = new HashMap<>();
+    private HashMap<String, Object> config;
 
+    private HashMap<String, Object> cooldownGroups;
 
     public ConfigData() {
         instance = this;
@@ -47,6 +50,8 @@ public class ConfigData {
 
         File configFile = new File(plugin.getDataFolder()+"/config.yml");
         config = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(configFile).getConfigurationSection("").getValues(true);
+
+        cooldownGroups = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(configFile).getConfigurationSection("cooldown").getValues(true);
 
         plugin.getLogger().log(Level.INFO, "Config file loaded.");
     }
@@ -77,6 +82,18 @@ public class ConfigData {
 
     protected boolean isSendingWithoutAdmin() {
         return (boolean) config.get("send_without_admin");
+    }
+
+    protected String getServerNameDeclaration() {
+        return (String) config.get("server_name");
+    }
+
+    protected double getCooldown(String group) {
+        if (cooldownGroups.containsKey(group)) return (Double) cooldownGroups.get(group);
+        else return 0.0;
+    }
+    protected Set<String> getCooldownGroups() {
+        return cooldownGroups.keySet();
     }
 
     private void createConfigs(boolean forceCopy) {

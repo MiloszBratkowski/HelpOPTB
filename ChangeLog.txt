@@ -1,5 +1,7 @@
 TODO:
  - add sounds
+ - add response to player
+ - add notification to other administrations about response
 
 1.2.2:
  + added default config and message download

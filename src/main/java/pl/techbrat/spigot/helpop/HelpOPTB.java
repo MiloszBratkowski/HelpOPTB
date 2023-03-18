@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.techbrat.spigot.helpop.API.HelpOPTBAPI;
 import pl.techbrat.spigot.helpop.commands.HelpOPCommand;
 import pl.techbrat.spigot.helpop.commands.HelpOPTabCompleter;
+import pl.techbrat.spigot.helpop.commands.ReponseCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +35,7 @@ public final class HelpOPTB extends JavaPlugin {
         new PlayerData();
 
         getCommand("helpop").setExecutor(new HelpOPCommand());
+        getCommand("response").setExecutor(new ReponseCommand());
         getCommand("helpop").setTabCompleter(new HelpOPTabCompleter());
 
         if(ConfigData.getInstance().isDatabaseEnabled()) {

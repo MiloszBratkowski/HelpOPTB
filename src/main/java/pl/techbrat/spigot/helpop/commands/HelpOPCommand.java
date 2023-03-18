@@ -120,7 +120,7 @@ public class HelpOPCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.reload")));
                 return true;
             }
-            if (!sender.hasPermission(config.getPerms("report"))) {
+            if (!sender.hasPermission(config.getPerms("report")) || !sender.hasPermission("helpoptb.report")) { //TODO Remove this old permission in next updates
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("no_permission")));
             } else {
                 PlayerData playerData = PlayerData.getInstance();

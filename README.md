@@ -4,13 +4,14 @@
 ## Description
 Simple and modern Spigot plugin to help your players message online staff for help.
 This plugin allows players to communicate with the administration via direct messages.
-To send a message, the player must have the appropriate permissions (*helpoptb.command* and *helpoptb.report*).
+To send a message, the player must have the appropriate permissions (*helpoptb.command* and *helpoptb.command.report*).
 Messages are sent using the */helpop message* command.
 
 ### JAVA 11+ IS REQUIRED (IF YOU WANT TO USE DATABASE)
 
 ## Commands
 - **/helpop *message*** - sending message to administration.
+- **/response *player message*** - responding player.
 - **/helpop check** - marking reports as solved.
 - **/helpop history** - displaying history of reports.
 - **/helpop clear_all** - deleting all reports from database.
@@ -24,7 +25,7 @@ Messages are sent using the */helpop message* command.
 ###### Players and administration
 - **helpoptb.command** - **main permission** to use */helpop* command.
 ###### Players
-- **helpoptb.report** - using */helpop message*.
+- **helpoptb.command.report** - using */helpop message*.
 - **helpoptb.cooldown.*group*** - relating cooldown from config with player.
 ###### Administration | receiving messages
 - **helpoptb.receive** - displaying messages on chat.
@@ -32,6 +33,7 @@ Messages are sent using the */helpop message* command.
 ###### Administration | BungeeCord functionality
 - **helpoptb.move** - Moving to bungee server after click on message.
 ###### Administration | commands
+- **helpoptb.command.response** - using */response*.
 - **helpoptb.command.check** - using */helpop check*.
 - **helpoptb.command.history** - using */helpop history*.
 - **helpoptb.command.clear.all** - using */helpop clear_all*.

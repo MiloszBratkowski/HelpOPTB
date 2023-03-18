@@ -35,7 +35,7 @@ public class ConfigData {
 
         plugin.getLogger().log(Level.INFO, "Loading config file...");
 
-        perms.put("report", "helpoptb.report"); //+
+        perms.put("report", "helpoptb.command.report"); //+
         perms.put("receive", "helpoptb.receive"); //+
         perms.put("receive.screen", "helpoptb.receive.screen"); //+
         perms.put("move", "helpoptb.move"); //+
@@ -45,6 +45,8 @@ public class ConfigData {
         perms.put("clear.solved", "helpoptb.command.clear.solved"); //+
         perms.put("reload", "helpoptb.command.reload"); //+
         perms.put("help", "helpoptb.command.help"); //+
+
+        perms.put("response", "helpoptb.command.response"); //+
 
         File messagesFile = new File(plugin.getDataFolder()+"/messages.yml");
         messages = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(messagesFile).getConfigurationSection("").getValues(true);

@@ -7,4 +7,7 @@ website: ${project.url}
 commands:
   helpop:
     description: Main command to use
-    usage: /helpop message
+    usage: /helpop <message>
+  response:
+    description: Response message to player
+    usage: /response <player> <message>

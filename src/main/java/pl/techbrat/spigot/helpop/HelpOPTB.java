@@ -6,7 +6,8 @@ import pl.techbrat.spigot.helpop.API.HelpOPTBAPI;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeLoader;
 import pl.techbrat.spigot.helpop.commands.HelpOPCommand;
 import pl.techbrat.spigot.helpop.commands.HelpOPTabCompleter;
-import pl.techbrat.spigot.helpop.commands.ReponseCommand;
+import pl.techbrat.spigot.helpop.commands.ResponseCommand;
+import pl.techbrat.spigot.helpop.commands.ResponseTabCompleter;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 
@@ -38,8 +39,9 @@ public final class HelpOPTB extends JavaPlugin {
         new PlayerData();
 
         getCommand("helpop").setExecutor(new HelpOPCommand());
-        getCommand("response").setExecutor(new ReponseCommand());
+        getCommand("response").setExecutor(new ResponseCommand());
         getCommand("helpop").setTabCompleter(new HelpOPTabCompleter());
+        getCommand("response").setTabCompleter(new ResponseTabCompleter());
 
         if(ConfigData.getInstance().isDatabaseEnabled()) {
             Database.load();

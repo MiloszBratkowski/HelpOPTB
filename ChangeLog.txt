@@ -1,7 +1,7 @@
 TODO:
  - add sounds
- - add response to player
- - add notification to other administrations about response
+ + add response to player
+ + add notification to other administrations about response
  + fix seconds implemented in integer type
 
 1.2.2:

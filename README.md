@@ -28,7 +28,7 @@ Messages are sent using the */helpop message* command.
 - **helpoptb.command.report** - using */helpop message*.
 - **helpoptb.cooldown.*group*** - relating cooldown from config with player.
 ###### Administration | receiving messages
-- **helpoptb.receive** - displaying messages on chat.
+- **helpoptb.receive** - displaying messages and responds on chat.
 - **helpoptb.receive.screen** - displaying messages on the screen (title with subtitle).
 ###### Administration | BungeeCord functionality
 - **helpoptb.move** - Moving to bungee server after click on message.

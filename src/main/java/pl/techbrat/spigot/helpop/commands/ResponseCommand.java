@@ -11,7 +11,7 @@ import pl.techbrat.spigot.helpop.Functions;
 import pl.techbrat.spigot.helpop.HelpOPTB;
 import pl.techbrat.spigot.helpop.bungeecord.BungeePlayerListDownloader;
 
-public class ReponseCommand implements CommandExecutor {
+public class ResponseCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -38,11 +38,9 @@ public class ReponseCommand implements CommandExecutor {
                 BungeePlayerListDownloader bungeeList = BungeePlayerListDownloader.getInstance();
                 /*
                 if (bungeeList.getPlayers().contains(args[0])) {
-                    Bukkit.getLogger().severe("Znaleziono");
                     Functions.getInstance().sendResponse(args[0], String.valueOf(message), sender.getName());
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.response.format").replace("<player>", args[0]).replace("<message>", message)));
-                } else {
-                    Bukkit.getLogger().severe("Pobieranie");*/
+                } else {*/
                     bungeeList.downloadPlayers((Player) sender);
                     HelpOPTB.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(HelpOPTB.getInstance(), () -> {
                         if (bungeeList.getPlayers().contains(args[0])) {

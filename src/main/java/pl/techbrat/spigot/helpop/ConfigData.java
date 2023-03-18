@@ -31,7 +31,7 @@ public class ConfigData {
     public ConfigData() {
         instance = this;
 
-        createConfigs(false);
+        createConfigs(true);
 
         plugin.getLogger().log(Level.INFO, "Loading config file...");
 
@@ -127,7 +127,7 @@ public class ConfigData {
     }
 
     protected double getCooldown(String group) {
-        if (cooldownGroups.containsKey(group)) return (Double) cooldownGroups.get(group);
+        if (cooldownGroups.containsKey(group)) return Double.parseDouble(cooldownGroups.get(group).toString());
         else return 0.0;
     }
     protected Set<String> getCooldownGroups() {

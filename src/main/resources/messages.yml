@@ -19,6 +19,9 @@ players:
   #Information when a player sends a message too often. Cooldowns can be set by permission in config.yml
   cooldown: "<prefix> &cWait before send next message!"
 
+  #Style of text in responded message
+  response: "<prefix> &c<player>&7: &d<message>"
+
 admins:
   reports:
     #Format of messages on the admin's chat:
@@ -32,6 +35,9 @@ admins:
     bungee_send: "&aClick to join that server!"
 
   commands:
+    response:
+      type_player: "&cType player to response!"
+      type_message: "&cType response message!"
     reload: "&aConfig has reloaded!"
     history:
       title: "&7History of messages <page>/<all_pages>: (<amount>)"

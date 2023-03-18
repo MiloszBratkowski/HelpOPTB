@@ -118,6 +118,7 @@ public class RawReport {
         ByteArrayDataOutput packet = ByteStreams.newDataOutput();
         packet.writeUTF("helpoptb");
         packet.writeUTF(HelpOPTB.getInstance().getServer().getIp()+":"+HelpOPTB.getInstance().getServer().getPort());
+        packet.writeUTF("helpop");
         packet.writeUTF(Integer.toString(id));
         packet.writeUTF(message);
         packet.writeUTF(uuid);

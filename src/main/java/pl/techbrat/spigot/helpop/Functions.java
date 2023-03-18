@@ -111,4 +111,21 @@ public class Functions {
         HandlerList.unregisterAll(BungeeServerNameDownloader.getInstance());
     }
 
+    public boolean sendResponse(String playerName, String message, String adminName) {
+        ConfigData config = ConfigData.getInstance();
+        if (config.isBungeeEnabled()) {
+            ByteArrayDataOutput packet = ByteStreams.newDataOutput();
+            packet.writeUTF("helpoptb");
+            packet.writeUTF(HelpOPTB.getInstance().getServer().getIp()+":"+HelpOPTB.getInstance().getServer().getPort());
+            packet.writeUTF("response");
+            packet.writeUTF(adminName);
+            packet.writeUTF(playerName);
+            packet.writeUTF(message);
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
+            }
+            return true;
+        } else return false;
+    }
+
 }

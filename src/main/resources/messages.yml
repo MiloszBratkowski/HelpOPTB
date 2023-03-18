@@ -20,7 +20,7 @@ players:
   cooldown: "<prefix> &cWait before send next message!"
 
   #Style of text in responded message
-  response: "<prefix> &c<player>&7: &d<message>"
+  response: "<prefix> &c<admin>&7: &d<message>"
 
 admins:
   reports:
@@ -38,6 +38,8 @@ admins:
     response:
       type_player: "&cType player to response!"
       type_message: "&cType response message!"
+      format: "&c<admin> &7-> &6<player>&7: &d<message>"
+      offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!"
     reload: "&aConfig has reloaded!"
     history:
       title: "&7History of messages <page>/<all_pages>: (<amount>)"

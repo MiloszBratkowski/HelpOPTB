@@ -1,4 +1,7 @@
-package pl.techbrat.spigot.helpop;
+package pl.techbrat.spigot.helpop.database;
+
+import pl.techbrat.spigot.helpop.ConfigData;
+import pl.techbrat.spigot.helpop.RawReport;
 
 import java.sql.ResultSet;
 import java.util.*;
@@ -16,12 +19,12 @@ public class DatabaseReportManager {
     }
 
     //types: 0 - all, 1 - unsolved, 2 - solved
-    protected Collection<RawReport> reportsFromDatabase(int type, int first, int limit) throws DatabaseDisabledException {
+    public Collection<RawReport> reportsFromDatabase(int type, int first, int limit) throws DatabaseDisabledException {
         if (!ConfigData.getInstance().isDatabaseEnabled()) {
             throw new DatabaseDisabledException("Database (history of reports) is disabled!");
         }
         LinkedHashMap<Integer, RawReport> prototype = new LinkedHashMap<>();
-        String query = "SELECT * FROM "+Database.getInstance().getTable()+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+" ORDER BY date DESC LIMIT "+first+", "+limit+";";
+        String query = "SELECT * FROM "+ Database.getInstance().getTable()+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+" ORDER BY date DESC LIMIT "+first+", "+limit+";";
         try {
             ResultSet result = Database.getInstance().execute(query);
             RawReport report;

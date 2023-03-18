@@ -96,7 +96,7 @@ public class ConfigData {
         }
     }
 
-    protected String getDatabaseParams(String value) {
+    public String getDatabaseParams(String value) {
         return getReliabilityConfig("database."+value).toString();
     }
 
@@ -112,7 +112,7 @@ public class ConfigData {
         return (boolean) getReliabilityConfig("enable_history");
     }
 
-    protected boolean isScreenEnabled() {
+    public boolean isScreenEnabled() {
         return ((boolean) getReliabilityConfig("screen_information")) && !Bukkit.getBukkitVersion().contains("1.8");
     }
 
@@ -124,7 +124,7 @@ public class ConfigData {
         return (boolean) getReliabilityConfig("send_without_admin");
     }
 
-    protected String getServerNameDeclaration() {
+    public String getServerNameDeclaration() {
         return (String) getReliabilityConfig("server_name");
     }
 

@@ -38,8 +38,8 @@ database:
 #This option enabling use this plugin on all bungee servers.
 #When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
 #WARNING! THAT FEATURE REQUIRES "BungeeChannelTB" PLUGIN!
-enable_bungee: true
+enable_bungee: false
 
 #Server name displaying on messages.
 #If you have bungee mode enabled and want the name to be the same as the bungee server name, type server_name: BUNGEE.
-server_name: BUNGEE
+server_name: this

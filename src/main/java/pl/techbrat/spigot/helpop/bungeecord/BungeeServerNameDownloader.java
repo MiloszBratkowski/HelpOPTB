@@ -1,12 +1,13 @@
-package pl.techbrat.spigot.helpop;
+package pl.techbrat.spigot.helpop.bungeecord;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import pl.techbrat.spigot.helpop.ConfigData;
+import pl.techbrat.spigot.helpop.HelpOPTB;
 
 public class BungeeServerNameDownloader implements Listener {
 

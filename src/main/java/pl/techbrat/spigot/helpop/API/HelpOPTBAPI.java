@@ -2,8 +2,8 @@ package pl.techbrat.spigot.helpop.API;
 
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.ConfigData;
-import pl.techbrat.spigot.helpop.DatabaseDisabledException;
-import pl.techbrat.spigot.helpop.DatabaseReportManager;
+import pl.techbrat.spigot.helpop.database.DatabaseDisabledException;
+import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 import pl.techbrat.spigot.helpop.Report;
 
 import java.util.ArrayList;

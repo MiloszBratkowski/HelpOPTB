@@ -1,4 +1,7 @@
-package pl.techbrat.spigot.helpop;
+package pl.techbrat.spigot.helpop.database;
+
+import pl.techbrat.spigot.helpop.ConfigData;
+import pl.techbrat.spigot.helpop.HelpOPTB;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -9,7 +12,7 @@ public class Database {
     private static final HelpOPTB plugin = HelpOPTB.getInstance();
 
     private static Database instance;
-    protected static Database getInstance() {
+    public static Database getInstance() {
         return instance;
     }
 
@@ -96,11 +99,11 @@ public class Database {
         }
     }
 
-    protected String getTable() {
+    public String getTable() {
         return table;
     }
 
-    protected ResultSet execute(String query) {
+    public ResultSet execute(String query) {
         try {
             return statement.executeQuery(query);
         } catch (SQLException e) {
@@ -111,7 +114,7 @@ public class Database {
     }
 
     //Funkcja od wykonywania update w bazie danych
-    protected void update(String query) {
+    public void update(String query) {
         try {
             statement.executeUpdate(query);
         } catch (SQLException e) {

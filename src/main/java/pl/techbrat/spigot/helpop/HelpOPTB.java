@@ -3,9 +3,12 @@ package pl.techbrat.spigot.helpop;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.techbrat.spigot.helpop.API.HelpOPTBAPI;
+import pl.techbrat.spigot.helpop.bungeecord.BungeeLoader;
 import pl.techbrat.spigot.helpop.commands.HelpOPCommand;
 import pl.techbrat.spigot.helpop.commands.HelpOPTabCompleter;
 import pl.techbrat.spigot.helpop.commands.ReponseCommand;
+import pl.techbrat.spigot.helpop.database.Database;
+import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,14 +45,14 @@ public final class HelpOPTB extends JavaPlugin {
             Database.load();
         }
         if (ConfigData.getInstance().isBungeeEnabled()) {
-            Functions.getInstance().registerBungeeChannel();
+            new BungeeLoader(true);
         }
     }
 
     @Override
     public void onDisable() {
         getLogger().log(Level.INFO, "Stopping plugin...");
-        Functions.getInstance().unregisterBungeeChannel();
+        BungeeLoader.getInstance().unregisterBungeeChannel();
     }
 
     public void stopPlugin() {

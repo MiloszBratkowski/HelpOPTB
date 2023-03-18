@@ -2,13 +2,15 @@ package pl.techbrat.spigot.helpop.commands;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.*;
+import pl.techbrat.spigot.helpop.bungeecord.BungeeLoader;
+import pl.techbrat.spigot.helpop.database.Database;
+import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 
 
 public class HelpOPCommand implements CommandExecutor {
@@ -111,11 +113,11 @@ public class HelpOPCommand implements CommandExecutor {
                 return true;
             }
             if (sender.hasPermission(config.getPerms("reload")) && args[0].equals("reload")) {
-                Functions.getInstance().unregisterBungeeChannel();
+                BungeeLoader.getInstance().unregisterBungeeChannel();
                 new ConfigData();
                 new PlayerData();
                 if (ConfigData.getInstance().isDatabaseEnabled()) Database.load();
-                if (ConfigData.getInstance().isBungeeEnabled()) Functions.getInstance().registerBungeeChannel();
+                if (ConfigData.getInstance().isBungeeEnabled()) new BungeeLoader(true);
 
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.reload")));
                 return true;

@@ -1,4 +1,4 @@
-package pl.techbrat.spigot.helpop;
+package pl.techbrat.spigot.helpop.bungeecord;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import pl.techbrat.spigot.helpop.*;
 
 import java.util.ArrayList;
 
@@ -24,9 +25,15 @@ public class BungeeReceiver implements PluginMessageListener {
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         if (channel.equals("BungeeCord")) {
-            if (in.readUTF().equals("GetServer")) {
+            String type = in.readUTF();
+            if (type.equals("GetServer")) {
                 String name = in.readUTF();
                 BungeeServerNameDownloader.setServerName(name);
+            }
+            else if (type.equals("PlayerList")) {
+                in.readUTF();
+                String[] playerList = in.readUTF().split(", ");
+                BungeePlayerListDownloader.getInstance().setPlayers(playerList);
             }
             return;
         }
@@ -42,8 +49,8 @@ public class BungeeReceiver implements PluginMessageListener {
             String mess = in.readUTF();
             Player user = Bukkit.getPlayer(playerName);
             if (user != null && user.isOnline()) {
-                user.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.response").replace("<player>", admin).replace("<message>", mess)));
-
+                Functions.getInstance().respondedInfo(admin, playerName, mess);
+                user.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.response").replace("<admin>", admin).replace("<message>", mess)));
             }
         } else if (type.equals("helpop")) {
             int id = Integer.parseInt(in.readUTF());

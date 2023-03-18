@@ -5,6 +5,8 @@ import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
+import pl.techbrat.spigot.helpop.database.Database;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
@@ -32,7 +34,7 @@ public class RawReport {
     protected RawReport(Player player, String message) {
         this(player.getUniqueId().toString(), player.getName(), message, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), "-1", BungeeServerNameDownloader.getServerName());
     }
-    protected RawReport(String uuid, String playerName, String message, String date, String solved, String serverName) {
+    public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.message = message;
@@ -43,21 +45,21 @@ public class RawReport {
         localReports.put(localId, this);
     }
 
-    protected void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    protected String customizeChatMessage() {
+    public String customizeChatMessage() {
         return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.report_format").
                 replace("<message>", message).
                 replace("<player>", playerName).
                 replace("<server>", serverName));
     }
-    protected String customizeTitleMessage() {
+    public String customizeTitleMessage() {
         return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_title").replace("<message>", message).replace("<player>", playerName).replace("<server>", serverName));
     }
 
-    protected String customizeSubtitleMessage() {
+    public String customizeSubtitleMessage() {
         return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_subtitle").replace("<message>", message).replace("<player>", playerName).replace("<server>", serverName));
     }
 
@@ -65,7 +67,7 @@ public class RawReport {
         return id;
     }
 
-    protected int getLocalId() {
+    public int getLocalId() {
         return localId;
     }
 

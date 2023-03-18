@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.ConfigData;
 import pl.techbrat.spigot.helpop.Functions;
+import pl.techbrat.spigot.helpop.HelpOPTB;
+import pl.techbrat.spigot.helpop.bungeecord.BungeePlayerListDownloader;
 
 public class ReponseCommand implements CommandExecutor {
 
@@ -28,9 +30,34 @@ public class ReponseCommand implements CommandExecutor {
             message.append(args[i]).append(" ");
         }
         if (user != null && user.isOnline()) {
-            user.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.response").replace("<player>", sender.getName()).replace("<message>", message)));
+            user.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.response").replace("<admin>", sender.getName()).replace("<message>", message)));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.response.format").replace("<admin>", sender.getName()).replace("<player>", args[0]).replace("<message>", message)));
+            Functions.getInstance().respondedInfo(sender.getName(), args[0], String.valueOf(message));
         } else {
-            Functions.getInstance().sendResponse(args[0], String.valueOf(message), sender.getName());
+            if (config.isBungeeEnabled()) {
+                BungeePlayerListDownloader bungeeList = BungeePlayerListDownloader.getInstance();
+                /*
+                if (bungeeList.getPlayers().contains(args[0])) {
+                    Bukkit.getLogger().severe("Znaleziono");
+                    Functions.getInstance().sendResponse(args[0], String.valueOf(message), sender.getName());
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.response.format").replace("<player>", args[0]).replace("<message>", message)));
+                } else {
+                    Bukkit.getLogger().severe("Pobieranie");*/
+                    bungeeList.downloadPlayers((Player) sender);
+                    HelpOPTB.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(HelpOPTB.getInstance(), () -> {
+                        if (bungeeList.getPlayers().contains(args[0])) {
+                            Functions.getInstance().sendResponse(args[0], String.valueOf(message), sender.getName());
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.response.format").replace("<admin>", sender.getName()).replace("<player>", args[0]).replace("<message>", message)));
+                            Functions.getInstance().respondedInfo(sender.getName(), args[0], String.valueOf(message));
+                        } else {
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.response.offline_player").replace("<player>", args[0])));
+                        }
+                    }, 2);
+                //}
+            } else {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.response.offline_player").replace("<player>", args[0])));
+            }
+            return true;
         }
         return true;
     }

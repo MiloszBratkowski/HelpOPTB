@@ -11,7 +11,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerJoinEvent;
+import pl.techbrat.spigot.helpop.bungeecord.BungeeReceiver;
+import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
+import pl.techbrat.spigot.helpop.database.Database;
+import pl.techbrat.spigot.helpop.database.DatabaseDisabledException;
+import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 
 import java.sql.ResultSet;
 
@@ -61,7 +65,7 @@ public class Functions {
 
     //types: 0 - all, 1 - unsolved, 2 - solved
     protected int getNumberOfReports(int type) {
-        String query = "SELECT COUNT(id) FROM "+Database.getInstance().getTable()+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+";";
+        String query = "SELECT COUNT(id) FROM "+ Database.getInstance().getTable()+(type==1?" WHERE solved = -1":((type==2)?" WHERE solved NOT LIKE -1":""))+";";
         try {
             ResultSet result = Database.getInstance().execute(query);
             result.next();
@@ -76,8 +80,6 @@ public class Functions {
         return (int)Math.ceil(getNumberOfReports(type)*1.0/LIMIT);
     }
 
-
-
     public boolean isInteger(String string) {
         try {
             Integer.parseInt(string);
@@ -87,28 +89,11 @@ public class Functions {
         }
     }
 
-    public void registerBungeeChannel() {
-        HelpOPTB plugin = HelpOPTB.getInstance();
-        BungeeReceiver receiver = new BungeeReceiver();
-        plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "techbrat:channel");
-        plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, "techbrat:channel", receiver);
-        plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
-        plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", receiver);
-        plugin.getServer().getPluginManager().registerEvents(new BungeeServerNameDownloader(), plugin);
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            BungeeServerNameDownloader.downloadName(p);
-            break;
+    public Player getAnyPlayer() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            return player;
         }
-
-    }
-
-    public void unregisterBungeeChannel() {
-        HelpOPTB plugin = HelpOPTB.getInstance();
-        plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin, "techbrat:channel");
-        plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin, "techbrat:channel");
-        plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin, "BungeeCord");
-        plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin, "BungeeCord");
-        HandlerList.unregisterAll(BungeeServerNameDownloader.getInstance());
+        return null;
     }
 
     public boolean sendResponse(String playerName, String message, String adminName) {
@@ -128,4 +113,13 @@ public class Functions {
         } else return false;
     }
 
+    public void respondedInfo(String admin, String player, String message) {
+        ConfigData config = ConfigData.getInstance();
+        String perm = config.getPerms("receive");
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (!p.getName().equalsIgnoreCase(admin) && p.hasPermission(perm)) {
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.response.format").replace("<admin>", admin).replace("<player>", player).replace("<message>", message)));
+            }
+        }
+    }
 }

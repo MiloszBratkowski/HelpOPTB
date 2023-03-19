@@ -31,7 +31,7 @@ public class ConfigData {
     public ConfigData() {
         instance = this;
 
-        createConfigs(true);
+        createConfigs(false);
 
         plugin.getLogger().log(Level.INFO, "Loading config file...");
 

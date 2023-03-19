@@ -1,8 +1,10 @@
 TODO:
  - add sounds
- + add response to player
- + add notification to other administrations about response
- + fix seconds implemented in integer type
+
+1.2.5:
+ + added response to player
+ + added notification to other administrations about response
+ + fixed seconds implemented in integer type
 
 1.2.2:
  + added default config and message download

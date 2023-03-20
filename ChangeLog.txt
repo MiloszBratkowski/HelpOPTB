@@ -1,5 +1,10 @@
 TODO:
  - add sounds
+ - add LuckPerms prefix and suffix supports
+ + changed prefix to removable in admin messages
+ - add permission to view available updates
+ + added file version in config.yml
+ + added file version in messages.yml
 
 1.2.5:
  + added response to player

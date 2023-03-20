@@ -73,12 +73,12 @@ public class ConfigData {
     private Object getReliabilityConfig(String value) {
         if (config.containsKey(value)) return config.get(value);
         else {
-            plugin.getLogger().severe("");
-            plugin.getLogger().severe("Can't find '"+value+"' in config.yml!");
-            plugin.getLogger().severe("Default value has been got! ("+defaultConfig.get(value)+")");
-            plugin.getLogger().severe("To set that option, config file must be recreated!");
-            plugin.getLogger().severe("Paste manually new structures or delete config.yml to auto recreate!");
-            plugin.getLogger().severe("");
+            plugin.getLogger().warning("");
+            plugin.getLogger().warning("Can't find '"+value+"' in config.yml!");
+            plugin.getLogger().warning("Default value has been got! ("+defaultConfig.get(value)+")");
+            plugin.getLogger().warning("To set that option, config file must be recreated!");
+            plugin.getLogger().warning("Paste manually new structures or delete config.yml to auto recreate!");
+            plugin.getLogger().warning("");
             return defaultConfig.get(value);
         }
     }
@@ -86,12 +86,12 @@ public class ConfigData {
     private Object getReliabilityMessage(String value) {
         if (messages.containsKey(value)) return messages.get(value);
         else {
-            plugin.getLogger().severe("");
-            plugin.getLogger().severe("Can't find '"+value+"' in messages.yml!");
-            plugin.getLogger().severe("Default value has been got! ("+defaultConfig.get(value)+")");
-            plugin.getLogger().severe("To set that option, config file must be recreated!");
-            plugin.getLogger().severe("Paste manually new structures or delete messages.yml to auto recreate!");
-            plugin.getLogger().severe("");
+            plugin.getLogger().warning("");
+            plugin.getLogger().warning("Can't find '"+value+"' in messages.yml!");
+            plugin.getLogger().warning("Default value has been got! ("+defaultConfig.get(value)+")");
+            plugin.getLogger().warning("To set that option, config file must be recreated!");
+            plugin.getLogger().warning("Paste manually new structures or delete messages.yml to auto recreate!");
+            plugin.getLogger().warning("");
             return defaultMessages.get(value);
         }
     }
@@ -101,7 +101,7 @@ public class ConfigData {
     }
 
     public String getMsg(String value) {
-        return (value.contains("admins.commands")?"&7[&2HelpOP&bTB&7] ":"")+getReliabilityMessage(value).toString().replace("<prefix>", getReliabilityMessage("prefix").toString());
+        return getReliabilityMessage(value).toString().replace("<prefix>", getReliabilityMessage("prefix").toString());
     }
 
     public String getPerms(String value) {

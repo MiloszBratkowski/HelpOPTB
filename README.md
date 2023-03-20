@@ -54,7 +54,7 @@ Remember to receiving reports on other servers, admin must have permission on th
 ###### For latest plugin version!
 ````
 #CONFIG GENERATED FOR VERSION:
-#${project.version}
+#1.2.6
 
 #Display information on the screen to admins (title/subtitle). Admin must have permission!
 #Only for 1.9+ versions!
@@ -106,7 +106,7 @@ server_name: this
 ###### For latest plugin version!
 ````
 #MESSAGES GENERATED FOR VERSION:
-#${project.version}
+#1.2.6
 
 #Prefix placeholder
 prefix: "&7[&cHelpOP&7]"

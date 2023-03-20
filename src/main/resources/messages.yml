@@ -41,7 +41,7 @@ admins:
       type_message: "&cType response message!"
       format: "&c<admin> &7-> &6<player>&7: &d<message>"
       offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!"
-    reload: "&aConfig has reloaded!"
+    reload: "&aPlugin has reloaded!"
     history:
       title: "&7History of messages <page>/<all_pages>: (<amount>)"
       element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solve_admin>, <date>, <player>, <message>, <server>

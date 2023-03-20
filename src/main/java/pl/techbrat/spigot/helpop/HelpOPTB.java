@@ -1,6 +1,5 @@
 package pl.techbrat.spigot.helpop;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.techbrat.spigot.helpop.API.HelpOPTBAPI;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeLoader;
@@ -11,10 +10,6 @@ import pl.techbrat.spigot.helpop.commands.ResponseTabCompleter;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Scanner;
 import java.util.logging.Level;
 
 public final class HelpOPTB extends JavaPlugin {
@@ -30,7 +25,7 @@ public final class HelpOPTB extends JavaPlugin {
         instance = this;
         mainIntVersion = Integer.parseInt(getServer().getBukkitVersion().split("\\.")[1].split("-")[0]);
 
-        checkUpdate();
+        new UpdateChecker(true);
 
         new ConfigData();
         new Functions();
@@ -54,7 +49,7 @@ public final class HelpOPTB extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().log(Level.INFO, "Stopping plugin...");
-        BungeeLoader.getInstance().unregisterBungeeChannel();
+        if (ConfigData.getInstance().isBungeeEnabled()) BungeeLoader.getInstance().unregisterBungeeChannel();
     }
 
     public void stopPlugin() {
@@ -63,26 +58,5 @@ public final class HelpOPTB extends JavaPlugin {
 
     public int getVersionSymbol() {
         return mainIntVersion;
-    }
-
-    public void checkUpdate() {
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-            try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=108278").openStream(); Scanner scanner = new Scanner(inputStream)) {
-                if (scanner.hasNext()) {
-                    String latest = scanner.next();
-                    String current = getDescription().getVersion();
-                    if (!latest.equalsIgnoreCase(current)) {
-                        getLogger().warning("");
-                        getLogger().warning("New update available!");
-                        getLogger().warning("To best performance plugin should be updated!");
-                        getLogger().warning("This version: "+current+". Latest stable version: "+latest);
-                        getLogger().warning("Download from: https://www.spigotmc.org/resources/helpoptb.108278/");
-                        getLogger().warning("");
-                    }
-                }
-            } catch (IOException exception) {
-                getLogger().severe("Unable to check for updates: " + exception.getMessage());
-            }
-        });
     }
 }

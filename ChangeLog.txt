@@ -1,8 +1,11 @@
 TODO:
  - add sounds
  - add LuckPerms prefix and suffix supports
+
+1.2.6
  + changed prefix to removable in admin messages
- - add permission to view available updates
+ + fixed error while plugin stopping when bungee is disabled
+ + added notification about update to player with permissions
  + added file version in config.yml
  + added file version in messages.yml
 

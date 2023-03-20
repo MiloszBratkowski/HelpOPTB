@@ -7,7 +7,9 @@ website: ${project.url}
 commands:
   helpop:
     description: Main command to use
+    permission: helpoptb.command
     usage: /helpop <message>
   response:
     description: Response message to player
+    permission: helpoptb.response
     usage: /response <player> <message>

@@ -18,6 +18,7 @@ import pl.techbrat.spigot.helpop.database.DatabaseDisabledException;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class Functions {
     private static Functions instance;
@@ -122,4 +123,6 @@ public class Functions {
             }
         }
     }
+
+
 }

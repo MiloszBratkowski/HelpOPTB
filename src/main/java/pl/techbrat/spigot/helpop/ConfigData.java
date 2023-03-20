@@ -35,7 +35,8 @@ public class ConfigData {
 
         plugin.getLogger().log(Level.INFO, "Loading config file...");
 
-        perms.put("report", "helpoptb.command.report"); //+
+        perms.put("update", "helpoptb.update"); //+
+        perms.put("report", "helpoptb.report"); //+
         perms.put("receive", "helpoptb.receive"); //+
         perms.put("receive.screen", "helpoptb.receive.screen"); //+
         perms.put("move", "helpoptb.move"); //+

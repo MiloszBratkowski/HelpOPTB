@@ -22,6 +22,7 @@ public class HelpOPTabCompleter implements TabCompleter {
                 result.add("clear_all");
                 result.add("clear_solved");
                 result.add("reload");
+                result.add("update");
             } else if (args.length == 2 && args[0].equalsIgnoreCase("history")) {
                 for (int i = 1; i < Functions.getInstance().getNumbersOfPages(0); i++) {
                     result.add(Integer.toString(i));

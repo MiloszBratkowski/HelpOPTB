@@ -81,6 +81,19 @@ public class UpdateChecker implements Listener {
         }
     }
 
+    public void sendLatest(CommandSender sender) {
+        if (latestVersion.equalsIgnoreCase(currentVersion)) {
+            HelpOPTB plugin = HelpOPTB.getInstance();
+            sender.sendMessage("");
+            if (sender instanceof Player) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&dHelpOP&bTB&7] &aYou have latest version! &7(&a"+currentVersion+"&7)"));
+            } else {
+                plugin.getLogger().info("You have latest version! ("+currentVersion+")");
+            }
+            sender.sendMessage("");
+        }
+    }
+
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
         if (event.getPlayer().hasPermission(ConfigData.getInstance().getPerms("update"))) {

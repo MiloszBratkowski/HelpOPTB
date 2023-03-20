@@ -18,6 +18,7 @@ Messages are sent using the */helpop message* command.
 - **/helpop clear_solved** - deleting solved reports from database.
 - **/helpop help** - displaying all commands.
 - **/helpop reload** - reloading configuration file.
+- **/helpop update** - checking for updates.
 
 **Warning!** To use history of reports and checking solved, you have to set option *enable_history: true* in configuration file and type database's information.
 
@@ -40,6 +41,7 @@ Messages are sent using the */helpop message* command.
 - **helpoptb.command.clear.solved** - using */helpop clear_solved*.
 - **helpoptb.command.help** - using */helpop help*.
 - **helpoptb.command.reload** - using */helpop reload*.
+- **helpoptb.command.update** - using */helpop update and update check on join*.
 
 **Warning!** If player doesn't have permission to use admin commands (check, history, clear_* and reload), after execute one of these arguments it will send a report with this content.
 
@@ -51,6 +53,9 @@ Remember to receiving reports on other servers, admin must have permission on th
 ## Configuration file
 ###### For latest plugin version!
 ````
+#CONFIG GENERATED FOR VERSION:
+#${project.version}
+
 #Display information on the screen to admins (title/subtitle). Admin must have permission!
 #Only for 1.9+ versions!
 screen_information: true
@@ -63,7 +68,7 @@ send_without_admin: true
 #You can make your own time definitions, to refer to them set players permission "helpoptb.cooldown.name",
 #and replace the name with the group name defined below, e.g. vip, sponsor.
 cooldown:
-  normal: 3.0
+  normal: 3
   #vip: 1 #Permission: helpoptb.cooldown.vip
   #sponsor: 0 #Permission: helpoptb.cooldown.sponsor
 
@@ -100,7 +105,8 @@ server_name: this
 ## Messages
 ###### For latest plugin version!
 ````
-#This is configuration file of style of messages.
+#MESSAGES GENERATED FOR VERSION:
+#${project.version}
 
 #Prefix placeholder
 prefix: "&7[&cHelpOP&7]"
@@ -121,6 +127,9 @@ players:
   #Information when a player sends a message too often. Cooldowns can be set by permission in config.yml
   cooldown: "<prefix> &cWait before send next message!"
 
+  #Style of text in responded message
+  response: "<prefix> &c<admin>&7: &d<message>"
+
 admins:
   reports:
     #Format of messages on the admin's chat:
@@ -134,7 +143,12 @@ admins:
     bungee_send: "&aClick to join that server!"
 
   commands:
-    reload: "&aConfig has reloaded!"
+    response:
+      type_player: "&cType player to response!"
+      type_message: "&cType response message!"
+      format: "&c<admin> &7-> &6<player>&7: &d<message>"
+      offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!"
+    reload: "&aPlugin has reloaded!"
     history:
       title: "&7History of messages <page>/<all_pages>: (<amount>)"
       element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solve_admin>, <date>, <player>, <message>, <server>

@@ -61,4 +61,3 @@ admins:
       &e/helpop clear_all &7- deleting all reports from database,
       &e/helpop clear_solved &7- deleting solved reports from database,
       &e/helpop reload &7- reloading configuration file.
-

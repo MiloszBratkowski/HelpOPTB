@@ -10,15 +10,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import pl.techbrat.spigot.helpop.bungeecord.BungeeReceiver;
-import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseDisabledException;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
 public class Functions {
     private static Functions instance;
@@ -34,23 +30,16 @@ public class Functions {
 
     public void displayHistory(CommandSender sender, int type, Integer page) throws DatabaseDisabledException {
         ConfigData configData = ConfigData.getInstance();
-        String title = configData.getMsg("admins.commands.history.title").replace("<page>", Integer.toString(page)).replace("<all_pages>", Integer.toString(getNumbersOfPages(type))).replace("<amount>", Integer.toString(getNumberOfReports(type)));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', title));
+        FormatMessages formater = FormatMessages.getInstance();
+        sender.sendMessage(formater.getHistoryTitle(Integer.toString(page), Integer.toString(getNumbersOfPages(type)), Integer.toString(getNumberOfReports(type))));
         for (RawReport report : DatabaseReportManager.getInstance().reportsFromDatabase(type, (page-1)*LIMIT, LIMIT)) {
-            String messageOld = ChatColor.translateAlternateColorCodes('&', ConfigData.getInstance().getMsg("admins.commands.history.element").
-                    replace("<id>", Integer.toString(report.getId())).
-                    replace("<solved>", report.isSolved()?"&a✔":"&c✘").
-                    replace("<solve_admin>", report.isSolved()?"&a"+report.getSolved():"&c✘").
-                    replace("<date>", report.getDate()).
-                    replace("<player>", report.getPlayerName()).
-                    replace("<server>", report.getServerName()).
-                    replace("<message>", report.getMessage()));
+            String messageOld = formater.getHistoryElement(Integer.toString(report.getId()), report.isSolved(), report.getSolved(), report.getDate(), report.getPlayerName(), report.getServerName(), report.getMessage());
             if (HelpOPTB.getInstance().getVersionSymbol() >= 12 && sender.hasPermission(configData.getPerms("check"))) {
                 TextComponent message = new TextComponent(messageOld);
                 if (report.isSolved()) {
-                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getMsg("admins.commands.history.hover_solve").replace("<player>", report.getSolved()))).create()));
+                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(formater.getHistoryHoverSolve(report.getSolved())).create()));
                 } else {
-                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', configData.getMsg("admins.commands.history.click_solve"))).create()));
+                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(formater.formatMessage("admins.commands.history.click_solve")).create()));
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop check " + report.getId()));
                 }
                 sender.spigot().sendMessage(message);
@@ -61,7 +50,7 @@ public class Functions {
     }
 
     public void displayHelp(CommandSender sender) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ConfigData.getInstance().getMsg("admins.commands.help")));
+        sender.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.help"));
     }
 
     //types: 0 - all, 1 - unsolved, 2 - solved
@@ -119,7 +108,7 @@ public class Functions {
         String perm = config.getPerms("receive");
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getName().equalsIgnoreCase(admin) && p.hasPermission(perm)) {
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.commands.response.format").replace("<admin>", admin).replace("<player>", player).replace("<message>", message)));
+                p.sendMessage(FormatMessages.getInstance().getResponse(admin, player, message, true));
             }
         }
     }

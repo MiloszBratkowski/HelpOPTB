@@ -1,5 +1,8 @@
 package pl.techbrat.spigot.helpop;
 
+import net.luckperms.api.LuckPerms;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.techbrat.spigot.helpop.API.HelpOPTBAPI;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeLoader;
@@ -9,6 +12,7 @@ import pl.techbrat.spigot.helpop.commands.ResponseCommand;
 import pl.techbrat.spigot.helpop.commands.ResponseTabCompleter;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
+import pl.techbrat.spigot.helpop.dependency.LuckPermsMeta;
 
 import java.util.logging.Level;
 
@@ -32,6 +36,10 @@ public final class HelpOPTB extends JavaPlugin {
         new DatabaseReportManager();
         new HelpOPTBAPI();
         new PlayerData();
+        new FormatMessages();
+
+        if (Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) new LuckPermsMeta();
+
 
         getCommand("helpop").setExecutor(new HelpOPCommand());
         getCommand("response").setExecutor(new ResponseCommand());

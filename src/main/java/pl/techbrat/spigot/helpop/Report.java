@@ -1,7 +1,6 @@
 package pl.techbrat.spigot.helpop;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -14,9 +13,10 @@ public class Report extends RawReport {
 
     public void sendReport(Boolean feedback, Boolean saveInDB) {
         ConfigData config = ConfigData.getInstance();
+        FormatMessages formater = FormatMessages.getInstance();
         ArrayList<Player> admins = getAdministration();
         if(admins.size() == 0 && !config.isSendingWithoutAdmin()) {
-            Bukkit.getPlayer(getPlayerName()).sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.no_admins")));
+            Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.no_admins"));
             return;
         }
         for (Player admin : admins) {
@@ -25,7 +25,7 @@ public class Report extends RawReport {
                 admin.sendTitle(customizeTitleMessage(), customizeSubtitleMessage());
             }
         }
-        if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.feedback")));
+        if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.feedback"));
         if (config.isBungeeEnabled()) sendToBungee();
         if (config.isDatabaseEnabled() && saveInDB) saveReport();
     }

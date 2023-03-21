@@ -50,7 +50,7 @@ public class BungeeReceiver implements PluginMessageListener {
             Player user = Bukkit.getPlayer(playerName);
             if (user != null && user.isOnline()) {
                 Functions.getInstance().respondedInfo(admin, playerName, mess);
-                user.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMsg("players.response").replace("<admin>", admin).replace("<message>", mess)));
+                user.sendMessage(FormatMessages.getInstance().getResponse(admin, playerName, mess, false));
             }
         } else if (type.equals("helpop")) {
             int id = Integer.parseInt(in.readUTF());
@@ -67,7 +67,7 @@ public class BungeeReceiver implements PluginMessageListener {
                 String normalMessage = report.customizeChatMessage();
                 if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
                     TextComponent chatMessage = new TextComponent(normalMessage);
-                    chatMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.bungee_send").replace("<server>", report.getServerName()))).create()));
+                    chatMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(FormatMessages.getInstance().getBungeeSend(serverName)).create()));
                     chatMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop move " + report.getLocalId()));
                     for (Player admin : admins) {
                         if (admin.hasPermission(config.getPerms("move"))) admin.spigot().sendMessage(chatMessage);

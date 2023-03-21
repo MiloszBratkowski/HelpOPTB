@@ -3,7 +3,6 @@ package pl.techbrat.spigot.helpop;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
 import pl.techbrat.spigot.helpop.database.Database;
@@ -50,17 +49,14 @@ public class RawReport {
     }
 
     public String customizeChatMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.report_format").
-                replace("<message>", message).
-                replace("<player>", playerName).
-                replace("<server>", serverName));
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "report_format");
     }
     public String customizeTitleMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_title").replace("<message>", message).replace("<player>", playerName).replace("<server>", serverName));
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_title");
     }
 
     public String customizeSubtitleMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getMsg("admins.reports.screen_subtitle").replace("<message>", message).replace("<player>", playerName).replace("<server>", serverName));
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_subtitle");
     }
 
     protected int getId() {

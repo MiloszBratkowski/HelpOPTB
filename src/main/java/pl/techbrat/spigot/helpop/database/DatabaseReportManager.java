@@ -1,5 +1,6 @@
 package pl.techbrat.spigot.helpop.database;
 
+import org.bukkit.Bukkit;
 import pl.techbrat.spigot.helpop.ConfigData;
 import pl.techbrat.spigot.helpop.RawReport;
 
@@ -77,20 +78,6 @@ public class DatabaseReportManager {
         }
         return false;
     }
-
-    /*
-    public boolean softDelete(int id) {
-        try {
-            if (Database.getInstance().execute("SELECT id FROM "+ConfigData.getInstance().getDatabaseParams("table")+" WHERE id = "+id+";").next()) {
-                Database.getInstance().update("DELETE FROM "+ConfigData.getInstance().getDatabaseParams("table")+" WHERE id = "+id+";");
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-     */
 
     public RawReport getReport(int id) throws DatabaseDisabledException {
         if (!ConfigData.getInstance().isDatabaseEnabled()) {

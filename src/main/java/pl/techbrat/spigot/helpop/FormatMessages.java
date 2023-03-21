@@ -62,10 +62,20 @@ public class FormatMessages {
     }
 
     public String getResponse(String admin, String player, String message, boolean forAdmin) {
+        return getResponse(admin,
+                player,
+                message,
+                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin):"",
+                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin):"",
+                forAdmin);
+    }
+    public String getResponse(String admin, String player, String message, String adminPrefix, String adminSuffix, boolean forAdmin) {
         return addColors(replacePrefix(configData.getMsg(forAdmin?"admins.commands.response.format":"players.response").
                 replace("<admin>", admin).
                 replace("<player>", player).
-                replace("<message>", message)));
+                replace("<message>", message).
+                replace("<lp_admin_prefix>", adminPrefix).
+                replace("<lp_admin_suffix>", adminSuffix)));
     }
 
 

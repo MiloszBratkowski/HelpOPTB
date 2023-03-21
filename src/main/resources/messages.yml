@@ -21,16 +21,16 @@ players:
   cooldown: "<prefix> &cWait before send next message!"
 
   #Style of text in responded message
-  response: "<prefix> &c<admin>&7: &d<message>"
+  response: "<prefix> &c<admin>&7: &d<message>" #Available placeholders: <prefix>, <admin>, <message>, <lp_admin_prefix>, <lp_admin_suffix>
 
 admins:
   reports:
     #Format of messages on the admin's chat:
-    report_format: "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>"
+    report_format: "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <prefix>, <server>, <player>, <message>, <lp_player_prefix>, <lp_player_suffix>
 
     #Display information on the screen to admins (title/subtitle). Admin must have permission!:
-    screen_title: "&cNew report from &6<player>&c!"
-    screen_subtitle: "&7(&3<server>&7) &f<message>"
+    screen_title: "&cNew report from &6<player>&c!" #Available placeholders: <prefix>, <server>, <player>, <message>, <lp_player_prefix>, <lp_player_suffix>
+    screen_subtitle: "&7(&3<server>&7) &f<message>" #Available placeholders: <prefix>, <server>, <player>, <message>, <lp_player_prefix>, <lp_player_suffix>
 
     #Hover label on the chat message sent to another bungee server
     bungee_send: "&aClick to join that server!"
@@ -39,15 +39,15 @@ admins:
     response:
       type_player: "&cType player to response!"
       type_message: "&cType response message!"
-      format: "&c<admin> &7-> &6<player>&7: &d<message>"
-      offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!"
+      format: "&c<admin> &7-> &6<player>&7: &d<message>" #Available placeholders: <prefix>, <admin>, <message>, <lp_admin_prefix>, <lp_admin_suffix>
+      offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!" #Available placeholders: <prefix>, <player>
     reload: "&aPlugin has reloaded!"
     history:
-      title: "&7History of messages <page>/<all_pages>: (<amount>)"
+      title: "&7History of messages <page>/<all_pages>: (<amount>)" #Available placeholders: <prefix>, <page>, <all_pages>, <amount>
       element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solve_admin>, <date>, <player>, <message>, <server>
-      page_rage: "&cPlease type page number from 1 to <all_pages>."
+      page_rage: "&cPlease type page number from 1 to <all_pages>." #Available placeholders: <prefix>, <all_pages>
       click_solve: "&aClick to solve report!"
-      hover_solve: "&7Solved by &a<solve_admin>&7."
+      hover_solve: "&7Solved by &a<solve_admin>&7." #Available placeholders: <prefix>, <solve_admin>
     check:
       solved: "&7Report solved!"
       type_id: "&cPlease type id of report."

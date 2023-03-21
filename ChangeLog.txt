@@ -1,6 +1,11 @@
 TODO:
  - add sounds
- - add LuckPerms prefix and suffix supports
+
+
+1.3.0
+ + added LuckPerms prefix and suffix supports
+ + added more replaceable values in messages
+ + new messaging system
 
 1.2.6
  + changed prefix to removable in admin messages

@@ -33,7 +33,7 @@ public class ResponseCommand implements CommandExecutor {
         if (user != null && user.isOnline()) {
             user.sendMessage(formater.getResponse(sender.getName(), args[0], message.toString(), false));
             sender.sendMessage(formater.getResponse(sender.getName(), args[0], message.toString(), true));
-            Functions.getInstance().respondedInfo(sender.getName(), args[0], String.valueOf(message));
+            Functions.getInstance().respondedInfoToStaff(sender.getName(), args[0], String.valueOf(message));
         } else {
             if (config.isBungeeEnabled()) {
                 BungeePlayerListDownloader bungeeList = BungeePlayerListDownloader.getInstance();
@@ -42,7 +42,7 @@ public class ResponseCommand implements CommandExecutor {
                         if (bungeeList.getPlayers().contains(args[0])) {
                             Functions.getInstance().sendResponse(args[0], String.valueOf(message), sender.getName());
                             sender.sendMessage(formater.getResponse(sender.getName(), args[0], message.toString(), true));
-                            Functions.getInstance().respondedInfo(sender.getName(), args[0], String.valueOf(message));
+                            Functions.getInstance().respondedInfoToStaff(sender.getName(), args[0], String.valueOf(message));
                         } else {
                             sender.sendMessage(formater.getResponseOfflinePlayer(args[0]));
                         }

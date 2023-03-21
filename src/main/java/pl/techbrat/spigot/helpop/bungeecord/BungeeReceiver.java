@@ -7,7 +7,6 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import pl.techbrat.spigot.helpop.*;
@@ -47,10 +46,12 @@ public class BungeeReceiver implements PluginMessageListener {
             String admin = in.readUTF();
             String playerName = in.readUTF();
             String mess = in.readUTF();
+            String lpAdminPrefix = in.readUTF();
+            String lpAdminSuffix = in.readUTF();
             Player user = Bukkit.getPlayer(playerName);
             if (user != null && user.isOnline()) {
-                Functions.getInstance().respondedInfo(admin, playerName, mess);
-                user.sendMessage(FormatMessages.getInstance().getResponse(admin, playerName, mess, false));
+                Functions.getInstance().respondedInfoToStaff(admin, playerName, mess, lpAdminPrefix, lpAdminSuffix);
+                user.sendMessage(FormatMessages.getInstance().getResponse(admin, playerName, mess, lpAdminPrefix, lpAdminSuffix, false));
             }
         } else if (type.equals("helpop")) {
             int id = Integer.parseInt(in.readUTF());

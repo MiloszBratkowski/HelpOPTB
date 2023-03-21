@@ -7,12 +7,12 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseDisabledException;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
+import pl.techbrat.spigot.helpop.dependency.APILoader;
 
 import java.sql.ResultSet;
 
@@ -33,7 +33,7 @@ public class Functions {
         FormatMessages formater = FormatMessages.getInstance();
         sender.sendMessage(formater.getHistoryTitle(Integer.toString(page), Integer.toString(getNumbersOfPages(type)), Integer.toString(getNumberOfReports(type))));
         for (RawReport report : DatabaseReportManager.getInstance().reportsFromDatabase(type, (page-1)*LIMIT, LIMIT)) {
-            String messageOld = formater.getHistoryElement(Integer.toString(report.getId()), report.isSolved(), report.getSolved(), report.getDate(), report.getPlayerName(), report.getServerName(), report.getMessage());
+            String messageOld = formater.getHistoryElement(Integer.toString(report.getId()), report.isSolved(), report.getSolved(), report.getDate(), report.getPlayerName(), report.getMessage(), report.getServerName());
             if (HelpOPTB.getInstance().getVersionSymbol() >= 12 && sender.hasPermission(configData.getPerms("check"))) {
                 TextComponent message = new TextComponent(messageOld);
                 if (report.isSolved()) {
@@ -96,6 +96,8 @@ public class Functions {
             packet.writeUTF(adminName);
             packet.writeUTF(playerName);
             packet.writeUTF(message);
+            packet.writeUTF(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(adminName):"");
+            packet.writeUTF(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(adminName):"");
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
             }
@@ -103,12 +105,18 @@ public class Functions {
         } else return false;
     }
 
-    public void respondedInfo(String admin, String player, String message) {
+    public void respondedInfoToStaff(String admin, String player, String message) {
+        String lpAdminPrefix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin):"";
+        String lpAdminSuffix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin):"";
+        respondedInfoToStaff(admin, player, message, lpAdminPrefix, lpAdminSuffix);
+    }
+
+    public void respondedInfoToStaff(String admin, String player, String message, String lpAdminPrefix, String lpAdminSuffix) {
         ConfigData config = ConfigData.getInstance();
         String perm = config.getPerms("receive");
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getName().equalsIgnoreCase(admin) && p.hasPermission(perm)) {
-                p.sendMessage(FormatMessages.getInstance().getResponse(admin, player, message, true));
+                p.sendMessage(FormatMessages.getInstance().getResponse(admin, player, message, lpAdminPrefix, lpAdminSuffix, true));
             }
         }
     }

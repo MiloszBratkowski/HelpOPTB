@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
 import pl.techbrat.spigot.helpop.database.Database;
+import pl.techbrat.spigot.helpop.dependency.APILoader;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
@@ -22,6 +23,9 @@ public class RawReport {
     private final String playerName;
     private final String date;
 
+    private String lpPrefix;
+    private String lpSuffix;
+
     private final String serverName;
     private String solved;
 
@@ -31,9 +35,16 @@ public class RawReport {
     private final static HashMap<Integer, RawReport> localReports = new HashMap<>();
 
     protected RawReport(Player player, String message) {
-        this(player.getUniqueId().toString(), player.getName(), message, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), "-1", BungeeServerNameDownloader.getServerName());
+        this(player.getUniqueId().toString(),
+                player.getName(),
+                message,
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                "-1",
+                BungeeServerNameDownloader.getServerName(),
+                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(player.getName()):"",
+                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(player.getName()):"");
     }
-    public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName) {
+    public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName, String lpPrefix, String lpSuffix) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.message = message;
@@ -42,6 +53,8 @@ public class RawReport {
         this.serverName = serverName;
         this.localId = localReports.keySet().size()+1;
         localReports.put(localId, this);
+        this.lpPrefix = lpPrefix;
+        this.lpSuffix = lpSuffix;
     }
 
     public void setId(int id) {
@@ -49,14 +62,14 @@ public class RawReport {
     }
 
     public String customizeChatMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "report_format");
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "report_format", lpPrefix, lpSuffix);
     }
     public String customizeTitleMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_title");
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_title", lpPrefix, lpSuffix);
     }
 
     public String customizeSubtitleMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_subtitle");
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_subtitle", lpPrefix, lpSuffix);
     }
 
     protected int getId() {
@@ -94,6 +107,14 @@ public class RawReport {
         return serverName;
     }
 
+    public String getLpPrefix() {
+        return lpPrefix;
+    }
+
+    public String getLpSuffix() {
+        return lpSuffix;
+    }
+
     void saveReport() {
         Database.getInstance()
                 .update("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
@@ -124,6 +145,8 @@ public class RawReport {
         packet.writeUTF(date);
         packet.writeUTF(solved);
         packet.writeUTF(BungeeServerNameDownloader.getServerName());
+        packet.writeUTF(lpPrefix);
+        packet.writeUTF(lpSuffix);
         getPlayer().sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
     }
 

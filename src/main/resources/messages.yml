@@ -47,7 +47,7 @@ admins:
       element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solve_admin>, <date>, <player>, <message>, <server>
       page_rage: "&cPlease type page number from 1 to <all_pages>."
       click_solve: "&aClick to solve report!"
-      hover_solve: "&7Solved by &a<player>&7."
+      hover_solve: "&7Solved by &a<solve_admin>&7."
     check:
       solved: "&7Report solved!"
       type_id: "&cPlease type id of report."

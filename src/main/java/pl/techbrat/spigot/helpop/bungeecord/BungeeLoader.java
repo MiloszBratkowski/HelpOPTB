@@ -14,8 +14,8 @@ public class BungeeLoader {
 
     public BungeeLoader(boolean registerChannel) {
         if (registerChannel) {
-            registerBungeeChannel();
             if (getInstance() != null) getInstance().unregisterBungeeChannel();
+            registerBungeeChannel();
         }
         instance = this;
     }

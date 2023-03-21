@@ -60,7 +60,9 @@ public class BungeeReceiver implements PluginMessageListener {
             String date = in.readUTF();
             String solved = in.readUTF();
             String serverName = in.readUTF();
-            RawReport report = new RawReport(uuid, playerName, mess, date, solved, serverName);
+            String lpPrefix = in.readUTF();
+            String lpSuffix = in.readUTF();
+            RawReport report = new RawReport(uuid, playerName, mess, date, solved, serverName, lpPrefix, lpSuffix);
 
             ArrayList<Player> admins = Report.getAdministration();
             if (admins.size() > 0) {

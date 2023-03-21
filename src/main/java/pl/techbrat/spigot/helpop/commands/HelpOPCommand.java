@@ -7,9 +7,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.*;
+import pl.techbrat.spigot.helpop.API.HelpOPTBAPI;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeLoader;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
+import pl.techbrat.spigot.helpop.dependency.APILoader;
 
 
 public class HelpOPCommand implements CommandExecutor {
@@ -19,11 +21,15 @@ public class HelpOPCommand implements CommandExecutor {
         try {
             FormatMessages formater = FormatMessages.getInstance();
             ConfigData config = ConfigData.getInstance();
-            if (args.length < 1 && (sender.hasPermission(config.getPerms("report")) || sender.hasPermission("helpoptb.report"))) { //TODO Remove old permission in next updates
-                sender.sendMessage(formater.formatMessage("players.incorrect_use"));
+            if (args.length == 0) {
+                if (sender.hasPermission(config.getPerms("report")) || sender.hasPermission("helpoptb.report")) { //TODO Remove old permission in next updates
+                    sender.sendMessage(formater.formatMessage("players.incorrect_use"));
+                } else {
+                    sender.sendMessage(formater.formatMessage("no_permission"));
+                }
                 return true;
             }
-            if (args.length > 0) {
+            else {
                 if (sender.hasPermission(config.getPerms("help")) && args[0].equals("help")) {
                     Functions.getInstance().displayHelp(sender);
                     return true;
@@ -116,9 +122,14 @@ public class HelpOPCommand implements CommandExecutor {
                 if (sender.hasPermission(config.getPerms("reload")) && args[0].equals("reload")) {
                     if (ConfigData.getInstance().isBungeeEnabled()) BungeeLoader.getInstance().unregisterBungeeChannel();
                     new ConfigData();
+                    new HelpOPTBAPI();
                     new PlayerData();
+                    new FormatMessages();
+
                     if (ConfigData.getInstance().isDatabaseEnabled()) Database.load();
                     if (ConfigData.getInstance().isBungeeEnabled()) new BungeeLoader(true);
+
+                    new APILoader();
 
                     sender.sendMessage(formater.formatMessage("admins.commands.reload"));
                     return true;

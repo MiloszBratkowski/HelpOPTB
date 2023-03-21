@@ -1,6 +1,8 @@
 package pl.techbrat.spigot.helpop;
 
 import org.bukkit.ChatColor;
+import pl.techbrat.spigot.helpop.dependency.APILoader;
+import pl.techbrat.spigot.helpop.dependency.LuckPermsAPI;
 
 public class FormatMessages {
     private static FormatMessages instance;
@@ -68,10 +70,19 @@ public class FormatMessages {
 
 
     public String getReportFormat(String server, String player, String message, String type) {
+        APILoader apiLoader = APILoader.getInstance();
+        return getReportFormat(server, player, message, type,
+                apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getPrefix(player) : "DISABLED",
+                apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getSuffix(player) : "DISABLED");
+    }
+
+    public String getReportFormat(String server, String player, String message, String type, String lpPrefix, String lpSuffix) {
         return addColors(replacePrefix(configData.getMsg("admins.reports."+type).
                 replace("<message>", message).
                 replace("<player>", player).
-                replace("<server>", server)));
+                replace("<server>", server).
+                replace("<lp_player_prefix>", lpPrefix).
+                replace("<lp_player_suffix>", lpSuffix)));
     }
 
     public String getBungeeSend(String server) {

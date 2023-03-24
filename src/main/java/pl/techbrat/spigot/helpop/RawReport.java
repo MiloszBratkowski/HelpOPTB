@@ -25,6 +25,7 @@ public class RawReport {
 
     private String lpPrefix;
     private String lpSuffix;
+    private String displayName;
 
     private final String serverName;
     private String solved;
@@ -41,10 +42,11 @@ public class RawReport {
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 "-1",
                 BungeeServerNameDownloader.getServerName(),
-                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(player.getName()):"",
-                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(player.getName()):"");
+                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(player.getUniqueId().toString(), player.getName()):"",
+                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(player.getUniqueId().toString(), player.getName()):"",
+                player.getDisplayName());
     }
-    public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName, String lpPrefix, String lpSuffix) {
+    public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName, String lpPrefix, String lpSuffix, String displayName) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.message = message;
@@ -55,6 +57,7 @@ public class RawReport {
         localReports.put(localId, this);
         this.lpPrefix = lpPrefix;
         this.lpSuffix = lpSuffix;
+        this.displayName = displayName;
     }
 
     public void setId(int id) {
@@ -62,14 +65,14 @@ public class RawReport {
     }
 
     public String customizeChatMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "report_format", lpPrefix, lpSuffix);
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "report_format", lpPrefix, lpSuffix, displayName);
     }
     public String customizeTitleMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_title", lpPrefix, lpSuffix);
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_title", lpPrefix, lpSuffix, displayName);
     }
 
     public String customizeSubtitleMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_subtitle", lpPrefix, lpSuffix);
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_subtitle", lpPrefix, lpSuffix, displayName);
     }
 
     protected int getId() {
@@ -147,6 +150,7 @@ public class RawReport {
         packet.writeUTF(BungeeServerNameDownloader.getServerName());
         packet.writeUTF(lpPrefix);
         packet.writeUTF(lpSuffix);
+        packet.writeUTF(displayName);
         getPlayer().sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
     }
 

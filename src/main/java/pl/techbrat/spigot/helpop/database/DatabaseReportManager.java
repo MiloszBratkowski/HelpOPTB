@@ -30,7 +30,7 @@ public class DatabaseReportManager {
             ResultSet result = Database.getInstance().execute(query);
             RawReport report;
             while (result.next()) {
-                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), "", "");
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), "", "", "");
                 report.setId(result.getInt("id"));
                 prototype.put(result.getInt("id"), report);
             }
@@ -50,7 +50,7 @@ public class DatabaseReportManager {
         try {
             ResultSet result = Database.getInstance().execute(query);
             if (result.next()) {
-                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), "", "");
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), "", "", "");
                 report.setId(result.getInt("id"));
                 reports.put(id, report);
             }

@@ -117,6 +117,13 @@ public class ConfigData {
         return ((boolean) getReliabilityConfig("screen_information")) && !Bukkit.getBukkitVersion().contains("1.8");
     }
 
+    public boolean isReceivedPlayerFormat() {
+        return (boolean) getReliabilityConfig("receive_player_nickname_format");
+    }
+    public boolean isReceivedAdminFormat() {
+        return (boolean) getReliabilityConfig("receive_admin_nickname_format");
+    }
+
     public boolean isBungeeEnabled() {
         return (boolean) getReliabilityConfig("enable_bungee");
     }

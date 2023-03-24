@@ -1,6 +1,8 @@
 package pl.techbrat.spigot.helpop;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
 
 import java.util.regex.Matcher;
@@ -83,38 +85,42 @@ public class FormatMessages {
                 replace("<solve_admin>", solveAdmin)));
     }
 
-    public String getResponse(String admin, String player, String message, boolean forAdmin) {
-        return getResponse(admin,
+    public String getResponse(Player admin, String player, String message, boolean forAdmin) {
+        return getResponse(admin.getName(),
                 player,
                 message,
-                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin):"",
-                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin):"",
+                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin.getUniqueId().toString(), admin.getName()):"",
+                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin.getUniqueId().toString(), admin.getName()):"",
+                admin.getDisplayName(),
                 forAdmin);
     }
-    public String getResponse(String admin, String player, String message, String adminPrefix, String adminSuffix, boolean forAdmin) {
+    public String getResponse(String admin, String player, String message, String adminPrefix, String adminSuffix, String adminDisplayName, boolean forAdmin) {
         return addColors(replacePrefix(configData.getMsg(forAdmin?"admins.commands.response.format":"players.response").
                 replace("<admin>", admin).
                 replace("<player>", player).
                 replace("<message>", message).
                 replace("<lp_admin_prefix>", adminPrefix).
-                replace("<lp_admin_suffix>", adminSuffix)));
+                replace("<lp_admin_suffix>", adminSuffix).
+                replace("<admin_display_name>", adminDisplayName)));
     }
 
 
-    public String getReportFormat(String server, String player, String message, String type) {
+    public String getReportFormat(String server, String player, String uuid, String message, String type) {
         APILoader apiLoader = APILoader.getInstance();
         return getReportFormat(server, player, message, type,
-                apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getPrefix(player) : "DISABLED",
-                apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getSuffix(player) : "DISABLED");
+                apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getPrefix(uuid, player) : "DISABLED",
+                apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getSuffix(uuid, player) : "DISABLED",
+                "");
     }
 
-    public String getReportFormat(String server, String player, String message, String type, String lpPrefix, String lpSuffix) {
+    public String getReportFormat(String server, String player, String message, String type, String lpPrefix, String lpSuffix, String displayName) {
         return addColors(replacePrefix(configData.getMsg("admins.reports."+type).
                 replace("<message>", message).
                 replace("<player>", player).
                 replace("<server>", server).
                 replace("<lp_player_prefix>", lpPrefix).
-                replace("<lp_player_suffix>", lpSuffix)));
+                replace("<lp_player_suffix>", lpSuffix).
+                replace("<player_display_name>", displayName)));
     }
 
     public String getBungeeSend(String server) {

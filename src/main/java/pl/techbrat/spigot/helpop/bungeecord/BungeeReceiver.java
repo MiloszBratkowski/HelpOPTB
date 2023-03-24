@@ -2,6 +2,7 @@ package pl.techbrat.spigot.helpop.bungeecord;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import net.luckperms.api.model.user.User;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -10,8 +11,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import pl.techbrat.spigot.helpop.*;
+import pl.techbrat.spigot.helpop.dependency.APILoader;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class BungeeReceiver implements PluginMessageListener {
 
@@ -41,50 +44,67 @@ public class BungeeReceiver implements PluginMessageListener {
         }
         String type = in.readUTF();
 
-        ConfigData config = ConfigData.getInstance();
         if (type.equals("response")) {
-            String admin = in.readUTF();
-            String playerName = in.readUTF();
-            String mess = in.readUTF();
-            String lpAdminPrefix = in.readUTF();
-            String lpAdminSuffix = in.readUTF();
-            Player user = Bukkit.getPlayer(playerName);
-            if (user != null && user.isOnline()) {
-                Functions.getInstance().respondedInfoToStaff(admin, playerName, mess, lpAdminPrefix, lpAdminSuffix);
-                user.sendMessage(FormatMessages.getInstance().getResponse(admin, playerName, mess, lpAdminPrefix, lpAdminSuffix, false));
-            }
+            receiveResponse(in.readUTF(),in.readUTF(),  in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         } else if (type.equals("helpop")) {
             int id = Integer.parseInt(in.readUTF());
-            String mess = in.readUTF();
-            String uuid = in.readUTF();
-            String playerName = in.readUTF();
-            String date = in.readUTF();
-            String solved = in.readUTF();
-            String serverName = in.readUTF();
-            String lpPrefix = in.readUTF();
-            String lpSuffix = in.readUTF();
-            RawReport report = new RawReport(uuid, playerName, mess, date, solved, serverName, lpPrefix, lpSuffix);
+            receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
+        }
+    }
 
-            ArrayList<Player> admins = Report.getAdministration();
-            if (admins.size() > 0) {
-                String normalMessage = report.customizeChatMessage();
-                if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
-                    TextComponent chatMessage = new TextComponent(normalMessage);
-                    chatMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(FormatMessages.getInstance().getBungeeSend(serverName)).create()));
-                    chatMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop move " + report.getLocalId()));
-                    for (Player admin : admins) {
-                        if (admin.hasPermission(config.getPerms("move"))) admin.spigot().sendMessage(chatMessage);
-                        else admin.sendMessage(normalMessage);
-                        if (config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
-                            admin.sendTitle(report.customizeTitleMessage(), report.customizeSubtitleMessage());
-                        }
+    private void receiveResponse(String message, String admin, String adminUUID, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName, String player) {
+        Player user = Bukkit.getPlayer(player);
+        if (user != null && user.isOnline()) {
+            ConfigData config = ConfigData.getInstance();
+            if (!config.isReceivedAdminFormat()) {
+                APILoader apiLoader = APILoader.getInstance();
+                if (apiLoader.isLuckPermsAPIEnabled()) {
+                    lpAdminPrefix = apiLoader.getLuckPermsAPI().getPrefix(adminUUID, player);
+                    lpAdminSuffix = apiLoader.getLuckPermsAPI().getSuffix(adminUUID, player);
+                }
+                if (Bukkit.getOfflinePlayer(UUID.fromString(adminUUID)).getPlayer() != null) {
+                    adminDisplayName = Bukkit.getOfflinePlayer(UUID.fromString(adminUUID)).getPlayer().getDisplayName();
+                }
+            }
+            Functions.getInstance().respondedInfoToStaff(admin, player, message, lpAdminPrefix, lpAdminSuffix, adminDisplayName);
+            user.sendMessage(FormatMessages.getInstance().getResponse(admin, player, message, lpAdminPrefix, lpAdminSuffix, adminDisplayName, false));
+        }
+    }
+
+    private void receiveHelpop(String message, String uuid, String player, String date, String solved, String server, String lpPrefix, String lpSuffix, String displayName) {
+        ConfigData config = ConfigData.getInstance();
+
+        if (!config.isReceivedPlayerFormat()) {
+            APILoader apiLoader = APILoader.getInstance();
+            if (apiLoader.isLuckPermsAPIEnabled()) {
+                lpPrefix = apiLoader.getLuckPermsAPI().getPrefix(uuid, player);
+                lpSuffix = apiLoader.getLuckPermsAPI().getSuffix(uuid, player);
+            }
+            if (Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getPlayer() != null) {
+                displayName = Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getPlayer().getDisplayName();
+            }
+        }
+        RawReport report = new RawReport(uuid, player, message, date, solved, server, lpPrefix, lpSuffix, displayName);
+
+        ArrayList<Player> admins = Report.getAdministration();
+        if (admins.size() > 0) {
+            String normalMessage = report.customizeChatMessage();
+            if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
+                TextComponent chatMessage = new TextComponent(normalMessage);
+                chatMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(FormatMessages.getInstance().getBungeeSend(server)).create()));
+                chatMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop move " + report.getLocalId()));
+                for (Player admin : admins) {
+                    if (admin.hasPermission(config.getPerms("move"))) admin.spigot().sendMessage(chatMessage);
+                    else admin.sendMessage(normalMessage);
+                    if (config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
+                        admin.sendTitle(report.customizeTitleMessage(), report.customizeSubtitleMessage());
                     }
-                } else {
-                    for (Player admin : admins) {
-                        admin.sendMessage(normalMessage);
-                        if (config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
-                            admin.sendTitle(report.customizeTitleMessage(), report.customizeSubtitleMessage());
-                        }
+                }
+            } else {
+                for (Player admin : admins) {
+                    admin.sendMessage(normalMessage);
+                    if (config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
+                        admin.sendTitle(report.customizeTitleMessage(), report.customizeSubtitleMessage());
                     }
                 }
             }

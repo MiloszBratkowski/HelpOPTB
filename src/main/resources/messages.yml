@@ -21,25 +21,25 @@ players:
   cooldown: "<prefix> &cWait before send next message!"
 
   #Style of text in responded message
-  response: "<prefix> &c<admin>&7: &d<message>" #Available placeholders: <prefix>, <admin>, <message>, <lp_admin_prefix>, <lp_admin_suffix>
+  response: "<prefix> &c<admin>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
 
 admins:
   reports:
     #Format of messages on the admin's chat:
-    report_format: "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <prefix>, <server>, <player>, <message>, <lp_player_prefix>, <lp_player_suffix>
+    report_format: "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
     #Display information on the screen to admins (title/subtitle). Admin must have permission!:
-    screen_title: "&cNew report from &6<player>&c!" #Available placeholders: <prefix>, <server>, <player>, <message>, <lp_player_prefix>, <lp_player_suffix>
-    screen_subtitle: "&7(&3<server>&7) &f<message>" #Available placeholders: <prefix>, <server>, <player>, <message>, <lp_player_prefix>, <lp_player_suffix>
+    screen_title: "&cNew report from &6<player>&c!" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
+    screen_subtitle: "&7(&3<server>&7) &f<message>" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
     #Hover label on the chat message sent to another bungee server
-    bungee_send: "&aClick to join that server!"
+    bungee_send: "&aClick to join that server!" #Available placeholders: <prefix>, <server>
 
   commands:
     response:
+      format: "&c<admin> &7-> &6<player>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
       type_player: "&cType player to response!"
       type_message: "&cType response message!"
-      format: "&c<admin> &7-> &6<player>&7: &d<message>" #Available placeholders: <prefix>, <admin>, <message>, <lp_admin_prefix>, <lp_admin_suffix>
       offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!" #Available placeholders: <prefix>, <player>
     reload: "&aPlugin has reloaded!"
     history:

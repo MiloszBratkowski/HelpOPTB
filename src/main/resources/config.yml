@@ -46,3 +46,9 @@ enable_bungee: false
 #Server name displaying on messages.
 #If you have bungee mode enabled and want the name to be the same as the bungee server name, type server_name: BUNGEE.
 server_name: this
+
+#BungeeCord - player displayname, prefix or suffix (LuckPerms) taken from:
+#true - sender server (ex. staffs sees player's prefix taken from player's server and vice versa)
+#false - receiver server (ex. staffs sees player's prefix taken from the server they are on and vice versa)
+receive_player_nickname_format: true
+receive_admin_nickname_format: true

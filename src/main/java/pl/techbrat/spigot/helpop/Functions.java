@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.database.Database;
@@ -86,18 +87,20 @@ public class Functions {
         return null;
     }
 
-    public boolean sendResponse(String playerName, String message, String adminName) {
+    public boolean sendResponse(String playerName, String message, Player admin) {
         ConfigData config = ConfigData.getInstance();
         if (config.isBungeeEnabled()) {
             ByteArrayDataOutput packet = ByteStreams.newDataOutput();
             packet.writeUTF("helpoptb");
             packet.writeUTF(HelpOPTB.getInstance().getServer().getIp()+":"+HelpOPTB.getInstance().getServer().getPort());
             packet.writeUTF("response");
-            packet.writeUTF(adminName);
-            packet.writeUTF(playerName);
             packet.writeUTF(message);
-            packet.writeUTF(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(adminName):"");
-            packet.writeUTF(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(adminName):"");
+            packet.writeUTF(admin.getName());
+            packet.writeUTF(admin.getUniqueId().toString());
+            packet.writeUTF(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin.getUniqueId().toString(), admin.getName()):"");
+            packet.writeUTF(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin.getUniqueId().toString(), admin.getName()):"");
+            packet.writeUTF(admin.getDisplayName());
+            packet.writeUTF(playerName);
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
             }
@@ -105,18 +108,18 @@ public class Functions {
         } else return false;
     }
 
-    public void respondedInfoToStaff(String admin, String player, String message) {
-        String lpAdminPrefix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin):"";
-        String lpAdminSuffix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin):"";
-        respondedInfoToStaff(admin, player, message, lpAdminPrefix, lpAdminSuffix);
+    public void respondedInfoToStaff(Player admin, String player, String message) {
+        String lpAdminPrefix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin.getUniqueId().toString(), admin.getName()):"";
+        String lpAdminSuffix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin.getUniqueId().toString(), admin.getName()):"";
+        respondedInfoToStaff(admin.getName(), player, message, lpAdminPrefix, lpAdminSuffix, admin.getDisplayName());
     }
 
-    public void respondedInfoToStaff(String admin, String player, String message, String lpAdminPrefix, String lpAdminSuffix) {
+    public void respondedInfoToStaff(String admin, String player, String message, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName) {
         ConfigData config = ConfigData.getInstance();
         String perm = config.getPerms("receive");
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getName().equalsIgnoreCase(admin) && p.hasPermission(perm)) {
-                p.sendMessage(FormatMessages.getInstance().getResponse(admin, player, message, lpAdminPrefix, lpAdminSuffix, true));
+                p.sendMessage(FormatMessages.getInstance().getResponse(admin, player, message, lpAdminPrefix, lpAdminSuffix, adminDisplayName, true));
             }
         }
     }

@@ -2,11 +2,14 @@ package pl.techbrat.spigot.helpop.dependency;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
+import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import pl.techbrat.spigot.helpop.HelpOPTB;
 
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 public class LuckPermsAPI {
     private LuckPerms luckPerms;
@@ -19,13 +22,19 @@ public class LuckPermsAPI {
         }
     }
 
-    public String getPrefix(String player) {
+    private User getForceUser(String uuid, String player) throws ExecutionException, InterruptedException {
+        if (luckPerms.getUserManager().isLoaded(UUID.fromString(uuid))) {
+            Bukkit.getLogger().info("Zaladowany.");
+            return luckPerms.getUserManager().getUser(player);
+        } else {
+            Bukkit.getLogger().info("Pobieranie.");
+            return luckPerms.getUserManager().loadUser(UUID.fromString(uuid), player).get();
+        }
+    }
+
+    public String getPrefix(String uuid, String player) {
         try {
-            CachedMetaData data = luckPerms.
-                    getUserManager().
-                    getUser(player).
-                    getCachedData().
-                    getMetaData();
+            CachedMetaData data = getForceUser(uuid, player).getCachedData().getMetaData();
             if (data.getPrefix() == null) return "";
             else return data.getPrefix();
         } catch (Exception e){
@@ -34,13 +43,9 @@ public class LuckPermsAPI {
 
     }
 
-    public String getSuffix(String player) {
+    public String getSuffix(String uuid, String player) {
         try {
-            CachedMetaData data = luckPerms.
-                    getUserManager().
-                    getUser(player).
-                    getCachedData().
-                    getMetaData();
+            CachedMetaData data = getForceUser(uuid, player).getCachedData().getMetaData();
             if (data.getSuffix() == null) return "";
             else return data.getSuffix();
         } catch (Exception e){

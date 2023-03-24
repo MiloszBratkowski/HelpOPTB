@@ -31,18 +31,18 @@ public class ResponseCommand implements CommandExecutor {
             message.append(args[i]).append(" ");
         }
         if (user != null && user.isOnline()) {
-            user.sendMessage(formater.getResponse(sender.getName(), args[0], message.toString(), false));
-            sender.sendMessage(formater.getResponse(sender.getName(), args[0], message.toString(), true));
-            Functions.getInstance().respondedInfoToStaff(sender.getName(), args[0], String.valueOf(message));
+            user.sendMessage(formater.getResponse((Player) sender, args[0], message.toString(), false));
+            sender.sendMessage(formater.getResponse((Player) sender, args[0], message.toString(), true));
+            Functions.getInstance().respondedInfoToStaff((Player) sender, args[0], String.valueOf(message));
         } else {
             if (config.isBungeeEnabled()) {
                 BungeePlayerListDownloader bungeeList = BungeePlayerListDownloader.getInstance();
                     bungeeList.downloadPlayers((Player) sender);
                     HelpOPTB.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(HelpOPTB.getInstance(), () -> {
                         if (bungeeList.getPlayers().contains(args[0])) {
-                            Functions.getInstance().sendResponse(args[0], String.valueOf(message), sender.getName());
-                            sender.sendMessage(formater.getResponse(sender.getName(), args[0], message.toString(), true));
-                            Functions.getInstance().respondedInfoToStaff(sender.getName(), args[0], String.valueOf(message));
+                            Functions.getInstance().sendResponse(args[0], String.valueOf(message), (Player) sender);
+                            sender.sendMessage(formater.getResponse((Player) sender, args[0], message.toString(), true));
+                            Functions.getInstance().respondedInfoToStaff((Player) sender, args[0], String.valueOf(message));
                         } else {
                             sender.sendMessage(formater.getResponseOfflinePlayer(args[0]));
                         }

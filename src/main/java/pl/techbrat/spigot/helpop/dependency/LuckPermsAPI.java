@@ -24,10 +24,8 @@ public class LuckPermsAPI {
 
     private User getForceUser(String uuid, String player) throws ExecutionException, InterruptedException {
         if (luckPerms.getUserManager().isLoaded(UUID.fromString(uuid))) {
-            Bukkit.getLogger().info("Zaladowany.");
             return luckPerms.getUserManager().getUser(player);
         } else {
-            Bukkit.getLogger().info("Pobieranie.");
             return luckPerms.getUserManager().loadUser(UUID.fromString(uuid), player).get();
         }
     }

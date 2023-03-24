@@ -34,11 +34,11 @@ public class Functions {
         FormatMessages formater = FormatMessages.getInstance();
         sender.sendMessage(formater.getHistoryTitle(Integer.toString(page), Integer.toString(getNumbersOfPages(type)), Integer.toString(getNumberOfReports(type))));
         for (RawReport report : DatabaseReportManager.getInstance().reportsFromDatabase(type, (page-1)*LIMIT, LIMIT)) {
-            String messageOld = formater.getHistoryElement(Integer.toString(report.getId()), report.isSolved(), report.getSolved(), report.getDate(), report.getPlayerName(), report.getMessage(), report.getServerName());
+            String messageOld = formater.getHistoryElement(Integer.toString(report.getId()), report.isSolved(), report.getSolved(), report.getDate(), report.getPlayerName(), report.getMessage(), report.getServerName(), report.getPlayerLpPrefix(), report.getPlayerLpSuffix(), report.getPlayerDisplayName(), report.getSolverLpPrefix(), report.getSolverLpSuffix(), report.getSolverDisplayName());
             if (HelpOPTB.getInstance().getVersionSymbol() >= 12 && sender.hasPermission(configData.getPerms("check"))) {
                 TextComponent message = new TextComponent(messageOld);
                 if (report.isSolved()) {
-                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(formater.getHistoryHoverSolve(report.getSolved())).create()));
+                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(formater.getHistoryHoverSolve(report.getSolved(), report.getSolverLpPrefix(), report.getSolverLpSuffix(), report.getSolverDisplayName())).create()));
                 } else {
                     message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(formater.formatMessage("admins.commands.history.click_solve")).create()));
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop check " + report.getId()));

@@ -2,7 +2,6 @@ package pl.techbrat.spigot.helpop.bungeecord;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import net.luckperms.api.model.user.User;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -48,7 +47,7 @@ public class BungeeReceiver implements PluginMessageListener {
             receiveResponse(in.readUTF(),in.readUTF(),  in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         } else if (type.equals("helpop")) {
             int id = Integer.parseInt(in.readUTF());
-            receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
+            receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         }
     }
 
@@ -71,20 +70,20 @@ public class BungeeReceiver implements PluginMessageListener {
         }
     }
 
-    private void receiveHelpop(String message, String uuid, String player, String date, String solved, String server, String lpPrefix, String lpSuffix, String displayName) {
+    private void receiveHelpop(String message, String uuid, String player, String date, String solved, String server, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
         ConfigData config = ConfigData.getInstance();
 
         if (!config.isReceivedPlayerFormat()) {
             APILoader apiLoader = APILoader.getInstance();
             if (apiLoader.isLuckPermsAPIEnabled()) {
-                lpPrefix = apiLoader.getLuckPermsAPI().getPrefix(uuid, player);
-                lpSuffix = apiLoader.getLuckPermsAPI().getSuffix(uuid, player);
+                playerLpPrefix = apiLoader.getLuckPermsAPI().getPrefix(uuid, player);
+                playerLpSuffix = apiLoader.getLuckPermsAPI().getSuffix(uuid, player);
             }
             if (Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getPlayer() != null) {
-                displayName = Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getPlayer().getDisplayName();
+                playerDisplayName = Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getPlayer().getDisplayName();
             }
         }
-        RawReport report = new RawReport(uuid, player, message, date, solved, server, lpPrefix, lpSuffix, displayName);
+        RawReport report = new RawReport(uuid, player, message, date, solved, server, playerLpPrefix, playerLpSuffix, playerDisplayName, solverLpPrefix, solverLpSuffix, solverDisplayName);
 
         ArrayList<Player> admins = Report.getAdministration();
         if (admins.size() > 0) {

@@ -50,5 +50,6 @@ server_name: this
 #BungeeCord - player displayname, prefix or suffix (LuckPerms) taken from:
 #true - sender server (ex. staffs sees player's prefix taken from player's server and vice versa)
 #false - receiver server (ex. staffs sees player's prefix taken from the server they are on and vice versa)
+#That option isn't related with history - all values in history are taking from sender server
 receive_player_nickname_format: true
 receive_admin_nickname_format: true

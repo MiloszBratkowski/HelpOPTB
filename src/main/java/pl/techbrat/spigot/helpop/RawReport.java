@@ -23,12 +23,16 @@ public class RawReport {
     private final String playerName;
     private final String date;
 
-    private String lpPrefix;
-    private String lpSuffix;
-    private String displayName;
+    private String playerLpPrefix;
+    private String playerLpSuffix;
+    private String playerDisplayName;
 
     private final String serverName;
     private String solved;
+
+    private String solverLpPrefix;
+    private String solverLpSuffix;
+    private String solverDisplayName;
 
     private final ConfigData config = ConfigData.getInstance();
 
@@ -44,9 +48,10 @@ public class RawReport {
                 BungeeServerNameDownloader.getServerName(),
                 APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(player.getUniqueId().toString(), player.getName()):"",
                 APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(player.getUniqueId().toString(), player.getName()):"",
-                player.getDisplayName());
+                player.getDisplayName(),
+                "", "", "");
     }
-    public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName, String lpPrefix, String lpSuffix, String displayName) {
+    public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.message = message;
@@ -55,9 +60,12 @@ public class RawReport {
         this.serverName = serverName;
         this.localId = localReports.keySet().size()+1;
         localReports.put(localId, this);
-        this.lpPrefix = lpPrefix;
-        this.lpSuffix = lpSuffix;
-        this.displayName = displayName;
+        this.playerLpPrefix = playerLpPrefix;
+        this.playerLpSuffix = playerLpSuffix;
+        this.playerDisplayName = playerDisplayName;
+        this.solverLpPrefix = solverLpPrefix;
+        this.solverLpSuffix = solverLpSuffix;
+        this.solverDisplayName = solverDisplayName;
     }
 
     public void setId(int id) {
@@ -65,14 +73,14 @@ public class RawReport {
     }
 
     public String customizeChatMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "report_format", lpPrefix, lpSuffix, displayName);
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "report_format", playerLpPrefix, playerLpSuffix, playerDisplayName);
     }
     public String customizeTitleMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_title", lpPrefix, lpSuffix, displayName);
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_title", playerLpPrefix, playerLpSuffix, playerDisplayName);
     }
 
     public String customizeSubtitleMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_subtitle", lpPrefix, lpSuffix, displayName);
+        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_subtitle", playerLpPrefix, playerLpSuffix, playerDisplayName);
     }
 
     protected int getId() {
@@ -110,18 +118,36 @@ public class RawReport {
         return serverName;
     }
 
-    public String getLpPrefix() {
-        return lpPrefix;
+    public String getPlayerLpPrefix() {
+        return playerLpPrefix;
     }
 
-    public String getLpSuffix() {
-        return lpSuffix;
+    public String getPlayerLpSuffix() {
+        return playerLpSuffix;
+    }
+
+    public String getPlayerDisplayName() {
+        return playerDisplayName;
+    }
+
+    public String getSolverLpPrefix() {
+        return solverLpPrefix;
+    }
+
+    public String getSolverLpSuffix() {
+        return solverLpSuffix;
+    }
+
+    public String getSolverDisplayName() {
+        return solverDisplayName;
     }
 
     void saveReport() {
+        Bukkit.getLogger().info("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
+                "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message+"', '-1', '"+date+"', '"+serverName+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");
         Database.getInstance()
                 .update("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
-                        "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message+"', '-1', '"+date+"', '"+serverName+"');");
+                        "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message+"', '-1', '"+date+"', '"+serverName+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");
         try {
             ResultSet result = Database.getInstance().execute("SELECT id FROM " + config.getDatabaseParams("table") + " WHERE date = '" + date + "' AND message = '" + message + "';");
             result.next();
@@ -131,9 +157,13 @@ public class RawReport {
         }
     }
 
-    public void solveReport(String admin) {
-        solved = admin;
-        Database.getInstance().update("UPDATE "+config.getDatabaseParams("table")+" SET solved = '"+solved+"' WHERE id = "+id+";");
+    public void solveReport(Player solver) {
+        Database.getInstance().update("UPDATE "+config.getDatabaseParams("table")+
+                " SET solved = '" + solver.getName() + "',"+
+                " solver_prefix = '"+(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(solver.getUniqueId().toString(), solver.getName()):"")+"',"+
+                " solver_suffix = '"+(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(solver.getUniqueId().toString(), solver.getName()):"")+"',"+
+                " solver_display_name = '"+solver.getDisplayName()+"'"+
+                " WHERE id = " + id + ";");
     }
 
     void sendToBungee() {
@@ -148,9 +178,12 @@ public class RawReport {
         packet.writeUTF(date);
         packet.writeUTF(solved);
         packet.writeUTF(BungeeServerNameDownloader.getServerName());
-        packet.writeUTF(lpPrefix);
-        packet.writeUTF(lpSuffix);
-        packet.writeUTF(displayName);
+        packet.writeUTF(playerLpPrefix);
+        packet.writeUTF(playerLpSuffix);
+        packet.writeUTF(playerDisplayName);
+        packet.writeUTF(solverLpPrefix);
+        packet.writeUTF(solverLpSuffix);
+        packet.writeUTF(solverDisplayName);
         getPlayer().sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
     }
 

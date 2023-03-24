@@ -85,7 +85,7 @@ public class HelpOPCommand implements CommandExecutor {
                     }
                     int id = Integer.parseInt(args[1]);
                     if (!DatabaseReportManager.getInstance().containsId(id)) {
-                        if (DatabaseReportManager.getInstance().softSolve(id, sender.getName())) {
+                        if (DatabaseReportManager.getInstance().softSolve(id, (Player) sender)) {
                             sender.sendMessage(formater.formatMessage("admins.commands.check.solved"));
                             return true;
                         }
@@ -97,7 +97,7 @@ public class HelpOPCommand implements CommandExecutor {
                         sender.sendMessage(formater.formatMessage("admins.commands.check.is_solved"));
                         return true;
                     }
-                    DatabaseReportManager.getInstance().getReport(id).solveReport(sender.getName());
+                    DatabaseReportManager.getInstance().getReport(id).solveReport((Player) sender);
                     sender.sendMessage(formater.formatMessage("admins.commands.check.solved"));
                     return true;
                 }

@@ -88,14 +88,35 @@ public class Database {
         try {
             plugin.getLogger().log(Level.INFO, "Creating table "+type+" if not exist.");
             File file = new File(plugin.getDataFolder()+"/table.temp");
-            Files.copy(plugin.getResource("database/"+this.type+"_table.structure"), file.toPath());
+            Files.copy(plugin.getResource("database/"+this.type+"_helpop_create.sql"), file.toPath());
             String query = Files.readString(file.toPath());
             file.delete();
-            query = query.replaceAll("%tableName%", table);
+            query = query.replaceAll("helpop", table);
             update(query);
             plugin.getLogger().log(Level.INFO, "If table wasn't exist, it has been created.");
+            updateTable();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void updateTable() {
+        try {
+            if (type.equals("SQLITE")) {
+                ResultSet result = execute("PRAGMA table_info("+table+");");
+                while (result.next()) {
+                    if (result.getString("name").equals("player_prefix")) {
+                        return;
+                    }
+                }
+            }
+            File file = new File(plugin.getDataFolder()+"/table_update.temp");
+            Files.copy(plugin.getResource("database/"+this.type+"_helpop_update.sql"), file.toPath());
+            String query = Files.readString(file.toPath());
+            file.delete();
+            query = query.replaceAll("helpop", table);
+            update(query);
+        } catch (Exception ignored) {
         }
     }
 

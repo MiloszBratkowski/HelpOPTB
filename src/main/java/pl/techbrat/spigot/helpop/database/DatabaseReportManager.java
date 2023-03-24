@@ -1,8 +1,10 @@
 package pl.techbrat.spigot.helpop.database;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.ConfigData;
 import pl.techbrat.spigot.helpop.RawReport;
+import pl.techbrat.spigot.helpop.dependency.APILoader;
 
 import java.sql.ResultSet;
 import java.util.*;
@@ -30,7 +32,7 @@ public class DatabaseReportManager {
             ResultSet result = Database.getInstance().execute(query);
             RawReport report;
             while (result.next()) {
-                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), "", "", "");
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), result.getString("player_prefix"), result.getString("player_suffix"), result.getString("player_display_name"), result.getString("solver_prefix"), result.getString("solver_suffix"), result.getString("solver_display_name"));
                 report.setId(result.getInt("id"));
                 prototype.put(result.getInt("id"), report);
             }
@@ -50,7 +52,7 @@ public class DatabaseReportManager {
         try {
             ResultSet result = Database.getInstance().execute(query);
             if (result.next()) {
-                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), "", "", "");
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), result.getString("player_prefix"), result.getString("player_suffix"), result.getString("player_display_name"), result.getString("solver_prefix"), result.getString("solver_suffix"), result.getString("solver_display_name"));
                 report.setId(result.getInt("id"));
                 reports.put(id, report);
             }
@@ -60,17 +62,22 @@ public class DatabaseReportManager {
         return report;
     }
 
-    public boolean softSolve(int id, String admin) throws DatabaseDisabledException {
+    public boolean softSolve(int id, Player solver) throws DatabaseDisabledException {
         if (!ConfigData.getInstance().isDatabaseEnabled()) {
             throw new DatabaseDisabledException("Database (history of reports) is disabled!");
         }
         if (containsId(id)) {
-            getReport(id).solveReport(admin);
+            getReport(id).solveReport(solver);
             return true;
         }
         try {
             if (Database.getInstance().execute("SELECT id FROM " + ConfigData.getInstance().getDatabaseParams("table") + " WHERE id = " + id + ";").next()) {
-                Database.getInstance().update("UPDATE " + ConfigData.getInstance().getDatabaseParams("table") + " SET solved = '" + admin + "' WHERE id = " + id + ";");
+                Database.getInstance().update("UPDATE " + ConfigData.getInstance().getDatabaseParams("table") +
+                        " SET solved = '" + solver.getName() + "',"+
+                        " solver_prefix = '"+(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(solver.getUniqueId().toString(), solver.getName()):"")+"',"+
+                        " solver_suffix = '"+(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(solver.getUniqueId().toString(), solver.getName()):"")+"',"+
+                        " solver_display_name = '"+solver.getDisplayName()+"'"+
+                        " WHERE id = " + id + ";");
                 return true;
             }
         } catch (Exception e) {

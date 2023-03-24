@@ -65,13 +65,19 @@ public class FormatMessages {
                 .replace("<amount>", amount));
     }
 
-    public String getHistoryElement(String id, boolean solved, String solveAdmin, String date, String player, String message, String server) {
+    public String getHistoryElement(String id, boolean solved, String solver, String date, String player, String message, String server, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
         return addColors(replacePrefix(configData.getMsg("admins.commands.history.element").
                 replace("<id>", id).
                 replace("<solved>", solved?"&a✔":"&c✘").
-                replace("<solve_admin>", solved?"&a"+solveAdmin:"&c✘").
+                replace("<solver>", solved?"&a"+solver:"&c✘").
                 replace("<date>", date).
                 replace("<player>", player).
+                replace("<lp_player_prefix>", playerLpPrefix).
+                replace("<lp_player_suffix>", playerLpSuffix).
+                replace("<player_display_name>", playerDisplayName).
+                replace("<lp_solver_prefix>", solverLpPrefix).
+                replace("<lp_solver_suffix>", solverLpSuffix).
+                replace("<solver_display_name>", solverDisplayName).
                 replace("<server>", server).
                 replace("<message>", message)));
     }
@@ -80,9 +86,12 @@ public class FormatMessages {
         return addColors(replacePrefix(configData.getMsg("admins.commands.history.page_rage").
                 replace("<all_pages>", pageRage)));
     }
-    public String getHistoryHoverSolve(String solveAdmin) {
+    public String getHistoryHoverSolve(String solveAdmin, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
         return addColors(replacePrefix(configData.getMsg("admins.commands.history.hover_solve").
-                replace("<solve_admin>", solveAdmin)));
+                replace("<lp_solver_prefix>", solverLpPrefix).
+                replace("<lp_solver_suffix>", solverLpSuffix).
+                replace("<solver_display_name>", solverDisplayName).
+                replace("<solver>", solveAdmin)));
     }
 
     public String getResponse(Player admin, String player, String message, boolean forAdmin) {

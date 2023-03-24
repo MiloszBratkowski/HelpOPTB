@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS `helpop` (
+`id` INT NOT NULL AUTO_INCREMENT,
+`player_name` VARCHAR(32) NOT NULL,
+`player_uuid` CHAR(36) NOT NULL,
+`message` VARCHAR(256) NOT NULL,
+`solved` VARCHAR(32) NOT NULL DEFAULT '-1',
+`date` DATETIME NOT NULL,
+`server` VARCHAR(32) NOT NULL,
+`player_prefix` VARCHAR(32) NOT NULL DEFAULT "",
+`player_suffix` VARCHAR(32) NOT NULL DEFAULT "",
+`player_display_name` VARCHAR(32) NOT NULL DEFAULT "",
+`solver_prefix` VARCHAR(32) NOT NULL DEFAULT "",
+`solver_suffix` VARCHAR(32) NOT NULL DEFAULT "",
+`solver_display_name` VARCHAR(32) NOT NULL DEFAULT "",
+PRIMARY KEY (`id`));

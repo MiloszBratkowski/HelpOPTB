@@ -45,16 +45,25 @@ Messages are sent using the */helpop message* command.
 
 **Warning!** If player doesn't have permission to use admin commands (check, history, clear_* and reload), after execute one of these arguments it will send a report with this content.
 
+## LuckPerms:
+Helpop message can contains placeholders for prefix and suffix which will be replaced after send:
+- placeholders for report messages: **<lp_player_prefix>**, **<lp_player_suffix>**
+- placeholders for response messages: **<lp_admin_prefix>**, **<lp_admin_suffix>**
+- placeholders for history element: **<lp_player_prefix>**, **<lp_player_suffix>**, **<lp_solver_prefix>**, **<lp_solver_suffix>**
+- placeholders for hover on solved report: **<lp_solver_prefix>**, **<lp_solver_suffix>**
+
+If you use bungeecord you can **see on your server what player has prefix and suffix on the server from which he sends** the message. In the same way, the player sees your prefix that you have on the server where you executed the /response command.
+
 ## BungeeCord
-First of all download library: [BungeeChannelTB](https://www.spigotmc.org/resources/bungeechanneltb.108382/).
-To enable BungeeCord messaging set option *enable_bungee: true* in config.yml.
+First of all download library: ***[BungeeChannelTB](https://www.spigotmc.org/resources/bungeechanneltb.108382/)***.
+To enable BungeeCord messaging set option ***enable_bungee: true*** in config.yml.
 Remember to receiving reports on other servers, admin must have permission on the server where he is.
 
 ## Configuration file
 ###### For latest plugin version!
 ````
 #CONFIG GENERATED FOR VERSION:
-#1.2.6
+#1.3.1
 
 #Display information on the screen to admins (title/subtitle). Admin must have permission!
 #Only for 1.9+ versions!
@@ -83,12 +92,12 @@ database:
   table: helpop
 
   #If you use SQLite, you can set file's name.
-  filename: database.db
+  filename: helpoptb.db
 
   #If you use MySQL, you have to set database parameters.
   host: localhost
   port: 3306
-  database: helpop
+  database: helpoptb
   username: root
   password: ''
   ssl: false
@@ -101,12 +110,19 @@ enable_bungee: false
 #Server name displaying on messages.
 #If you have bungee mode enabled and want the name to be the same as the bungee server name, type server_name: BUNGEE.
 server_name: this
+
+#BungeeCord - player displayname, prefix or suffix (LuckPerms) taken from:
+#true - sender server (ex. staffs sees player's prefix taken from player's server and vice versa)
+#false - receiver server (ex. staffs sees player's prefix taken from the server they are on and vice versa)
+#That option isn't related with history - all values in history are taking from sender server
+receive_player_nickname_format: true
+receive_admin_nickname_format: true
 ````
 ## Messages
 ###### For latest plugin version!
 ````
 #MESSAGES GENERATED FOR VERSION:
-#1.2.6
+#1.3.1
 
 #Prefix placeholder
 prefix: "&7[&cHelpOP&7]"
@@ -128,33 +144,33 @@ players:
   cooldown: "<prefix> &cWait before send next message!"
 
   #Style of text in responded message
-  response: "<prefix> &c<admin>&7: &d<message>"
+  response: "<prefix> &c<admin>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
 
 admins:
   reports:
     #Format of messages on the admin's chat:
-    report_format: "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>"
+    report_format: "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
     #Display information on the screen to admins (title/subtitle). Admin must have permission!:
-    screen_title: "&cNew report from &6<player>&c!"
-    screen_subtitle: "&7(&3<server>&7) &f<message>"
+    screen_title: "&cNew report from &6<player>&c!" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
+    screen_subtitle: "&7(&3<server>&7) &f<message>" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
     #Hover label on the chat message sent to another bungee server
-    bungee_send: "&aClick to join that server!"
+    bungee_send: "&aClick to join that server!" #Available placeholders: <prefix>, <server>
 
   commands:
     response:
+      format: "&c<admin> &7-> &6<player>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
       type_player: "&cType player to response!"
       type_message: "&cType response message!"
-      format: "&c<admin> &7-> &6<player>&7: &d<message>"
-      offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!"
+      offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!" #Available placeholders: <prefix>, <player>
     reload: "&aPlugin has reloaded!"
     history:
-      title: "&7History of messages <page>/<all_pages>: (<amount>)"
-      element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solve_admin>, <date>, <player>, <message>, <server>
-      page_rage: "&cPlease type page number from 1 to <all_pages>."
+      title: "&7History of messages <page>/<all_pages>: (<amount>)" #Available placeholders: <prefix>, <page>, <all_pages>, <amount>
+      element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solver>, <date>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>, <solver>, <solver_display_name>, <lp_solver_prefix>, <lp_solver_suffix>
+      page_rage: "&cPlease type page number from 1 to <all_pages>." #Available placeholders: <prefix>, <all_pages>
       click_solve: "&aClick to solve report!"
-      hover_solve: "&7Solved by &a<player>&7."
+      hover_solve: "&7Solved by &a<solver>&7." #Available placeholders: <prefix>, <solver>, <solver_display_name>, <lp_solver_prefix>, <lp_solver_suffix>
     check:
       solved: "&7Report solved!"
       type_id: "&cPlease type id of report."
@@ -168,4 +184,5 @@ admins:
       &e/helpop clear_all &7- deleting all reports from database,
       &e/helpop clear_solved &7- deleting solved reports from database,
       &e/helpop reload &7- reloading configuration file.
+      &e/helpop update &7- checking for updates.
 ````

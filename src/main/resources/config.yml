@@ -28,12 +28,12 @@ database:
   table: helpop
 
   #If you use SQLite, you can set file's name.
-  filename: database.db
+  filename: helpoptb.db
 
   #If you use MySQL, you have to set database parameters.
   host: localhost
   port: 3306
-  database: helpop
+  database: helpoptb
   username: root
   password: ''
   ssl: false

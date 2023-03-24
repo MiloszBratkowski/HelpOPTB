@@ -1,6 +1,14 @@
 TODO:
  - add sounds
+ - add GUI
+ - add API
 
+1.3.1
+ + added displayname placeholder support
+ + added LP prefix, suffix and sisplay name support in history
+ + added receiving prefix, suffix, displayname setting option
+ + changed databases structure (auto-change from older version)
+ + optimized code and responsing system
 
 1.3.0
  + added LuckPerms prefix and suffix supports

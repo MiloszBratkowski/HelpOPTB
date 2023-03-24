@@ -44,10 +44,10 @@ admins:
     reload: "&aPlugin has reloaded!"
     history:
       title: "&7History of messages <page>/<all_pages>: (<amount>)" #Available placeholders: <prefix>, <page>, <all_pages>, <amount>
-      element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solver>, <date>, <player>, <message>, <server>
+      element: "<solved> &8[<id>] &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <id>, <solved>, <solver>, <date>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>, <solver>, <solver_display_name>, <lp_solver_prefix>, <lp_solver_suffix>
       page_rage: "&cPlease type page number from 1 to <all_pages>." #Available placeholders: <prefix>, <all_pages>
       click_solve: "&aClick to solve report!"
-      hover_solve: "&7Solved by &a<solver>&7." #Available placeholders: <prefix>, <solver>
+      hover_solve: "&7Solved by &a<solver>&7." #Available placeholders: <prefix>, <solver>, <solver_display_name>, <lp_solver_prefix>, <lp_solver_suffix>
     check:
       solved: "&7Report solved!"
       type_id: "&cPlease type id of report."

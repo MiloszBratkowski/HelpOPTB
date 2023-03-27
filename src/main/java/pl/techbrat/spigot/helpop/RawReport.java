@@ -76,14 +76,14 @@ public class RawReport {
     }
 
     public String customizeChatMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "report_format", playerLpPrefix, playerLpSuffix, playerDisplayName);
+        return FormatMessages.getInstance().getReportFormat(getServerName(), playerName, message, "report_format", playerLpPrefix, playerLpSuffix, playerDisplayName);
     }
     public String customizeTitleMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_title", playerLpPrefix, playerLpSuffix, playerDisplayName);
+        return FormatMessages.getInstance().getReportFormat(getServerName(), playerName, message, "screen_title", playerLpPrefix, playerLpSuffix, playerDisplayName);
     }
 
     public String customizeSubtitleMessage() {
-        return FormatMessages.getInstance().getReportFormat(serverName, playerName, message, "screen_subtitle", playerLpPrefix, playerLpSuffix, playerDisplayName);
+        return FormatMessages.getInstance().getReportFormat(getServerName(), playerName, message, "screen_subtitle", playerLpPrefix, playerLpSuffix, playerDisplayName);
     }
 
     protected int getId() {

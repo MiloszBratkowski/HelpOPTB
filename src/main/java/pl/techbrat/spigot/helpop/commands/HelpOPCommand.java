@@ -70,7 +70,7 @@ public class HelpOPCommand implements CommandExecutor {
                     }
                     ByteArrayDataOutput packet = ByteStreams.newDataOutput();
                     packet.writeUTF("Connect");
-                    packet.writeUTF(RawReport.getLocalReport(id).getServerName());
+                    packet.writeUTF(RawReport.getLocalReport(id).getBungeeServerName());
                     ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "BungeeCord", packet.toByteArray());
                     return true;
                 }

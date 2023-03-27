@@ -47,7 +47,7 @@ public class BungeeReceiver implements PluginMessageListener {
             receiveResponse(in.readUTF(),in.readUTF(),  in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         } else if (type.equals("helpop")) {
             int id = Integer.parseInt(in.readUTF());
-            receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
+            receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         }
     }
 
@@ -70,7 +70,7 @@ public class BungeeReceiver implements PluginMessageListener {
         }
     }
 
-    private void receiveHelpop(String message, String uuid, String player, String date, String solved, String server, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
+    private void receiveHelpop(String message, String uuid, String player, String date, String solved, String serverName, String bungeeServerName, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
         ConfigData config = ConfigData.getInstance();
 
         if (!config.isReceivedPlayerFormat()) {
@@ -83,14 +83,14 @@ public class BungeeReceiver implements PluginMessageListener {
                 playerDisplayName = Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getPlayer().getDisplayName();
             }
         }
-        RawReport report = new RawReport(uuid, player, message, date, solved, server, playerLpPrefix, playerLpSuffix, playerDisplayName, solverLpPrefix, solverLpSuffix, solverDisplayName);
+        RawReport report = new RawReport(uuid, player, message, date, solved, serverName, bungeeServerName, playerLpPrefix, playerLpSuffix, playerDisplayName, solverLpPrefix, solverLpSuffix, solverDisplayName);
 
         ArrayList<Player> admins = Report.getAdministration();
         if (admins.size() > 0) {
             String normalMessage = report.customizeChatMessage();
             if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
                 TextComponent chatMessage = new TextComponent(normalMessage);
-                chatMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(FormatMessages.getInstance().getBungeeSend(server)).create()));
+                chatMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(FormatMessages.getInstance().getBungeeSend(bungeeServerName)).create()));
                 chatMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop move " + report.getLocalId()));
                 for (Player admin : admins) {
                     if (admin.hasPermission(config.getPerms("move"))) admin.spigot().sendMessage(chatMessage);

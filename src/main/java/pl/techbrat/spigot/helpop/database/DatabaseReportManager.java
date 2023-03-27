@@ -32,7 +32,7 @@ public class DatabaseReportManager {
             ResultSet result = Database.getInstance().execute(query);
             RawReport report;
             while (result.next()) {
-                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), result.getString("player_prefix"), result.getString("player_suffix"), result.getString("player_display_name"), result.getString("solver_prefix"), result.getString("solver_suffix"), result.getString("solver_display_name"));
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), result.getString("server"), result.getString("player_prefix"), result.getString("player_suffix"), result.getString("player_display_name"), result.getString("solver_prefix"), result.getString("solver_suffix"), result.getString("solver_display_name"));
                 report.setId(result.getInt("id"));
                 prototype.put(result.getInt("id"), report);
             }
@@ -52,7 +52,7 @@ public class DatabaseReportManager {
         try {
             ResultSet result = Database.getInstance().execute(query);
             if (result.next()) {
-                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), result.getString("player_prefix"), result.getString("player_suffix"), result.getString("player_display_name"), result.getString("solver_prefix"), result.getString("solver_suffix"), result.getString("solver_display_name"));
+                report = new RawReport(result.getString("player_uuid"), result.getString("player_name"), result.getString("message"), result.getString("date"), result.getString("solved"), result.getString("server"), result.getString("server"), result.getString("player_prefix"), result.getString("player_suffix"), result.getString("player_display_name"), result.getString("solver_prefix"), result.getString("solver_suffix"), result.getString("solver_display_name"));
                 report.setId(result.getInt("id"));
                 reports.put(id, report);
             }

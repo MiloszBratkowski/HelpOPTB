@@ -28,6 +28,7 @@ public class RawReport {
     private String playerDisplayName;
 
     private final String serverName;
+    private final String bungeeServerName;
     private String solved;
 
     private String solverLpPrefix;
@@ -45,19 +46,21 @@ public class RawReport {
                 message,
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 "-1",
+                ConfigData.getInstance().getServerNameDeclaration(),
                 BungeeServerNameDownloader.getServerName(),
                 APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(player.getUniqueId().toString(), player.getName()):"",
                 APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(player.getUniqueId().toString(), player.getName()):"",
                 player.getDisplayName(),
                 "", "", "");
     }
-    public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
+    public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName, String bungeeServerName, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.message = message;
         this.date = date;
         this.solved = solved;
-        this.serverName = serverName;
+        this.serverName = serverName; //Always set to value in config
+        this.bungeeServerName = bungeeServerName; //If bungee enabled set to BungeeCord server name, else set to config value
         this.localId = localReports.keySet().size()+1;
         localReports.put(localId, this);
         this.playerLpPrefix = playerLpPrefix;
@@ -115,7 +118,15 @@ public class RawReport {
     }
 
     public String getServerName() {
-        return serverName;
+        if (serverName.equals("BUNGEE") && bungeeServerName != null) {
+            return bungeeServerName;
+        } else {
+            return serverName;
+        }
+    }
+
+    public String getBungeeServerName() {
+        return bungeeServerName;
     }
 
     public String getPlayerLpPrefix() {
@@ -143,11 +154,9 @@ public class RawReport {
     }
 
     void saveReport() {
-        Bukkit.getLogger().info("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
-                "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message+"', '-1', '"+date+"', '"+serverName+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");
         Database.getInstance()
                 .update("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
-                        "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message+"', '-1', '"+date+"', '"+serverName+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");
+                        "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message+"', '-1', '"+date+"', '"+getServerName()+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");
         try {
             ResultSet result = Database.getInstance().execute("SELECT id FROM " + config.getDatabaseParams("table") + " WHERE date = '" + date + "' AND message = '" + message + "';");
             result.next();
@@ -177,7 +186,8 @@ public class RawReport {
         packet.writeUTF(playerName);
         packet.writeUTF(date);
         packet.writeUTF(solved);
-        packet.writeUTF(BungeeServerNameDownloader.getServerName());
+        packet.writeUTF(getServerName()); //Returns value in config "server_name: VALUE" or if exists and set returns bungee
+        packet.writeUTF(getBungeeServerName()); //Returns always BungeeCord serverName
         packet.writeUTF(playerLpPrefix);
         packet.writeUTF(playerLpSuffix);
         packet.writeUTF(playerDisplayName);

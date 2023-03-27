@@ -39,7 +39,7 @@ public class BungeeServerNameDownloader implements Listener {
 
     public static String getServerName() {
         String first = ConfigData.getInstance().getServerNameDeclaration();
-        if (first.equalsIgnoreCase("BUNGEE") && ConfigData.getInstance().isBungeeEnabled() && serverName != null) return serverName;
+        if (ConfigData.getInstance().isBungeeEnabled() && serverName != null) return serverName;
         else return first;
     }
 

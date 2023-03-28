@@ -15,19 +15,31 @@ public class Report extends RawReport {
         ConfigData config = ConfigData.getInstance();
         FormatMessages formater = FormatMessages.getInstance();
         ArrayList<Player> admins = getAdministration();
-        if(admins.size() == 0 && !config.isSendingWithoutAdmin()) {
-            Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.no_admins"));
-            return;
-        }
         for (Player admin : admins) {
             admin.sendMessage(customizeChatMessage());
             if(config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
                 admin.sendTitle(customizeTitleMessage(), customizeSubtitleMessage());
+                setAnyAdminGot(true);
             }
         }
-        if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.feedback"));
         if (config.isBungeeEnabled()) sendToBungee();
-        if (config.isDatabaseEnabled() && saveInDB) saveReport();
+        if (config.isSendingWithoutAdmin() || isAnyAdminGot()) {
+            if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.feedback"));
+            if (config.isDatabaseEnabled() && saveInDB) saveReport();
+        } else {
+            if (config.isBungeeEnabled()) {
+                HelpOPTB.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(HelpOPTB.getInstance(), () -> {
+                    if (isAnyAdminGot()) {
+                        if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.feedback"));
+                        if (config.isDatabaseEnabled() && saveInDB) saveReport();
+                    } else {
+                        Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.no_admins"));
+                    }
+                }, 3);
+            } else {
+                Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.no_admins"));
+            }
+        }
     }
 
     public static ArrayList<Player> getAdministration() {

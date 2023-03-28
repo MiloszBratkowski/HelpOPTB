@@ -35,6 +35,8 @@ public class RawReport {
     private String solverLpSuffix;
     private String solverDisplayName;
 
+    private boolean anyAdminGot;
+
     private final ConfigData config = ConfigData.getInstance();
 
 
@@ -69,6 +71,7 @@ public class RawReport {
         this.solverLpPrefix = solverLpPrefix;
         this.solverLpSuffix = solverLpSuffix;
         this.solverDisplayName = solverDisplayName;
+        this.anyAdminGot = false;
     }
 
     public void setId(int id) {
@@ -153,6 +156,14 @@ public class RawReport {
         return solverDisplayName;
     }
 
+    public void setAnyAdminGot(boolean anyAdminGot) {
+        this.anyAdminGot = anyAdminGot;
+    }
+
+    public boolean isAnyAdminGot() {
+        return anyAdminGot;
+    }
+
     void saveReport() {
         Database.getInstance()
                 .update("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
@@ -180,7 +191,7 @@ public class RawReport {
         packet.writeUTF("helpoptb");
         packet.writeUTF(HelpOPTB.getInstance().getServer().getIp()+":"+HelpOPTB.getInstance().getServer().getPort());
         packet.writeUTF("helpop");
-        packet.writeUTF(Integer.toString(id));
+        packet.writeUTF(Integer.toString(localId));
         packet.writeUTF(message);
         packet.writeUTF(uuid);
         packet.writeUTF(playerName);

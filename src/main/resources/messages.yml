@@ -26,14 +26,24 @@ players:
 admins:
   reports:
     #Format of messages on the admin's chat:
-    report_format: "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
+    report_format: | #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>, <move_button>, <response_button>
+      ""
+      "<prefix> &7(&3<server>&7) &6<player>&7: &f<message>"
+      "<move_button> <response_button>"
+      ""
 
     #Display information on the screen to admins (title/subtitle). Admin must have permission!:
     screen_title: "&cNew report from &6<player>&c!" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
     screen_subtitle: "&7(&3<server>&7) &f<message>" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
+    #Buttons customization
+    move_button: "&a[CONNECT]" #Available placeholders: <server>
+    response_button: "&b[RESPONSE]" #Available placeholders: <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
+
     #Hover label on the chat message sent to another bungee server
     bungee_send: "&aClick to join that server!" #Available placeholders: <prefix>, <server>
+    bungee_current: "&aYou're on this server!" #Available placeholders: <prefix>, <server>
+
 
   commands:
     response:
@@ -56,6 +66,7 @@ admins:
     clear: "&7Reports deleted!"
     help: |
       &7All commands:
+      &e/helpop notify &7- on/off notification of reports,
       &e/helpop check <id> &7- marking reports as solved,
       &e/helpop history [page] &7- displaying history of reports,
       &e/helpop clear_all &7- deleting all reports from database,

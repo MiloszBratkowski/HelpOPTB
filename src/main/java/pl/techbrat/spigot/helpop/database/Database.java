@@ -57,7 +57,7 @@ public class Database {
         } else {
             this.filename = config.getDatabaseParams("filename");
         }
-        if(closeLastCon && instance != null && instance.connection.isValid(0)) instance.connection.close();
+        if(closeLastCon && instance != null && instance.connection.isValid(0)) instance.disconnect();
         instance = this;
         connect();
         checkConnect();
@@ -75,6 +75,15 @@ public class Database {
         }
         statement = connection.createStatement();
         plugin.getLogger().log(Level.INFO, "Database connected.");
+    }
+
+    public void disconnect() {
+        try {
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void checkConnect() {

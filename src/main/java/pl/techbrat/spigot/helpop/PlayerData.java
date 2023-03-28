@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class PlayerData {
     private static PlayerData instance;
 
-    private ArrayList<String> playersInQueue = new ArrayList<>();
+    private final ArrayList<String> playersInQueue = new ArrayList<>();
 
     public PlayerData() {
         instance = this;

@@ -1,6 +1,7 @@
 package pl.techbrat.spigot.helpop.bungeecord;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -46,8 +47,9 @@ public class BungeeReceiver implements PluginMessageListener {
         if (type.equals("response")) {
             receiveResponse(in.readUTF(),in.readUTF(),  in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         } else if (type.equals("helpop")) {
-            int id = Integer.parseInt(in.readUTF());
-            receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
+            receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
+        } else if (type.equals("receive")) {
+            RawReport.getLocalReport(Integer.parseInt(in.readUTF())).setAnyAdminGot(true);
         }
     }
 
@@ -70,7 +72,7 @@ public class BungeeReceiver implements PluginMessageListener {
         }
     }
 
-    private void receiveHelpop(String message, String uuid, String player, String date, String solved, String serverName, String bungeeServerName, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
+    private void receiveHelpop(String localId, String message, String uuid, String player, String date, String solved, String serverName, String bungeeServerName, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
         ConfigData config = ConfigData.getInstance();
 
         if (!config.isReceivedPlayerFormat()) {
@@ -87,6 +89,13 @@ public class BungeeReceiver implements PluginMessageListener {
 
         ArrayList<Player> admins = Report.getAdministration();
         if (admins.size() > 0) {
+            ByteArrayDataOutput packet = ByteStreams.newDataOutput();
+            packet.writeUTF("helpoptb");
+            packet.writeUTF(HelpOPTB.getInstance().getServer().getIp()+":"+HelpOPTB.getInstance().getServer().getPort());
+            packet.writeUTF("receive");
+            packet.writeUTF(localId);
+            admins.get(0).sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
+
             String normalMessage = report.customizeChatMessage();
             if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
                 TextComponent chatMessage = new TextComponent(normalMessage);

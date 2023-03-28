@@ -102,7 +102,7 @@ public class ConfigData {
     }
 
     public String getMsg(String value) {
-        return getReliabilityMessage(value).toString().replace("<prefix>", getReliabilityMessage("prefix").toString());
+        return getReliabilityMessage(value).toString().replace("\"", "").replace("<prefix>", getReliabilityMessage("prefix").toString());
     }
 
     public String getPerms(String value) {

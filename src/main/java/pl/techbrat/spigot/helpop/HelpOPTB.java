@@ -55,6 +55,7 @@ public final class HelpOPTB extends JavaPlugin {
     public void onDisable() {
         getLogger().log(Level.INFO, "Stopping plugin...");
         if (ConfigData.getInstance().isBungeeEnabled()) BungeeLoader.getInstance().unregisterBungeeChannel();
+        if (ConfigData.getInstance().isDatabaseEnabled()) Database.getInstance().disconnect();
     }
 
     public void stopPlugin() {

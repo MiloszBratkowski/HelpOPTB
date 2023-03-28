@@ -129,6 +129,21 @@ public class FormatMessages {
                 replace("<server>", server).
                 replace("<lp_player_prefix>", lpPrefix).
                 replace("<lp_player_suffix>", lpSuffix).
+                replace("<move_button>", getMoveButton(server)).
+                replace("<response_button>", getResponseButton(player, lpPrefix, lpSuffix, displayName)).
+                replace("<player_display_name>", displayName)));
+    }
+
+    public String getMoveButton(String server) {
+        return addColors(replacePrefix(configData.getMsg("admins.reports.move_button").
+                replace("<server>", server)));
+    }
+
+    public String getResponseButton(String player, String lpPrefix, String lpSuffix, String displayName) {
+        return addColors(replacePrefix(configData.getMsg("admins.reports.response_button").
+                replace("<player>", player).
+                replace("<lp_player_prefix>", lpPrefix).
+                replace("<lp_player_suffix>", lpSuffix).
                 replace("<player_display_name>", displayName)));
     }
 

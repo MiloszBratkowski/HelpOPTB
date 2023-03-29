@@ -12,16 +12,10 @@ public class Report extends RawReport {
     }
 
     public void sendReport(Boolean feedback, Boolean saveInDB) {
+        sendStaffNotification();
+
         ConfigData config = ConfigData.getInstance();
         FormatMessages formater = FormatMessages.getInstance();
-        ArrayList<Player> admins = getAdministration();
-        for (Player admin : admins) {
-            admin.sendMessage(customizeChatMessage());
-            if(config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
-                admin.sendTitle(customizeTitleMessage(), customizeSubtitleMessage());
-                setAnyAdminGot(true);
-            }
-        }
         if (config.isBungeeEnabled()) sendToBungee();
         if (config.isSendingWithoutAdmin() || isAnyAdminGot()) {
             if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.feedback"));
@@ -40,14 +34,5 @@ public class Report extends RawReport {
                 Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.no_admins"));
             }
         }
-    }
-
-    public static ArrayList<Player> getAdministration() {
-        ConfigData config = ConfigData.getInstance();
-        ArrayList<Player> admins = new ArrayList<>();
-        for (Player loopPlayer : Bukkit.getOnlinePlayers()) {
-            if (loopPlayer.hasPermission(config.getPerms("receive"))) admins.add(loopPlayer);
-        }
-        return admins;
     }
 }

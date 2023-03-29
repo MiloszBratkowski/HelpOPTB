@@ -1,10 +1,16 @@
 package pl.techbrat.spigot.helpop;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -134,6 +140,48 @@ public class FormatMessages {
                 replace("<player_display_name>", displayName)));
     }
 
+    public TextComponent getReportFormatWithHovers(String reportId, String server, String bungeeServer, String player, String message, String type, String lpPrefix, String lpSuffix, String displayName) {
+        TextComponent movebutton = new TextComponent(getMoveButton(server));
+        if (bungeeServer.equals(BungeeServerNameDownloader.getServerName())) {
+            movebutton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(getBungeeHoverCurrent(server)).create()));
+        } else {
+            movebutton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(getBungeeHoverSend(server)).create()));
+            movebutton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop move " + reportId));
+        }
+
+        TextComponent responseButton = new TextComponent(getResponseButton(player, lpPrefix, lpSuffix, displayName));
+        responseButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(getResponseHover(player, lpPrefix, lpSuffix, displayName)).create()));
+        responseButton.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/response "+player+" "));
+
+        ArrayList<TextComponent> textElements = new ArrayList<>();
+        String basic = configData.getMsg("admins.reports."+type).
+                replace("<message>", message).
+                replace("<player>", player).
+                replace("<server>", server).
+                replace("<lp_player_prefix>", lpPrefix).
+                replace("<lp_player_suffix>", lpSuffix).
+                replace("<player_display_name>", displayName);
+        String[] splitMoveButton = basic.split("<move_button>");
+        for (int i = 0; i < splitMoveButton.length; i++) {
+            String[] splitResponseButton = splitMoveButton[i].split("<response_button>");
+            for (int j = 0; j < splitResponseButton.length; j++) {
+                textElements.add(new TextComponent(addColors(splitResponseButton[j])));
+                if (j != splitResponseButton.length-1) {
+                    textElements.add(responseButton);
+                }
+            }
+            if (i != splitMoveButton.length-1) {
+                textElements.add(movebutton);
+            }
+        }
+        TextComponent mainText = new TextComponent("");
+        for (TextComponent component : textElements) {
+            mainText.addExtra(component);
+        }
+
+        return mainText;
+    }
+
     public String getMoveButton(String server) {
         return addColors(replacePrefix(configData.getMsg("admins.reports.move_button").
                 replace("<server>", server)));
@@ -147,9 +195,22 @@ public class FormatMessages {
                 replace("<player_display_name>", displayName)));
     }
 
-    public String getBungeeSend(String server) {
+    public String getBungeeHoverSend(String server) {
         return addColors(replacePrefix(configData.getMsg("admins.reports.bungee_send").
                 replace("<server>", server)));
+    }
+
+    public String getBungeeHoverCurrent(String server) {
+        return addColors(replacePrefix(configData.getMsg("admins.reports.bungee_current").
+                replace("<server>", server)));
+    }
+
+    public String getResponseHover(String player, String lpPrefix, String lpSuffix, String displayName) {
+        return addColors(replacePrefix(configData.getMsg("admins.reports.response_info").
+                replace("<player>", player).
+                replace("<lp_player_prefix>", lpPrefix).
+                replace("<lp_player_suffix>", lpSuffix).
+                replace("<player_display_name>", displayName)));
     }
 
     public String getResponseOfflinePlayer(String player) {

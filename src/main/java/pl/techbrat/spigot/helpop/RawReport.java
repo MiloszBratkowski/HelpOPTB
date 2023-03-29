@@ -2,6 +2,10 @@ package pl.techbrat.spigot.helpop;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
@@ -11,6 +15,7 @@ import pl.techbrat.spigot.helpop.dependency.APILoader;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -80,6 +85,10 @@ public class RawReport {
 
     public String customizeChatMessage() {
         return FormatMessages.getInstance().getReportFormat(getServerName(), playerName, message, "report_format", playerLpPrefix, playerLpSuffix, playerDisplayName);
+    }
+
+    public TextComponent customizeChatMessageWithHovers() {
+        return FormatMessages.getInstance().getReportFormatWithHovers(String.valueOf(localId), getServerName(), getBungeeServerName(), playerName, message, "report_format", playerLpPrefix, playerLpSuffix, playerDisplayName);
     }
     public String customizeTitleMessage() {
         return FormatMessages.getInstance().getReportFormat(getServerName(), playerName, message, "screen_title", playerLpPrefix, playerLpSuffix, playerDisplayName);
@@ -208,8 +217,35 @@ public class RawReport {
         getPlayer().sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
     }
 
+    public void sendStaffNotification() {
+        ConfigData config = ConfigData.getInstance();
+        ArrayList<Player> admins = getAdministration();
+
+        for (Player admin : admins) {
+            String chatMessage = customizeChatMessage();
+            if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
+                admin.spigot().sendMessage(customizeChatMessageWithHovers());
+            } else {
+                admin.sendMessage(chatMessage);
+            }
+            if(config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
+                admin.sendTitle(customizeTitleMessage(), customizeSubtitleMessage());
+                setAnyAdminGot(true);
+            }
+        }
+    }
+
 
     public static RawReport getLocalReport(int id) {
         return localReports.get(id);
+    }
+
+    public static ArrayList<Player> getAdministration() {
+        ConfigData config = ConfigData.getInstance();
+        ArrayList<Player> admins = new ArrayList<>();
+        for (Player loopPlayer : Bukkit.getOnlinePlayers()) {
+            if (loopPlayer.hasPermission(config.getPerms("receive"))) admins.add(loopPlayer);
+        }
+        return admins;
     }
 }

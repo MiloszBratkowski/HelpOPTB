@@ -37,12 +37,13 @@ admins:
     screen_subtitle: "&7(&3<server>&7) &f<message>" #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
     #Buttons customization
-    move_button: "&a[CONNECT]" #Available placeholders: <server>
+    move_button: "&a[MOVE]" #Available placeholders: <server>
     response_button: "&b[RESPONSE]" #Available placeholders: <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
-    #Hover label on the chat message sent to another bungee server
+    #Button's hover labels
     bungee_send: "&aClick to join that server!" #Available placeholders: <prefix>, <server>
     bungee_current: "&aYou're on this server!" #Available placeholders: <prefix>, <server>
+    response_info: "&aClick to response <player>" #Available placeholders: <prefix>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
 
   commands:

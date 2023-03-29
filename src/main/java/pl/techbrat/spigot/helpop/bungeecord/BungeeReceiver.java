@@ -96,10 +96,12 @@ public class BungeeReceiver implements PluginMessageListener {
             packet.writeUTF(localId);
             admins.get(0).sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
 
-            String normalMessage = report.customizeChatMessage();
+
+            report.sendStaffNotification();
+           /* String normalMessage = report.customizeChatMessage();
             if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
                 TextComponent chatMessage = new TextComponent(normalMessage);
-                chatMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(FormatMessages.getInstance().getBungeeSend(bungeeServerName)).create()));
+                chatMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(FormatMessages.getInstance().getBungeeHoverSend(bungeeServerName)).create()));
                 chatMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop move " + report.getLocalId()));
                 for (Player admin : admins) {
                     if (admin.hasPermission(config.getPerms("move"))) admin.spigot().sendMessage(chatMessage);
@@ -115,7 +117,7 @@ public class BungeeReceiver implements PluginMessageListener {
                         admin.sendTitle(report.customizeTitleMessage(), report.customizeSubtitleMessage());
                     }
                 }
-            }
+            }*/
         }
     }
 }

@@ -65,6 +65,8 @@ admins:
       incorrect_id: "&cIncorrect id of report."
       is_solved: "&cThis report has been solved."
     clear: "&7Reports deleted!"
+    back:
+      no_server: "&cCan't find back server!"
     help: |
       &7All commands:
       &e/helpop notify &7- on/off notification of reports,
@@ -73,4 +75,5 @@ admins:
       &e/helpop clear_all &7- deleting all reports from database,
       &e/helpop clear_solved &7- deleting solved reports from database,
       &e/helpop reload &7- reloading configuration file.
+      &e/helpop back &7- back to previous server (BungeeCord).
       &e/helpop update &7- checking for updates.

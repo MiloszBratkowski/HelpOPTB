@@ -3,10 +3,6 @@ package pl.techbrat.spigot.helpop.bungeecord;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -50,16 +46,14 @@ public class BungeeReceiver implements PluginMessageListener {
             receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         } else if (type.equals("receive")) {
             RawReport.getLocalReport(Integer.parseInt(in.readUTF())).setAnyAdminGot(true);
-        }/* else if (type.equals("staffJoinByMove")) {
-            receiveStaffJoinByMove(in.readUTF());
-        }*/
+        } else if (type.equals("backServerInfo") && in.readUTF().equals(BungeeServerNameDownloader.getServerName())) {
+            setBackServer(in.readUTF(), in.readUTF());
+        }
     }
 
-    /*private void receiveStaffJoinByMove(String bungeeServer) {
-        if (BungeeServerNameDownloader.getServerName().equals(bungeeServer)) {
-
-        }
-    }*/
+    private void setBackServer(String bungeeServer, String playerData) {
+        BungeeStaffInfo.getInstance().setStaffBackServer(playerData, bungeeServer);
+    }
 
     private void receiveResponse(String message, String admin, String adminUUID, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName, String player) {
         Player user = Bukkit.getPlayer(player);

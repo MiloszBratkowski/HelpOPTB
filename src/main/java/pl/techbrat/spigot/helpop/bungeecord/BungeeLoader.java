@@ -33,6 +33,7 @@ public class BungeeLoader {
             break;
         }
         new BungeePlayerListDownloader();
+        new BungeeStaffInfo();
     }
 
     public void unregisterBungeeChannel() {

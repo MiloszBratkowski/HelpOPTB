@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.*;
 import pl.techbrat.spigot.helpop.API.HelpOPTBAPI;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeLoader;
+import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
+import pl.techbrat.spigot.helpop.bungeecord.BungeeStaffInfo;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
@@ -34,7 +36,7 @@ public class HelpOPCommand implements CommandExecutor {
                     Functions.getInstance().displayHelp(sender);
                     return true;
                 }
-                if (sender.hasPermission(config.getPerms("history")) && args[0].equals("history")) {
+                else if (sender.hasPermission(config.getPerms("history")) && args[0].equals("history")) {
                     if (!config.isDatabaseEnabled()) {
                         sender.sendMessage(formater.formatMessage("disabled_database"));
                         return true;
@@ -54,7 +56,7 @@ public class HelpOPCommand implements CommandExecutor {
                     Functions.getInstance().displayHistory(sender, TYPE, page);
                     return true;
                 }
-                if (sender.hasPermission(config.getPerms("move")) && args[0].equals("move")) {
+                else if (sender.hasPermission(config.getPerms("move")) && args[0].equals("move")) {
                     if (!config.isBungeeEnabled()) {
                         sender.sendMessage(formater.formatMessage("disabled_bungee"));
                         return true;
@@ -68,14 +70,15 @@ public class HelpOPCommand implements CommandExecutor {
                         sender.sendMessage(formater.formatMessage("admins.commands.check.incorrect_id"));
                         return true;
                     }
-                    /*
                     ByteArrayDataOutput infoPacket = ByteStreams.newDataOutput();
                     infoPacket.writeUTF("helpoptb");
                     infoPacket.writeUTF(HelpOPTB.getInstance().getServer().getIp()+":"+HelpOPTB.getInstance().getServer().getPort());
-                    infoPacket.writeUTF("staffJoinByMove");
+                    infoPacket.writeUTF("backServerInfo");
                     infoPacket.writeUTF(RawReport.getLocalReport(id).getBungeeServerName());
+                    infoPacket.writeUTF(BungeeServerNameDownloader.getServerName());
+                    infoPacket.writeUTF(sender.getName() + ((Player) sender).getUniqueId().toString());
                     ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", infoPacket.toByteArray());
-                    */
+
 
                     ByteArrayDataOutput sendPacket = ByteStreams.newDataOutput();
                     sendPacket.writeUTF("Connect");
@@ -83,7 +86,20 @@ public class HelpOPCommand implements CommandExecutor {
                     ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "BungeeCord", sendPacket.toByteArray());
                     return true;
                 }
-                if (sender.hasPermission(config.getPerms("check")) && args[0].equals("check")) {
+                else if (sender.hasPermission(config.getPerms("move")) && args[0].equals("back")) {
+                    Player staff = (Player) sender;
+                    BungeeStaffInfo bungeeStaffInfo = BungeeStaffInfo.getInstance();
+                    if (bungeeStaffInfo.hasStaffBackServer(staff)) {
+                        ByteArrayDataOutput sendPacket = ByteStreams.newDataOutput();
+                        sendPacket.writeUTF("Connect");
+                        sendPacket.writeUTF(bungeeStaffInfo.getStaffBackServer(staff, true));
+                        staff.sendPluginMessage(HelpOPTB.getInstance(), "BungeeCord", sendPacket.toByteArray());
+                    } else {
+                        staff.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.back.no_server"));
+                    }
+                    return true;
+                }
+                else if (sender.hasPermission(config.getPerms("check")) && args[0].equals("check")) {
                     if (!config.isDatabaseEnabled()) {
                         sender.sendMessage(formater.formatMessage("disabled_database"));
                         return true;
@@ -110,7 +126,7 @@ public class HelpOPCommand implements CommandExecutor {
                     sender.sendMessage(formater.formatMessage("admins.commands.check.solved"));
                     return true;
                 }
-                if (sender.hasPermission(config.getPerms("clear.all")) && args[0].equals("clear_all")) {
+                else if (sender.hasPermission(config.getPerms("clear.all")) && args[0].equals("clear_all")) {
                     if (!config.isDatabaseEnabled()) {
                         sender.sendMessage(formater.formatMessage("disabled_database"));
                         return true;
@@ -119,7 +135,7 @@ public class HelpOPCommand implements CommandExecutor {
                     sender.sendMessage(formater.formatMessage("admins.commands.clear"));
                     return true;
                 }
-                if (sender.hasPermission(config.getPerms("clear.solved")) && args[0].equals("clear_solved")) {
+                else if (sender.hasPermission(config.getPerms("clear.solved")) && args[0].equals("clear_solved")) {
                     if (!config.isDatabaseEnabled()) {
                         sender.sendMessage(formater.formatMessage("disabled_database"));
                         return true;
@@ -128,7 +144,7 @@ public class HelpOPCommand implements CommandExecutor {
                     sender.sendMessage(formater.formatMessage("admins.commands.clear"));
                     return true;
                 }
-                if (sender.hasPermission(config.getPerms("reload")) && args[0].equals("reload")) {
+                else if (sender.hasPermission(config.getPerms("reload")) && args[0].equals("reload")) {
                     if (ConfigData.getInstance().isBungeeEnabled()) BungeeLoader.getInstance().unregisterBungeeChannel();
                     new ConfigData();
                     new HelpOPTBAPI();
@@ -143,12 +159,12 @@ public class HelpOPCommand implements CommandExecutor {
                     sender.sendMessage(formater.formatMessage("admins.commands.reload"));
                     return true;
                 }
-                if (sender.hasPermission(config.getPerms("update")) && args[0].equals("update")) {
+                else if (sender.hasPermission(config.getPerms("update")) && args[0].equals("update")) {
                     UpdateChecker.getInstance().sendInfo(sender);
                     UpdateChecker.getInstance().sendLatest(sender);
                     return true;
                 }
-                if (!sender.hasPermission(config.getPerms("report")) || !sender.hasPermission("helpoptb.report")) { //TODO Remove this old permission in next updates
+                else if (!sender.hasPermission(config.getPerms("report")) || !sender.hasPermission("helpoptb.report")) { //TODO Remove this old permission in next updates
                     sender.sendMessage(formater.formatMessage("no_permission"));
                 } else {
 

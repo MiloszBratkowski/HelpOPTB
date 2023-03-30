@@ -57,6 +57,10 @@ public class HelpOPCommand implements CommandExecutor {
                     return true;
                 }
                 else if (sender.hasPermission(config.getPerms("move")) && args[0].equals("move")) {
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.only_player"));
+                        return true;
+                    }
                     if (!config.isBungeeEnabled()) {
                         sender.sendMessage(formater.formatMessage("disabled_bungee"));
                         return true;
@@ -87,6 +91,10 @@ public class HelpOPCommand implements CommandExecutor {
                     return true;
                 }
                 else if (sender.hasPermission(config.getPerms("move")) && args[0].equals("back")) {
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.only_player"));
+                        return true;
+                    }
                     Player staff = (Player) sender;
                     BungeeStaffInfo bungeeStaffInfo = BungeeStaffInfo.getInstance();
                     if (bungeeStaffInfo.hasStaffBackServer(staff)) {
@@ -100,6 +108,10 @@ public class HelpOPCommand implements CommandExecutor {
                     return true;
                 }
                 else if (sender.hasPermission(config.getPerms("check")) && args[0].equals("check")) {
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.only_player"));
+                        return true;
+                    }
                     if (!config.isDatabaseEnabled()) {
                         sender.sendMessage(formater.formatMessage("disabled_database"));
                         return true;
@@ -167,6 +179,10 @@ public class HelpOPCommand implements CommandExecutor {
                 else if (!sender.hasPermission(config.getPerms("report")) || !sender.hasPermission("helpoptb.report")) { //TODO Remove this old permission in next updates
                     sender.sendMessage(formater.formatMessage("no_permission"));
                 } else {
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.only_player"));
+                        return true;
+                    }
 
                     PlayerData playerData = PlayerData.getInstance();
                     if (playerData.canSend((Player) sender)) {

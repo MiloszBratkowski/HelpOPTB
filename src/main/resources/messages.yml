@@ -47,6 +47,7 @@ admins:
 
 
   commands:
+    only_player: "&cThat command can't be executed in console!"
     response:
       format: "&c<admin> &7-> &6<player>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
       type_player: "&cType player to response!"

@@ -127,7 +127,11 @@ public class ConfigData {
     public boolean isBungeeEnabled() {
         return (boolean) getReliabilityConfig("enable_bungee");
     }
-
+/*
+    public boolean isBungeeAutoVanish() {
+        return (boolean) getReliabilityConfig("auto_vanish");
+    }
+*/
     protected boolean isSendingWithoutAdmin() {
         return (boolean) getReliabilityConfig("send_without_admin");
     }

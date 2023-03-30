@@ -68,10 +68,19 @@ public class HelpOPCommand implements CommandExecutor {
                         sender.sendMessage(formater.formatMessage("admins.commands.check.incorrect_id"));
                         return true;
                     }
-                    ByteArrayDataOutput packet = ByteStreams.newDataOutput();
-                    packet.writeUTF("Connect");
-                    packet.writeUTF(RawReport.getLocalReport(id).getBungeeServerName());
-                    ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "BungeeCord", packet.toByteArray());
+                    /*
+                    ByteArrayDataOutput infoPacket = ByteStreams.newDataOutput();
+                    infoPacket.writeUTF("helpoptb");
+                    infoPacket.writeUTF(HelpOPTB.getInstance().getServer().getIp()+":"+HelpOPTB.getInstance().getServer().getPort());
+                    infoPacket.writeUTF("staffJoinByMove");
+                    infoPacket.writeUTF(RawReport.getLocalReport(id).getBungeeServerName());
+                    ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", infoPacket.toByteArray());
+                    */
+
+                    ByteArrayDataOutput sendPacket = ByteStreams.newDataOutput();
+                    sendPacket.writeUTF("Connect");
+                    sendPacket.writeUTF(RawReport.getLocalReport(id).getBungeeServerName());
+                    ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "BungeeCord", sendPacket.toByteArray());
                     return true;
                 }
                 if (sender.hasPermission(config.getPerms("check")) && args[0].equals("check")) {

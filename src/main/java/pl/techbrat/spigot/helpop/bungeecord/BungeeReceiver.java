@@ -50,8 +50,16 @@ public class BungeeReceiver implements PluginMessageListener {
             receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         } else if (type.equals("receive")) {
             RawReport.getLocalReport(Integer.parseInt(in.readUTF())).setAnyAdminGot(true);
-        }
+        }/* else if (type.equals("staffJoinByMove")) {
+            receiveStaffJoinByMove(in.readUTF());
+        }*/
     }
+
+    /*private void receiveStaffJoinByMove(String bungeeServer) {
+        if (BungeeServerNameDownloader.getServerName().equals(bungeeServer)) {
+
+        }
+    }*/
 
     private void receiveResponse(String message, String admin, String adminUUID, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName, String player) {
         Player user = Bukkit.getPlayer(player);
@@ -98,26 +106,6 @@ public class BungeeReceiver implements PluginMessageListener {
 
 
             report.sendStaffNotification();
-           /* String normalMessage = report.customizeChatMessage();
-            if (HelpOPTB.getInstance().getVersionSymbol() >= 12) {
-                TextComponent chatMessage = new TextComponent(normalMessage);
-                chatMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(FormatMessages.getInstance().getBungeeHoverSend(bungeeServerName)).create()));
-                chatMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop move " + report.getLocalId()));
-                for (Player admin : admins) {
-                    if (admin.hasPermission(config.getPerms("move"))) admin.spigot().sendMessage(chatMessage);
-                    else admin.sendMessage(normalMessage);
-                    if (config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
-                        admin.sendTitle(report.customizeTitleMessage(), report.customizeSubtitleMessage());
-                    }
-                }
-            } else {
-                for (Player admin : admins) {
-                    admin.sendMessage(normalMessage);
-                    if (config.isScreenEnabled() && admin.hasPermission(config.getPerms("receive.screen"))) {
-                        admin.sendTitle(report.customizeTitleMessage(), report.customizeSubtitleMessage());
-                    }
-                }
-            }*/
         }
     }
 }

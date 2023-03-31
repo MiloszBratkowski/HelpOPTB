@@ -174,8 +174,6 @@ public class RawReport {
     }
 
     void saveReport() {
-        Bukkit.getLogger().info("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
-                "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message.replace("'", "\\'")+"', '-1', '"+date+"', '"+getServerName()+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");
         Database.getInstance()
                 .update("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
                         "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message.replace("'", "\\'")+"', '-1', '"+date+"', '"+getServerName()+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");

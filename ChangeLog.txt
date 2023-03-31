@@ -3,6 +3,14 @@ TODO:
  - add GUI
  - add API
 
+1.4.0
+ + added checking admins state on all BungeeCord servers
+ + added more messages with replacements
+ + added changeable buttons for move and response
+ + new /helpop message format
+ + fixed small issues
+ + optimized code
+
 1.3.1
  + added displayname placeholder support
  + added LP prefix, suffix and sisplay name support in history

@@ -174,11 +174,14 @@ public class RawReport {
     }
 
     void saveReport() {
+        Bukkit.getLogger().info("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
+                "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message.replace("'", "\\'")+"', '-1', '"+date+"', '"+getServerName()+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");
         Database.getInstance()
                 .update("INSERT INTO `"+config.getDatabaseParams("table")+"` " +
-                        "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message+"', '-1', '"+date+"', '"+getServerName()+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");
+                        "VALUES (NULL, '"+playerName+"', '"+uuid+"', '"+message.replace("'", "\\'")+"', '-1', '"+date+"', '"+getServerName()+"', '"+playerLpPrefix+"', '"+playerLpSuffix+"', '"+playerDisplayName+"', '"+solverLpPrefix+"', '"+solverLpSuffix+"', '"+solverDisplayName+"');");
+
         try {
-            ResultSet result = Database.getInstance().execute("SELECT id FROM " + config.getDatabaseParams("table") + " WHERE date = '" + date + "' AND message = '" + message + "';");
+            ResultSet result = Database.getInstance().execute("SELECT id FROM " + config.getDatabaseParams("table") + " WHERE date = '" + date + "' AND message = '" + message.replace("'", "\\'") + "';");
             result.next();
             id = result.getInt("id");
         } catch (Exception e) {

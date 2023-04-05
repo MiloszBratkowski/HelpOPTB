@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,6 +15,12 @@ import pl.techbrat.spigot.helpop.database.DatabaseDisabledException;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 
 public class Functions {
@@ -122,6 +129,8 @@ public class Functions {
             }
         }
     }
+
+
 
 
 }

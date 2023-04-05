@@ -15,14 +15,15 @@ public class HelpOPTabCompleter implements TabCompleter {
     private ArrayList<String> completes = new ArrayList<>();
 
     public HelpOPTabCompleter() {
-        completes.add("help");
+        completes.add("notify");
         completes.add("history");
         completes.add("check");
         completes.add("clear_all");
         completes.add("clear_solved");
-        completes.add("reload");
         completes.add("back");
+        completes.add("reload");
         completes.add("update");
+        completes.add("help");
     }
 
     @Override

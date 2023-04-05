@@ -242,10 +242,13 @@ public class RawReport {
     }
 
     public static ArrayList<Player> getAdministration() {
+        PlayerData playerData = PlayerData.getInstance();
         ConfigData config = ConfigData.getInstance();
         ArrayList<Player> admins = new ArrayList<>();
         for (Player loopPlayer : Bukkit.getOnlinePlayers()) {
-            if (loopPlayer.hasPermission(config.getPerms("receive"))) admins.add(loopPlayer);
+            if (loopPlayer.hasPermission(config.getPerms("receive")) && !playerData.hasDisabledNotify(loopPlayer)) {
+                admins.add(loopPlayer);
+            }
         }
         return admins;
     }

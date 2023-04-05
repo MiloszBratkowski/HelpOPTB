@@ -9,6 +9,9 @@ public class PlayerData {
 
     private final ArrayList<String> playersInQueue = new ArrayList<>();
 
+    private final ArrayList<String> notifyDisabledAdmins = new ArrayList<>();
+
+
     public PlayerData() {
         instance = this;
     }
@@ -32,6 +35,24 @@ public class PlayerData {
 
     public boolean canSend(Player player) {
         return !playersInQueue.contains(player.getUniqueId().toString());
+    }
+
+    public boolean changeNotify(Player player) {
+        if (hasDisabledNotify(player)) enableNotify(player);
+        else disableNotify(player);
+        return !hasDisabledNotify(player);
+    }
+
+    public void disableNotify(Player player) {
+        notifyDisabledAdmins.add(player.getUniqueId().toString());
+    }
+
+    public void enableNotify(Player player) {
+        notifyDisabledAdmins.remove(player.getUniqueId().toString());
+    }
+
+    public boolean hasDisabledNotify(Player player) {
+        return notifyDisabledAdmins.contains(player.getUniqueId().toString());
     }
 
     public static PlayerData getInstance() {

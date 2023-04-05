@@ -1,12 +1,10 @@
 package pl.techbrat.spigot.helpop.bungeecord;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BungeeStaffInfo implements Listener {
+public class BungeeStaffInfo {
     private static BungeeStaffInfo instance;
     private HashMap<String, String> staffBackServer = new HashMap<>();
 

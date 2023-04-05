@@ -1,11 +1,18 @@
 package pl.techbrat.spigot.helpop;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
@@ -31,10 +38,13 @@ public class ConfigData {
     public ConfigData() {
         instance = this;
 
+        plugin.getDataFolder().mkdir();
+
         createConfigs(false);
 
         plugin.getLogger().log(Level.INFO, "Loading config file...");
 
+        perms.put("notify", "helpoptb.command.notify"); //+
         perms.put("update", "helpoptb.update"); //+
         perms.put("report", "helpoptb.report"); //+
         perms.put("receive", "helpoptb.receive"); //+
@@ -54,14 +64,24 @@ public class ConfigData {
         messages.put("disabled_database", "&cTo use history of reports you have to set enable_history: true in config.yml.");
         messages.put("disabled_bungee", "&cTo use that feature you have to set enable_bungee: true in config.yml");
         File temp = new File(plugin.getDataFolder()+"/messages.temp");
-        try {FileUtils.copyInputStreamToFile(plugin.getResource("messages.yml"), temp);} catch (IOException e) {e.printStackTrace();}
+        try {
+            //FileUtils.copyInputStreamToFile(plugin.getResource("messages.yml"), temp);
+            //copyInputStreamToFile("src/main/resources/messages.yml", temp);
+            //IOUtils.copy(plugin.getResource("messages.yml"), new FileOutputStream(temp));
+            Files.copy(plugin.getResource("messages.yml"), temp.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {e.printStackTrace();}
         defaultMessages = (HashMap<String, Object>)YamlConfiguration.loadConfiguration(temp).getConfigurationSection("").getValues(true);
         temp.delete();
 
         File configFile = new File(plugin.getDataFolder()+"/config.yml");
         config = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(configFile).getConfigurationSection("").getValues(true);
         temp = new File(plugin.getDataFolder()+"/config.temp");
-        try {FileUtils.copyInputStreamToFile(plugin.getResource("config.yml"), temp);} catch (IOException e) {e.printStackTrace();}
+        try {
+            //FileUtils.copyInputStreamToFile(plugin.getResource("config.yml"), temp);
+            //copyInputStreamToFile("src/main/resources/config.yml", temp);
+            //IOUtils.copy(plugin.getResource("config.yml"), new FileOutputStream(temp));
+            Files.copy(plugin.getResource("config.yml"), temp.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {e.printStackTrace();}
         defaultConfig = (HashMap<String, Object>)YamlConfiguration.loadConfiguration(temp).getConfigurationSection("").getValues(true);
         temp.delete();
 
@@ -89,7 +109,7 @@ public class ConfigData {
         else {
             plugin.getLogger().warning("");
             plugin.getLogger().warning("Can't find '"+value+"' in messages.yml!");
-            plugin.getLogger().warning("Default value has been got! ("+defaultConfig.get(value)+")");
+            plugin.getLogger().warning("Default value has been got! ("+defaultMessages.get(value)+")");
             plugin.getLogger().warning("To set that option, config file must be recreated!");
             plugin.getLogger().warning("Paste manually new structures or delete messages.yml to auto recreate!");
             plugin.getLogger().warning("");
@@ -155,11 +175,28 @@ public class ConfigData {
             if (!file.isFile() || forceCopy) {
                 try {
                     plugin.getLogger().log(Level.INFO, "Creating "+element+" ...");
-                    FileUtils.copyInputStreamToFile(plugin.getResource(element), file);
+                    //copyInputStreamToFile("src/main/resources/"+element, file);
+                    //FileUtils.copyInputStreamToFile(plugin.getResource(element), file);
+                    //IOUtils.copy(plugin.getResource(element), new FileOutputStream(file));
+                    Files.copy(plugin.getResource(element), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     plugin.getLogger().log(Level.INFO, "File "+element+" created");
                 } catch (Exception e) {e.printStackTrace(); plugin.stopPlugin();}
             }
         }
     }
+
+    /* OLD FUNCTION TO COPY RESOURCES TO FILES
+    private void copyInputStreamToFile(String path, File file) {
+        try {
+            Path newPath = Paths.get(path);
+            byte[] buffer = Files.readAllBytes(newPath);
+            OutputStream outputStream = new FileOutputStream(file);
+            outputStream.write(buffer);
+            IOUtils.closeQuietly(outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    */
 
 }

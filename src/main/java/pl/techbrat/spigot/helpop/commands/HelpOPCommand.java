@@ -56,6 +56,19 @@ public class HelpOPCommand implements CommandExecutor {
                     Functions.getInstance().displayHistory(sender, TYPE, page);
                     return true;
                 }
+                else if (sender.hasPermission(config.getPerms("notify")) && args[0].equals("notify")) {
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.only_player"));
+                        return true;
+                    }
+                    Player staff = (Player) sender;
+                    if (PlayerData.getInstance().changeNotify(staff)) {
+                        staff.sendMessage(formater.getEnabledNotifying());
+                    } else {
+                        staff.sendMessage(formater.getDisabledNotifying());
+                    }
+                    return true;
+                }
                 else if (sender.hasPermission(config.getPerms("move")) && args[0].equals("move")) {
                     if (!(sender instanceof Player)) {
                         sender.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.only_player"));

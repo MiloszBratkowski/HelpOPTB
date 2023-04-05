@@ -53,6 +53,9 @@ admins:
       type_player: "&cType player to response!"
       type_message: "&cType response message!"
       offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!" #Available placeholders: <prefix>, <player>
+    notify:
+      enabled: "&aReceiving reports has been enabled!"
+      disabled: "&6Receiving reports has been disabled!"
     reload: "&aPlugin has reloaded!"
     history:
       title: "&7History of messages <page>/<all_pages>: (<amount>)" #Available placeholders: <prefix>, <page>, <all_pages>, <amount>

@@ -218,6 +218,13 @@ public class FormatMessages {
                 replace("<player>", player)));
     }
 
+    public String getEnabledNotifying() {
+        return addColors(replacePrefix(configData.getMsg("admins.commands.notify.enabled")));
+    }
+    public String getDisabledNotifying() {
+        return addColors(replacePrefix(configData.getMsg("admins.commands.notify.disabled")));
+    }
+
 
     public static FormatMessages getInstance() {
         return instance;

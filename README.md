@@ -56,7 +56,7 @@ Helpop message can contain placeholders for prefix and suffix which will be repl
 
 All available placeholders are listed next to the massage in messages.yml.
 
-If you use bungeecord you can **see on your server what player has prefix and suffix on the server from which he sends** the message. In the same way, the player sees your prefix that you have on the server where you executed the /response command.
+If you use BungeeCord you can **see on your server what player has prefix and suffix on the server from which he sends** the message. In the same way, the player sees your prefix that you have on the server where you executed the /response command.
 
 ## BungeeCord
 First of all download library: ***[BungeeChannelTB](https://www.spigotmc.org/resources/bungeechanneltb.108382/)***.

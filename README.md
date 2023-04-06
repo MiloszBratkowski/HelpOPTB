@@ -12,6 +12,7 @@ Messages are sent using the */helpop message* command.
 ## Commands
 - **/helpop *message*** - sending message to administration.
 - **/response *player message*** - responding player.
+- **/helpop notify** - on/off notification of reports.
 - **/helpop check** - marking reports as solved.
 - **/helpop history** - displaying history of reports.
 - **/helpop clear_all** - deleting all reports from database.
@@ -36,6 +37,7 @@ Messages are sent using the */helpop message* command.
 - **helpoptb.move** - Moving to bungee server after click on message and using */helpop back*.
 ###### Administration | commands
 - **helpoptb.command.response** - using */response*.
+- **helpoptb.command.notify** - using */helpop notify*.
 - **helpoptb.command.check** - using */helpop check*.
 - **helpoptb.command.history** - using */helpop history*.
 - **helpoptb.command.clear.all** - using */helpop clear_all*.
@@ -67,7 +69,7 @@ Remember to receiving reports on other servers, admin must have permission on th
 ###### For latest plugin version!
 ````
 #CONFIG GENERATED FOR VERSION:
-#1.4.0
+#1.4.1
 
 #Display information on the screen to admins (title/subtitle). Admin must have permission!
 #Only for 1.9+ versions!
@@ -126,7 +128,7 @@ receive_admin_nickname_format: true
 ###### For latest plugin version!
 ````
 #MESSAGES GENERATED FOR VERSION:
-#1.4.0
+#1.4.1
 
 #Prefix placeholder
 prefix: "&7[&cHelpOP&7]"
@@ -179,6 +181,9 @@ admins:
       type_player: "&cType player to response!"
       type_message: "&cType response message!"
       offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!" #Available placeholders: <prefix>, <player>
+    notify:
+      enabled: "&aReceiving reports has been enabled!"
+      disabled: "&6Receiving reports has been disabled!"
     reload: "&aPlugin has reloaded!"
     history:
       title: "&7History of messages <page>/<all_pages>: (<amount>)" #Available placeholders: <prefix>, <page>, <all_pages>, <amount>

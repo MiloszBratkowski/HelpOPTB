@@ -3,6 +3,11 @@ TODO:
  - add GUI
  - add API
 
+1.4.1
+ + fixed loading error on 1.17.1
+ + added /helpop notify command
+ + fixed command autocomplete suggestions
+
 1.4.0
  + added checking admins state on all BungeeCord servers
  + added more messages with replacements

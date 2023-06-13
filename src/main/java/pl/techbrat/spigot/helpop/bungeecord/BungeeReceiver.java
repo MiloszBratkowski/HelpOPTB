@@ -51,6 +51,7 @@ public class BungeeReceiver implements PluginMessageListener {
         }
     }
 
+
     private void setBackServer(String bungeeServer, String playerData) {
         BungeeStaffInfo.getInstance().setStaffBackServer(playerData, bungeeServer);
     }

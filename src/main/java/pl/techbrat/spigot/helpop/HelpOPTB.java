@@ -10,6 +10,7 @@ import pl.techbrat.spigot.helpop.commands.ResponseTabCompleter;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
+import pl.techbrat.spigot.helpop.discordhook.DiscordManager;
 
 import java.util.logging.Level;
 
@@ -48,6 +49,9 @@ public final class HelpOPTB extends JavaPlugin {
         }
         if (ConfigData.getInstance().isBungeeEnabled()) {
             new BungeeLoader(true);
+        }
+        if (ConfigData.getInstance().isDiscordEnabled()) {
+            new DiscordManager(ConfigData.getInstance().getDiscordWebhook());
         }
     }
 

@@ -53,3 +53,8 @@ server_name: this
 #That option isn't related with history - all values in history are taking from sender server
 receive_player_nickname_format: true
 receive_admin_nickname_format: true
+
+discord:
+  enable: true
+  webhook_url: https://discord.com/api/webhooks/1118188827639545936/4UoAcv_uRWQEUknhLNzD3Sr4OgvpF--zCb84eTha2t5gfzJVqxvBIT1WEkNEpYlSr14X
+

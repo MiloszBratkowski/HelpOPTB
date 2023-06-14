@@ -137,6 +137,13 @@ public class ConfigData {
         return ((boolean) getReliabilityConfig("screen_information")) && !Bukkit.getBukkitVersion().contains("1.8");
     }
 
+    public boolean isDiscordEnabled() {
+        return ((boolean) getReliabilityConfig("discord.enable"));
+    }
+    public String getDiscordWebhook() {
+        return (String) getReliabilityConfig("discord.webhook_url");
+    }
+
     public boolean isReceivedPlayerFormat() {
         return (boolean) getReliabilityConfig("receive_player_nickname_format");
     }

@@ -120,7 +120,6 @@ public class HelpOPCommand implements CommandExecutor {
                     }
                     return true;
                 }
-
                 else if (sender.hasPermission(config.getPerms("check")) && args[0].equals("check")) {
                     if (!(sender instanceof Player)) {
                         sender.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.only_player"));

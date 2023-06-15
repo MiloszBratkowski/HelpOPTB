@@ -1,5 +1,8 @@
 package pl.techbrat.spigot.helpop.discordhook;
 
+import org.bukkit.ChatColor;
+import pl.techbrat.spigot.helpop.Functions;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.*;
 import java.io.IOException;
@@ -9,36 +12,22 @@ import java.nio.charset.StandardCharsets;
 
 public class DiscordManager {
 
-    //DiscordWebhook discordWebhook;
+    private static DiscordManager instance;
+
+    private String url;
+
+    private DiscordWebhook discordWebhook;
 
     public DiscordManager(String url) {
-        /*try {
-            final HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11");
-            connection.setDoOutput(true);
-            try (final OutputStream outputStream = connection.getOutputStream()) {
-                // Handle backslashes.
-                String preparedCommand = "sdadasdadsasd".replaceAll("\\\\", "");
-                if (preparedCommand.endsWith(" *")) preparedCommand = preparedCommand.substring(0, preparedCommand.length() - 2) + "*";
-
-                outputStream.write(("{\"content\":\"" + preparedCommand + "\"}").getBytes(StandardCharsets.UTF_8));
-            }
-            connection.getInputStream();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-
-
-        DiscordWebhook discordWebhook = new DiscordWebhook(url);
+        instance = this;
+        this.url = url;
 
         /*discordWebhook.setContent("to jest contanet");
         discordWebhook.setUsername("Nazwa ogulem cale te");
         discordWebhook.setAvatarUrl("https://premium4animals.pl/upload/premium4/blog//Kot-ragdoll.jpeg");
-        discordWebhook.addEmbed(new DiscordWebhook.EmbedObject()
+        EmbedObject data = new EmbedObject();
+        data.setTitle("To jest title");
+        discordWebhook.addEmbed(data
                 .setTitle("To jest title")
                 .setDescription("To jest opis")
                 .setColor(Color.BLUE)
@@ -54,8 +43,38 @@ public class DiscordManager {
 
         try {
             discordWebhook.execute();
+            discordWebhook.setUsername("Nazwa ogulem cale tess");
+            discordWebhook.execute();
         } catch (IOException e) {
             e.printStackTrace();
         }*/
+    }
+
+    public void sendNotification(String name, String content, String author, String title, String footer, String avatar, String color) {
+        System.out.println(name);
+        System.out.println(content);
+        System.out.println(author);
+        System.out.println(title);
+        System.out.println(footer);
+        System.out.println(avatar);
+        discordWebhook = new DiscordWebhook(url);
+        discordWebhook.setUsername(name);
+        discordWebhook.setContent(content);
+        if (avatar != null) discordWebhook.setAvatarUrl(avatar);
+        discordWebhook.addEmbed(new EmbedObject()
+                .setAuthor(author, null, null)
+                .setColor(Functions.getInstance().getColor(color))
+                .setTitle(title)
+                .setFooter(footer, null)
+        );
+        try {
+            discordWebhook.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static DiscordManager getInstance() {
+        return instance;
     }
 }

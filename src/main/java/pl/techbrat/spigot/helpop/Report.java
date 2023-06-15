@@ -20,12 +20,14 @@ public class Report extends RawReport {
         if (config.isSendingWithoutAdmin() || isAnyAdminGot()) {
             if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.feedback"));
             if (config.isDatabaseEnabled() && saveInDB) saveReport();
+            if (config.isDiscordEnabled()) sendDiscordNotification();
         } else {
             if (config.isBungeeEnabled()) {
                 HelpOPTB.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(HelpOPTB.getInstance(), () -> {
                     if (isAnyAdminGot()) {
                         if (feedback) Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.feedback"));
                         if (config.isDatabaseEnabled() && saveInDB) saveReport();
+                        if (config.isDiscordEnabled()) sendDiscordNotification();
                     } else {
                         Bukkit.getPlayer(getPlayerName()).sendMessage(formater.formatMessage("players.no_admins"));
                     }

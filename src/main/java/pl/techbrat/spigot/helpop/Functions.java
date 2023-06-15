@@ -2,6 +2,7 @@ package pl.techbrat.spigot.helpop;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -15,9 +16,11 @@ import pl.techbrat.spigot.helpop.database.DatabaseDisabledException;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -85,6 +88,16 @@ public class Functions {
             return false;
         }
     }
+
+    public Color getColor(String colorName) {
+        try {
+            Field field = Class.forName("java.awt.Color").getField(colorName);
+            return (Color) field.get(null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
     public Player getAnyPlayer() {
         for (Player player : Bukkit.getOnlinePlayers()) {

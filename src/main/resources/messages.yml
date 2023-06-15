@@ -81,3 +81,11 @@ admins:
       &e/helpop reload &7- reloading configuration file.
       &e/helpop back &7- back to previous server (BungeeCord).
       &e/helpop update &7- checking for updates.
+
+discord: #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
+  bot_name: "<player> <prefix>"
+  content: ""
+  author: "<lp_player_prefix> <player> <lp_player_suffix> (<server>)"
+  title: "<message>"
+  footer: "<date>"
+  color: "red"

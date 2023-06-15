@@ -143,6 +143,9 @@ public class ConfigData {
     public String getDiscordWebhook() {
         return (String) getReliabilityConfig("discord.webhook_url");
     }
+    public boolean isDiscordPlayerAvatar() {
+        return ((boolean) getReliabilityConfig("discord.sender_avatar"));
+    }
 
     public boolean isReceivedPlayerFormat() {
         return (boolean) getReliabilityConfig("receive_player_nickname_format");

@@ -4,10 +4,12 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
+import pl.techbrat.spigot.helpop.discordhook.DiscordManager;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
@@ -60,7 +62,7 @@ public class RawReport {
     public RawReport(String uuid, String playerName, String message, String date, String solved, String serverName, String bungeeServerName, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {
         this.uuid = uuid;
         this.playerName = playerName;
-        this.message = message;
+        this.message = ChatColor.stripColor(message);
         this.date = date;
         this.solved = solved;
         this.serverName = serverName; //Always set to value in config
@@ -231,6 +233,19 @@ public class RawReport {
                 setAnyAdminGot(true);
             }
         }
+    }
+
+    public void sendDiscordNotification() {
+        FormatMessages format = FormatMessages.getInstance();
+        DiscordManager.getInstance().sendNotification(
+                format.getReportDiscordFormat("bot_name", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                format.getReportDiscordFormat("content", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                format.getReportDiscordFormat("author", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                format.getReportDiscordFormat("title", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                format.getReportDiscordFormat("footer", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                config.isDiscordPlayerAvatar()?"https://mineskin.eu/avatar/"+getPlayerName():null,
+                config.getMsg("discord.color")
+        );
     }
 
 

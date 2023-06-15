@@ -1,11 +1,10 @@
 package pl.techbrat.spigot.helpop;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
@@ -58,6 +57,31 @@ public class FormatMessages {
     public String addColors(String message) {
         message = hexToColor(message);
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public String removeAllColors(String message) {
+        System.out.println(" ");
+        System.out.println("Wiad: " +message);
+        String newMessage = "";
+        if(message.contains("&")) {
+            for (String word : message.split("&")) {
+                System.out.println("Word: "+word);
+                if (word.startsWith("#")) {
+                    newMessage+=word.substring(7);
+                    System.out.println("form 7");
+                }
+                else if (word.length() > 0){
+                    System.out.println("form 1");
+                    newMessage+=word.substring(1);
+                }
+                org.bukkit.ChatColor.
+                System.out.println(newMessage);
+                System.out.println();
+            }
+
+        } else newMessage = message;
+        System.out.println("Gotowa: "+newMessage);
+        return newMessage;
     }
 
     public String formatMessage(final String patch) {
@@ -137,6 +161,17 @@ public class FormatMessages {
                 replace("<lp_player_suffix>", lpSuffix).
                 replace("<move_button>", getMoveButton(server)).
                 replace("<response_button>", getResponseButton(player, lpPrefix, lpSuffix, displayName)).
+                replace("<player_display_name>", displayName)));
+    }
+
+    public String getReportDiscordFormat(String type, String server, String player, String message, String lpPrefix, String lpSuffix, String displayName, String date) {
+        return removeAllColors(replacePrefix(configData.getMsg("discord."+type).
+                replace("<message>", message).
+                replace("<player>", player).
+                replace("<server>", server).
+                replace("<lp_player_prefix>", lpPrefix).
+                replace("<lp_player_suffix>", lpSuffix).
+                replace("<date>", date).
                 replace("<player_display_name>", displayName)));
     }
 

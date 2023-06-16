@@ -51,12 +51,6 @@ public class DiscordManager {
     }
 
     public void sendNotification(String name, String content, String author, String title, String footer, String avatar, String color) {
-        System.out.println(name);
-        System.out.println(content);
-        System.out.println(author);
-        System.out.println(title);
-        System.out.println(footer);
-        System.out.println(avatar);
         discordWebhook = new DiscordWebhook(url);
         discordWebhook.setUsername(name);
         discordWebhook.setContent(content);

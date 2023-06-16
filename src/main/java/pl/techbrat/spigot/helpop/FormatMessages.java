@@ -60,27 +60,24 @@ public class FormatMessages {
     }
 
     public String removeAllColors(String message) {
-        System.out.println(" ");
-        System.out.println("Wiad: " +message);
+        while (message.startsWith(" ")) {
+            message = message.substring(1);
+        }
         String newMessage = "";
-        if(message.contains("&")) {
-            for (String word : message.split("&")) {
-                System.out.println("Word: "+word);
-                if (word.startsWith("#")) {
-                    newMessage+=word.substring(7);
-                    System.out.println("form 7");
+        if (message.contains("&")) {
+            boolean first = false;
+            if (message.startsWith("&")) first = true;
+            String words[] = message.split("&");
+            for (int i = 0; i < words.length; i++) {
+                if ((i != 0 || first) && words[i].length()>0) {
+                    if (words[i].startsWith("#")) words[i] = words[i].substring(7);
+                    else words[i] = words[i].substring(1);
                 }
-                else if (word.length() > 0){
-                    System.out.println("form 1");
-                    newMessage+=word.substring(1);
-                }
-                org.bukkit.ChatColor.
-                System.out.println(newMessage);
-                System.out.println();
+                newMessage+=words[i];
             }
-
-        } else newMessage = message;
-        System.out.println("Gotowa: "+newMessage);
+        } else {
+            newMessage = message;
+        }
         return newMessage;
     }
 

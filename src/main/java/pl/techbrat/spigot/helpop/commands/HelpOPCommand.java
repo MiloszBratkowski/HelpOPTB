@@ -14,6 +14,7 @@ import pl.techbrat.spigot.helpop.bungeecord.BungeeStaffInfo;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
+import pl.techbrat.spigot.helpop.discordhook.DiscordManager;
 
 
 public class HelpOPCommand implements CommandExecutor {
@@ -178,6 +179,7 @@ public class HelpOPCommand implements CommandExecutor {
 
                     if (ConfigData.getInstance().isDatabaseEnabled()) Database.load();
                     if (ConfigData.getInstance().isBungeeEnabled()) new BungeeLoader(true);
+                    if (ConfigData.getInstance().isDiscordEnabled()) new DiscordManager(ConfigData.getInstance().getDiscordWebhook());
 
                     new APILoader();
 

@@ -206,7 +206,7 @@ public class RawReport {
         packet.writeUTF(playerName);
         packet.writeUTF(date);
         packet.writeUTF(solved);
-        packet.writeUTF(getServerName()); //Returns value in config "server_name: VALUE" or if exists and set returns bungee
+        packet.writeUTF(getServerName()); //Returns value in config "server_name: VALUE" or if exists and set - returns bungee
         packet.writeUTF(getBungeeServerName()); //Returns always BungeeCord serverName
         packet.writeUTF(playerLpPrefix);
         packet.writeUTF(playerLpSuffix);
@@ -238,11 +238,11 @@ public class RawReport {
     public void sendDiscordNotification() {
         FormatMessages format = FormatMessages.getInstance();
         DiscordManager.getInstance().sendNotification(
-                format.getReportDiscordFormat("bot_name", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
-                format.getReportDiscordFormat("content", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
-                format.getReportDiscordFormat("author", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
-                format.getReportDiscordFormat("title", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
-                format.getReportDiscordFormat("footer", serverName, playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                format.getReportDiscordFormat("bot_name", getServerName(), playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                format.getReportDiscordFormat("content", getServerName(), playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                format.getReportDiscordFormat("author", getServerName(), playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                format.getReportDiscordFormat("title", getServerName(), playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
+                format.getReportDiscordFormat("footer", getServerName(), playerName, message, playerLpPrefix, playerLpSuffix, playerDisplayName, date),
                 config.isDiscordPlayerAvatar()?"https://mineskin.eu/avatar/"+getPlayerName():null,
                 config.getMsg("discord.color")
         );

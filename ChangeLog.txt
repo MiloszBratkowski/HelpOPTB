@@ -3,6 +3,9 @@ TODO:
  - add GUI
  - add API
 
+1.4.2
+ + added discord webhook
+
 1.4.1
  + fixed loading error on 1.17.1
  + added /helpop notify command

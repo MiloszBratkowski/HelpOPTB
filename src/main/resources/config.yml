@@ -54,8 +54,9 @@ server_name: this
 receive_player_nickname_format: true
 receive_admin_nickname_format: true
 
+#Discord webhook - this option enables sending reports on discord messages channel by webhook.
 discord:
-  enable: true
-  webhook_url: https://discord.com/api/webhooks/1118188827639545936/4UoAcv_uRWQEUknhLNzD3Sr4OgvpF--zCb84eTha2t5gfzJVqxvBIT1WEkNEpYlSr14X
+  enable: false
+  webhook_url: ""
   sender_avatar: true
 

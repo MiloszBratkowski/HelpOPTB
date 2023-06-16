@@ -82,6 +82,7 @@ admins:
       &e/helpop back &7- back to previous server (BungeeCord).
       &e/helpop update &7- checking for updates.
 
+#Discord messages stylization
 discord: #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
   bot_name: "<player> <prefix>"
   content: ""

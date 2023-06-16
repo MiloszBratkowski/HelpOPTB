@@ -5,7 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import pl.techbrat.spigot.helpop.HelpOPTB;
 
+import java.util.logging.Level;
+
 public class BungeeLoader {
+    private static final HelpOPTB plugin = HelpOPTB.getInstance();
     private static BungeeLoader instance;
 
     public BungeeLoader() {
@@ -21,6 +24,7 @@ public class BungeeLoader {
     }
 
     public void registerBungeeChannel() {
+        plugin.getLogger().log(Level.INFO, "Registering BungeeCord connection...");
         HelpOPTB plugin = HelpOPTB.getInstance();
         BungeeReceiver receiver = new BungeeReceiver();
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "techbrat:channel");
@@ -34,6 +38,7 @@ public class BungeeLoader {
         }
         new BungeePlayerListDownloader();
         new BungeeStaffInfo();
+        plugin.getLogger().log(Level.INFO, "BungeeCord registered.");
     }
 
     public void unregisterBungeeChannel() {

@@ -59,4 +59,3 @@ discord:
   enable: false
   webhook_url: ""
   sender_avatar: true
-

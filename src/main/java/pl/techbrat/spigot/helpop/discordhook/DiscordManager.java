@@ -2,6 +2,7 @@ package pl.techbrat.spigot.helpop.discordhook;
 
 import org.bukkit.ChatColor;
 import pl.techbrat.spigot.helpop.Functions;
+import pl.techbrat.spigot.helpop.HelpOPTB;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.*;
@@ -9,9 +10,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
 
 public class DiscordManager {
 
+    private static final HelpOPTB plugin = HelpOPTB.getInstance();
     private static DiscordManager instance;
 
     private String url;
@@ -19,8 +22,12 @@ public class DiscordManager {
     private DiscordWebhook discordWebhook;
 
     public DiscordManager(String url) {
+        plugin.getLogger().log(Level.INFO, "Hooking Discord...");
         instance = this;
         this.url = url;
+        discordWebhook = new DiscordWebhook(url);
+        plugin.getLogger().log(Level.INFO, "Discord hooked!");
+
 
         /*discordWebhook.setContent("to jest contanet");
         discordWebhook.setUsername("Nazwa ogulem cale te");

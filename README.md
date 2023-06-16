@@ -65,11 +65,16 @@ First of all download library: ***[BungeeChannelTB](https://www.spigotmc.org/res
 To enable BungeeCord messaging set option ***enable_bungee: true*** in config.yml.
 Remember to receiving reports on other servers, admin must have permission on the server where he is.
 
+## Discord
+The plugin allows you to forward reports to the discord server using a webhook.
+To enable this feature, you need to set ***discord.enable: true*** in config.yml.
+Then enter the ***webhook url***. In messages.yml, you can personalize the style of messages sent on the discord server.
+
 ## Configuration file
 ###### For latest plugin version!
 ````
 #CONFIG GENERATED FOR VERSION:
-#1.4.1
+#1.4.2
 
 #Display information on the screen to admins (title/subtitle). Admin must have permission!
 #Only for 1.9+ versions!
@@ -123,12 +128,18 @@ server_name: this
 #That option isn't related with history - all values in history are taking from sender server
 receive_player_nickname_format: true
 receive_admin_nickname_format: true
+
+#Discord webhook - this option enables sending reports on discord messages channel by webhook.
+discord:
+  enable: false
+  webhook_url: ""
+  sender_avatar: true
 ````
 ## Messages
 ###### For latest plugin version!
 ````
 #MESSAGES GENERATED FOR VERSION:
-#1.4.1
+#1.4.2
 
 #Prefix placeholder
 prefix: "&7[&cHelpOP&7]"
@@ -209,4 +220,13 @@ admins:
       &e/helpop reload &7- reloading configuration file.
       &e/helpop back &7- back to previous server (BungeeCord).
       &e/helpop update &7- checking for updates.
+
+#Discord messages stylization
+discord: #Available placeholders: <prefix>, <message>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
+  bot_name: "<player> <prefix>"
+  content: ""
+  author: "<lp_player_prefix> <player> <lp_player_suffix> (<server>)"
+  title: "<message>"
+  footer: "<date>"
+  color: "red"
 ````

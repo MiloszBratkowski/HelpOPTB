@@ -5,6 +5,7 @@ TODO:
 
 1.4.2
  + added discord webhook
+ + fixed /helpop back command
 
 1.4.1
  + fixed loading error on 1.17.1

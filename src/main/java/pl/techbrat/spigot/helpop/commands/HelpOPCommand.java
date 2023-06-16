@@ -109,6 +109,10 @@ public class HelpOPCommand implements CommandExecutor {
                         sender.sendMessage(FormatMessages.getInstance().formatMessage("admins.commands.only_player"));
                         return true;
                     }
+                    if (!config.isBungeeEnabled()) {
+                        sender.sendMessage(formater.formatMessage("disabled_bungee"));
+                        return true;
+                    }
                     Player staff = (Player) sender;
                     BungeeStaffInfo bungeeStaffInfo = BungeeStaffInfo.getInstance();
                     if (bungeeStaffInfo.hasStaffBackServer(staff)) {

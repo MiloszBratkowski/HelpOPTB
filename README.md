@@ -52,7 +52,7 @@ Messages are sent using the */helpop message* command.
 Helpop message can contain placeholders for prefix and suffix which will be replaced after send:
 - placeholders for report messages: **<lp_player_prefix>**, **<lp_player_suffix>**
 - placeholders for response messages: **<lp_admin_prefix>**, **<lp_admin_suffix>**
-- placeholders for response button and hover label: **<lp_player_prefix>**, **<lp_player_suffix>**
+- placeholders for response button, hover label and discord message: **<lp_player_prefix>**, **<lp_player_suffix>**
 - placeholders for history element: **<lp_player_prefix>**, **<lp_player_suffix>**, **<lp_solver_prefix>**, **<lp_solver_suffix>**
 - placeholders for hover on solved report: **<lp_solver_prefix>**, **<lp_solver_suffix>**
 

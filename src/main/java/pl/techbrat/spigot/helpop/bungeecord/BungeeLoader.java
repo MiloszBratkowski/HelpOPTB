@@ -32,12 +32,12 @@ public class BungeeLoader {
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", receiver);
         plugin.getServer().getPluginManager().registerEvents(new BungeeServerNameDownloader(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new BungeeStaffInfo(), plugin);
         for (Player p : Bukkit.getOnlinePlayers()) {
             BungeeServerNameDownloader.downloadName(p);
             break;
         }
         new BungeePlayerListDownloader();
-        new BungeeStaffInfo();
         plugin.getLogger().log(Level.INFO, "BungeeCord registered.");
     }
 
@@ -48,6 +48,7 @@ public class BungeeLoader {
         plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin, "BungeeCord");
         plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin, "BungeeCord");
         HandlerList.unregisterAll(BungeeServerNameDownloader.getInstance());
+        HandlerList.unregisterAll(BungeeStaffInfo.getInstance());
     }
 
     public static BungeeLoader getInstance() {

@@ -39,6 +39,7 @@ public class BungeeReceiver implements PluginMessageListener {
             return;
         }
         String type = in.readUTF();
+        System.out.println("Odebrano: "+type);
 
         if (type.equals("response")) {
             receiveResponse(in.readUTF(),in.readUTF(),  in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
@@ -47,13 +48,21 @@ public class BungeeReceiver implements PluginMessageListener {
         } else if (type.equals("receive")) {
             RawReport.getLocalReport(Integer.parseInt(in.readUTF())).setAnyAdminGot(true);
         } else if (type.equals("backServerInfo") && in.readUTF().equals(BungeeServerNameDownloader.getServerName())) {
-            setBackServer(in.readUTF(), in.readUTF());
+            setStaffInfo(in.readUTF(), Integer.parseInt(in.readUTF()), in.readUTF());
+        } else if (type.equals("adminMovedInfo")) {
+            sendAdminMovedInfo(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         }
     }
 
+    private void sendAdminMovedInfo(String server, String player, String lpPrefix, String lpSuffix, String displayName, String admin, String adminLpPrefix, String adminLpSuffix, String adminDisplayName) {
+        for (Player staff : RawReport.getAdministration()) {
+                staff.sendMessage(FormatMessages.getInstance().getMovedAdmin(server, player, lpPrefix, lpSuffix, displayName, admin, adminLpPrefix, adminLpSuffix, adminDisplayName));
+        }
+    }
 
-    private void setBackServer(String bungeeServer, String playerData) {
+    private void setStaffInfo(String bungeeServer, Integer reportId, String playerData) {
         BungeeStaffInfo.getInstance().setStaffBackServer(playerData, bungeeServer);
+        BungeeStaffInfo.getInstance().setStaffReportId(playerData, reportId);
     }
 
     private void receiveResponse(String message, String admin, String adminUUID, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName, String player) {

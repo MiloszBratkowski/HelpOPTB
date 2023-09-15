@@ -257,6 +257,28 @@ public class FormatMessages {
         return addColors(replacePrefix(configData.getMsg("admins.commands.notify.disabled")));
     }
 
+    public String getMovedYourself(String server, String player, String lpPrefix, String lpSuffix, String displayName) {
+        return addColors(replacePrefix(configData.getMsg("admins.commands.move.moved").
+                replace("<server>", server).
+                replace("<player>", player).
+                replace("<lp_player_prefix>", lpPrefix).
+                replace("<lp_player_suffix>", lpSuffix).
+                replace("<player_display_name>", displayName)));
+    }
+
+    public String getMovedAdmin(String server, String player, String lpPrefix, String lpSuffix, String displayName, String admin, String adminLpPrefix, String adminLpSuffix, String adminDisplayName) {
+        return addColors(replacePrefix(configData.getMsg("admins.commands.move.admin_moved").
+                replace("<server>", server).
+                replace("<player>", player).
+                replace("<lp_player_prefix>", lpPrefix).
+                replace("<lp_player_suffix>", lpSuffix).
+                replace("<player_display_name>", displayName).
+                replace("<admin>", admin).
+                replace("<lp_admin_prefix>", adminLpPrefix).
+                replace("<lp_admin_suffix>", adminLpSuffix).
+                replace("<admin_display_name>", adminDisplayName)));
+    }
+
 
     public static FormatMessages getInstance() {
         return instance;

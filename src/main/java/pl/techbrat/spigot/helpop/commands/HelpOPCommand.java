@@ -94,6 +94,7 @@ public class HelpOPCommand implements CommandExecutor {
                     infoPacket.writeUTF("backServerInfo");
                     infoPacket.writeUTF(RawReport.getLocalReport(id).getBungeeServerName());
                     infoPacket.writeUTF(BungeeServerNameDownloader.getServerName());
+                    infoPacket.writeUTF(Integer.toString(id));
                     infoPacket.writeUTF(sender.getName() + ((Player) sender).getUniqueId().toString());
                     ((Player) sender).sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", infoPacket.toByteArray());
 

@@ -69,6 +69,9 @@ admins:
       incorrect_id: "&cIncorrect id of report."
       is_solved: "&cThis report has been solved."
     clear: "&7Reports deleted!"
+    move:
+      moved: "<prefix> &7Moved to &6<player> &7server! (<server>)" #Available placeholders: <prefix>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
+      admin_moved: "<prefix> &7Admin &c<admin> &7has moved to &6<player> &7server. (<server>)" #Available placeholders: <prefix>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
     back:
       no_server: "&cCan't find back server!"
     help: |

@@ -135,21 +135,27 @@ public class Database {
 
     public ResultSet execute(String query) {
         try {
+            if (connection.isClosed() || statement.isClosed() || connection == null) connect();
             return statement.executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
             plugin.stopPlugin();
             return null;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
     //Funkcja od wykonywania update w bazie danych
     public void update(String query) {
         try {
+            if (connection.isClosed() || statement.isClosed() || connection == null) connect();
             statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
             plugin.stopPlugin();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }

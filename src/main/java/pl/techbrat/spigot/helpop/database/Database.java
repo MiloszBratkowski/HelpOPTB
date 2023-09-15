@@ -135,11 +135,12 @@ public class Database {
 
     public ResultSet execute(String query) {
         try {
-            if (connection.isClosed() || statement.isClosed() || connection == null) connect();
+            if (connection == null || statement == null || connection.isClosed() || statement.isClosed()) connect();
             return statement.executeQuery(query);
         } catch (SQLException e) {
-            e.printStackTrace();
-            plugin.stopPlugin();
+            plugin.getLogger().warning("Database connection error, maybe was disconnected or typed wrong parameters.");
+            //e.printStackTrace();
+            //plugin.stopPlugin();
             return null;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -149,11 +150,12 @@ public class Database {
     //Funkcja od wykonywania update w bazie danych
     public void update(String query) {
         try {
-            if (connection.isClosed() || statement.isClosed() || connection == null) connect();
+            if (connection == null || statement == null || connection.isClosed() || statement.isClosed()) connect();
             statement.executeUpdate(query);
         } catch (SQLException e) {
-            e.printStackTrace();
-            plugin.stopPlugin();
+            plugin.getLogger().warning("Database connection error, maybe was disconnected or typed wrong parameters.");
+            //e.printStackTrace();
+            //plugin.stopPlugin();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

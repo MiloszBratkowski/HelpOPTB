@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
 import pl.techbrat.spigot.helpop.database.Database;
 import pl.techbrat.spigot.helpop.database.DatabaseDisabledException;
 import pl.techbrat.spigot.helpop.database.DatabaseReportManager;
@@ -143,6 +144,37 @@ public class Functions {
         }
     }
 
+    public void sendPluginConfigurationInfo(CommandSender sender) {
+        FormatMessages format = FormatMessages.getInstance();
+        ConfigData config = ConfigData.getInstance();
+        sender.sendMessage("");
+        sender.sendMessage(format.addColors("&7[&dHelpOP&bTB&7] &aInformation about plugin configuration."));
+        sender.sendMessage(format.addColors("&7Displaying reports on the admin's screen (1.9+): &e"+(config.isScreenEnabled()?"YES":"NO")));
+        sender.sendMessage(format.addColors("&7Sending reports with no admin on the server: &e"+(config.isSendingWithoutAdmin()?"YES":"NO")));
+        sender.sendMessage(format.addColors("&7Receiving player's nickname: &e"+(config.isReceivedPlayerFormat()?"PLAYER'S":"ADMIN RECEIVER")+" SERVER"));
+        sender.sendMessage(format.addColors("&7Receiving admin's nickname: &e"+(config.isReceivedAdminFormat()?"ADMIN'S":"PLAYERS RECEIVER")+" SERVER"));
+        sender.sendMessage(format.addColors("&7Database configuration (history of reports):"));
+        sender.sendMessage(format.addColors("&3 &7- status: &e"+(config.isDatabaseEnabled()?"ENABLED":"DISABLED")));
+        sender.sendMessage(format.addColors("&3 &7- DB type: &e"+(config.isDatabaseEnabled()?config.getDatabaseParams("type"):"---")));
+        sender.sendMessage(format.addColors("&3 &7- DB parameters: &e"+(
+                config.isDatabaseEnabled()?
+                        (config.getDatabaseParams("type").equalsIgnoreCase("mysql")?
+                                        config.getDatabaseParams("host")+
+                                        "&7:&e"+
+                                        config.getDatabaseParams("port")+
+                                        "&7, &e"+
+                                        config.getDatabaseParams("database"):
+                                config.getDatabaseParams("type").equalsIgnoreCase("sqlite")?
+                                        config.getDatabaseParams("filename"):"WRONG")
+                        :"---")));
+        sender.sendMessage(format.addColors("&7BungeeCord configuration:"));
+        sender.sendMessage(format.addColors("&3 &7- status: &e"+(config.isBungeeEnabled()?"ENABLED":"DISABLED")));
+        sender.sendMessage(format.addColors("&3 &7- server name: &e"+(config.isDatabaseEnabled()?BungeeServerNameDownloader.getServerName().equals("BUNGEE") :"---")));
+        sender.sendMessage(format.addColors("&7Discord configuration:"));
+        sender.sendMessage(format.addColors("&3 &7- status: &e"+(config.isDiscordEnabled()?"ENABLED":"DISABLED")));
+        sender.sendMessage(format.addColors("&3 &7- sending player's head: &e"+(config.isDiscordEnabled()?(config.isDiscordPlayerAvatar()?"YES":"NO"):"---")));
+        sender.sendMessage(format.addColors("&7Founded additional plugins: &e"+(APILoader.getInstance().isLuckPermsAPIEnabled()?"LuckPerms":"---")));
+    }
 
 
 

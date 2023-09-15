@@ -72,7 +72,6 @@ public class BungeeStaffInfo implements Listener {
                 infoPacket.writeUTF(staffLpSuffix);
                 infoPacket.writeUTF(staff.getDisplayName());
                 staff.sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", infoPacket.toByteArray());
-                Bukkit.getLogger().info("wyslano");
             }, 5);
         }
     }

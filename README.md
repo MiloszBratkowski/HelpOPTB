@@ -20,6 +20,7 @@ Messages are sent using the */helpop message* command.
 - **/helpop help** - displaying all commands.
 - **/helpop reload** - reloading configuration file.
 - **/helpop back** - back to previous server (BungeeCord).
+- **/helpop info** - displaying plugin configuration info.
 - **/helpop update** - checking for updates.
 
 **Warning!** To use history of reports and checking solved, you have to set option *enable_history: true* in configuration file and type database's information.
@@ -44,6 +45,7 @@ Messages are sent using the */helpop message* command.
 - **helpoptb.command.clear.solved** - using */helpop clear_solved*.
 - **helpoptb.command.help** - using */helpop help*.
 - **helpoptb.command.reload** - using */helpop reload*.
+- **helpoptb.command.info** - using */helpop info*.
 - **helpoptb.command.update** - using */helpop update and update check on join*.
 
 **Warning!** If player doesn't have permission to use admin commands (check, history, clear_* and reload), after execute one of these arguments it will send a report with this content.

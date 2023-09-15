@@ -196,6 +196,10 @@ public class HelpOPCommand implements CommandExecutor {
                     UpdateChecker.getInstance().sendLatest(sender);
                     return true;
                 }
+                else if (sender.hasPermission(config.getPerms("info")) && args[0].equals("info")) {
+                    Functions.getInstance().sendPluginConfigurationInfo(sender);
+                    return true;
+                }
                 else if (!sender.hasPermission(config.getPerms("report")) || !sender.hasPermission("helpoptb.report")) { //TODO Remove this old permission in next updates
                     sender.sendMessage(formater.formatMessage("no_permission"));
                 } else {

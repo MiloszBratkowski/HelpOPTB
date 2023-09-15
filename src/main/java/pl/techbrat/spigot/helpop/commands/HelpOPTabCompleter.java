@@ -22,6 +22,7 @@ public class HelpOPTabCompleter implements TabCompleter {
         completes.add("clear_solved");
         completes.add("back");
         completes.add("reload");
+        completes.add("info");
         completes.add("update");
         completes.add("help");
     }

@@ -39,7 +39,6 @@ public class BungeeReceiver implements PluginMessageListener {
             return;
         }
         String type = in.readUTF();
-        System.out.println("Odebrano: "+type);
 
         if (type.equals("response")) {
             receiveResponse(in.readUTF(),in.readUTF(),  in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());

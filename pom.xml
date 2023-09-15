@@ -6,7 +6,7 @@
 
     <groupId>pl.techbrat.spigot</groupId>
     <artifactId>helpop</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
     <packaging>jar</packaging>
 
     <name>HelpOPTB</name>

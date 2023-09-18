@@ -53,7 +53,7 @@ Messages are sent using the */helpop message* command.
 ## LuckPerms:
 Helpop message can contain placeholders for prefix and suffix which will be replaced after send:
 - placeholders for report messages: **<lp_player_prefix>**, **<lp_player_suffix>**
-- placeholders for response messages: **<lp_admin_prefix>**, **<lp_admin_suffix>**
+- placeholders for response messages: **<lp_admin_prefix>**, **<lp_admin_suffix>**, **<lp_player_prefix>**, **<lp_player_suffix>**
 - placeholders for response button, hover label and discord message: **<lp_player_prefix>**, **<lp_player_suffix>**
 - placeholders for history element: **<lp_player_prefix>**, **<lp_player_suffix>**, **<lp_solver_prefix>**, **<lp_solver_suffix>**
 - placeholders for hover on solved report: **<lp_solver_prefix>**, **<lp_solver_suffix>**
@@ -72,11 +72,16 @@ The plugin allows you to forward reports to the discord server using a webhook.
 To enable this feature, you need to set ***discord.enable: true*** in config.yml.
 Then enter the ***webhook url***. In messages.yml, you can personalize the style of messages sent on the discord server.
 
+## PlaceholderAPI
+You can get information about notify status for player.
+For do that add PlacehoderAPI to plugin folder and use ***%helpoptb_notify_status%*** placeholder.
+This placeholder display label from messages.yml -> placeholderapi section, you can type your own text which closely related with player notify status.
+
 ## Configuration file
 ###### For latest plugin version!
 ````
 #CONFIG GENERATED FOR VERSION:
-#1.4.2
+#1.4.3
 
 #Display information on the screen to admins (title/subtitle). Admin must have permission!
 #Only for 1.9+ versions!
@@ -94,6 +99,8 @@ cooldown:
   #vip: 1 #Permission: helpoptb.cooldown.vip
   #sponsor: 0 #Permission: helpoptb.cooldown.sponsor
 
+
+### DATABASE SECTION ###
 #History of messages, this option add features:
 # 1) if the administration solves the problem, can mark the report as solved
 # 2) history of messages
@@ -115,6 +122,8 @@ database:
   password: ''
   ssl: false
 
+
+### BUNGEECORD SECTION ###
 #This option enabling use this plugin on all bungee servers.
 #When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
 #WARNING! THAT FEATURE REQUIRES "BungeeChannelTB" PLUGIN!
@@ -131,6 +140,8 @@ server_name: this
 receive_player_nickname_format: true
 receive_admin_nickname_format: true
 
+
+### DISCORD SECTION ###
 #Discord webhook - this option enables sending reports on discord messages channel by webhook.
 discord:
   enable: false
@@ -141,7 +152,7 @@ discord:
 ###### For latest plugin version!
 ````
 #MESSAGES GENERATED FOR VERSION:
-#1.4.2
+#1.4.3
 
 #Prefix placeholder
 prefix: "&7[&cHelpOP&7]"
@@ -163,7 +174,7 @@ players:
   cooldown: "<prefix> &cWait before send next message!"
 
   #Style of text in responded message
-  response: "<prefix> &c<admin>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
+  response: "<prefix> &c<admin>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
 admins:
   reports:
@@ -189,8 +200,9 @@ admins:
 
 
   commands:
+    only_player: "&cThat command can't be executed in console!"
     response:
-      format: "&c<admin> &7-> &6<player>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
+      format: "&c<admin> &7-> &6<player>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
       type_player: "&cType player to response!"
       type_message: "&cType response message!"
       offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!" #Available placeholders: <prefix>, <player>
@@ -210,6 +222,9 @@ admins:
       incorrect_id: "&cIncorrect id of report."
       is_solved: "&cThis report has been solved."
     clear: "&7Reports deleted!"
+    move:
+      moved: "<prefix> &7Moved to &6<player> &7server! (<server>)" #Available placeholders: <prefix>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
+      admin_moved: "<prefix> &7Admin &c<admin> &7has moved to &6<player> &7server. (<server>)" #Available placeholders: <prefix>, <server>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
     back:
       no_server: "&cCan't find back server!"
     help: |
@@ -221,6 +236,7 @@ admins:
       &e/helpop clear_solved &7- deleting solved reports from database,
       &e/helpop reload &7- reloading configuration file.
       &e/helpop back &7- back to previous server (BungeeCord).
+      &e/helpop info &7- displaying plugin configuration info.
       &e/helpop update &7- checking for updates.
 
 #Discord messages stylization
@@ -231,4 +247,10 @@ discord: #Available placeholders: <prefix>, <message>, <server>, <player>, <play
   title: "<message>"
   footer: "<date>"
   color: "red"
+
+#PlaceholderAPI placeholder labels
+placeholderapi:
+  notify_status:
+    enabled: "&aENABLED"
+    disabled: "&cDISABLED"
 ````

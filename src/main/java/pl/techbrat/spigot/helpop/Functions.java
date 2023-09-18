@@ -212,7 +212,7 @@ public class Functions {
                         :"---")));
         sender.sendMessage(format.addColors("&7BungeeCord configuration:"));
         sender.sendMessage(format.addColors("&3 &7- status: &e"+(config.isBungeeEnabled()?"ENABLED":"DISABLED")));
-        sender.sendMessage(format.addColors("&3 &7- server name: &e"+(config.isDatabaseEnabled()?BungeeServerNameDownloader.getServerName().equals("BUNGEE") :"---")));
+        sender.sendMessage(format.addColors("&3 &7- server name: &e"+(config.isDatabaseEnabled()?ConfigData.getInstance().getServerNameDeclaration().equals("BUNGEE")?BungeeServerNameDownloader.getServerName():ConfigData.getInstance().getServerNameDeclaration() :"---")));
         sender.sendMessage(format.addColors("&7Discord configuration:"));
         sender.sendMessage(format.addColors("&3 &7- status: &e"+(config.isDiscordEnabled()?"ENABLED":"DISABLED")));
         sender.sendMessage(format.addColors("&3 &7- sending player's head: &e"+(config.isDiscordEnabled()?(config.isDiscordPlayerAvatar()?"YES":"NO"):"---")));

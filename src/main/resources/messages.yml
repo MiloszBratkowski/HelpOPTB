@@ -21,7 +21,7 @@ players:
   cooldown: "<prefix> &cWait before send next message!"
 
   #Style of text in responded message
-  response: "<prefix> &c<admin>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
+  response: "<prefix> &c<admin>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
 
 admins:
   reports:
@@ -49,7 +49,7 @@ admins:
   commands:
     only_player: "&cThat command can't be executed in console!"
     response:
-      format: "&c<admin> &7-> &6<player>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>
+      format: "&c<admin> &7-> &6<player>&7: &d<message>" #Available placeholders: <prefix>, <message>, <admin>, <admin_display_name>, <lp_admin_prefix>, <lp_admin_suffix>, <player>, <player_display_name>, <lp_player_prefix>, <lp_player_suffix>
       type_player: "&cType player to response!"
       type_message: "&cType response message!"
       offline_player: "&cResponse wasn't sent, because &6<player> &cis offline!" #Available placeholders: <prefix>, <player>

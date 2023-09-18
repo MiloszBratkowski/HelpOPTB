@@ -177,6 +177,8 @@ public class HelpOPCommand implements CommandExecutor {
                 }
                 else if (sender.hasPermission(config.getPerms("reload")) && args[0].equals("reload")) {
                     if (ConfigData.getInstance().isBungeeEnabled()) BungeeLoader.getInstance().unregisterBungeeChannel();
+                    if (ConfigData.getInstance().isDatabaseEnabled()) Database.getInstance().disconnect();
+                    if (APILoader.getInstance().isPlacehoderAPIEnabled() && APILoader.getInstance().getPlaceholderAPI().isRegistered()) APILoader.getInstance().getPlaceholderAPI().unregister();
                     new ConfigData();
                     new HelpOPTBAPI();
                     new PlayerData();

@@ -9,6 +9,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
@@ -108,38 +109,77 @@ public class Functions {
     }
 
     public boolean sendResponse(String playerName, String message, Player admin) {
+        Bukkit.getLogger().info("Wyslano");
         ConfigData config = ConfigData.getInstance();
         if (config.isBungeeEnabled()) {
+            APILoader apiLoader = APILoader.getInstance();
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+            String lpPlayerPrefix = "";
+            String lpPlayerSuffix = "";
+            String playerDisplayName = playerName;
+            if (offlinePlayer != null && offlinePlayer.hasPlayedBefore()) {
+                if (apiLoader.isLuckPermsAPIEnabled()) {
+                    lpPlayerPrefix = apiLoader.getLuckPermsAPI().getPrefix(offlinePlayer.getUniqueId().toString(), admin.getName());
+                    lpPlayerSuffix = apiLoader.getLuckPermsAPI().getSuffix(offlinePlayer.getUniqueId().toString(), admin.getName());
+                }
+                if (offlinePlayer.getPlayer() != null) {
+                    playerDisplayName = offlinePlayer.getPlayer().getDisplayName();
+                }
+            }
             ByteArrayDataOutput packet = ByteStreams.newDataOutput();
             packet.writeUTF("helpoptb");
             packet.writeUTF(HelpOPTB.getInstance().getServer().getIp()+":"+HelpOPTB.getInstance().getServer().getPort());
             packet.writeUTF("response");
             packet.writeUTF(message);
-            packet.writeUTF(admin.getName());
-            packet.writeUTF(admin.getUniqueId().toString());
-            packet.writeUTF(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin.getUniqueId().toString(), admin.getName()):"");
-            packet.writeUTF(APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin.getUniqueId().toString(), admin.getName()):"");
-            packet.writeUTF(admin.getDisplayName());
             packet.writeUTF(playerName);
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
-            }
+            packet.writeUTF(lpPlayerPrefix);
+            packet.writeUTF(lpPlayerSuffix);
+            packet.writeUTF(playerDisplayName);
+            packet.writeUTF(admin.getName());
+            packet.writeUTF(apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getPrefix(admin.getUniqueId().toString(), admin.getName()):"");
+            packet.writeUTF(apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getSuffix(admin.getUniqueId().toString(), admin.getName()):"");
+            packet.writeUTF(admin.getDisplayName());
+            packet.writeUTF(admin.getUniqueId().toString());
+            Functions.getInstance().getAnyPlayer().sendPluginMessage(HelpOPTB.getInstance(), "techbrat:channel", packet.toByteArray());
             return true;
         } else return false;
     }
 
-    public void respondedInfoToStaff(Player admin, String player, String message) {
+    public void respondedInfoToStaff(Player admin, Player player, String message) {
         String lpAdminPrefix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin.getUniqueId().toString(), admin.getName()):"";
         String lpAdminSuffix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin.getUniqueId().toString(), admin.getName()):"";
-        respondedInfoToStaff(admin.getName(), player, message, lpAdminPrefix, lpAdminSuffix, admin.getDisplayName());
+        String lpPlayerPrefix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(player.getUniqueId().toString(), player.getName()):"";
+        String lpPlayerSuffix = APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(player.getUniqueId().toString(), player.getName()):"";
+        respondedInfoToStaff(message, player.getName(), lpPlayerPrefix, lpPlayerSuffix, player.getDisplayName(), admin.getName(), lpAdminPrefix, lpAdminSuffix, admin.getDisplayName());
     }
 
-    public void respondedInfoToStaff(String admin, String player, String message, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName) {
+
+    public void respondedInfoToStaff(Player admin, String player, String message) {
+        APILoader apiLoader = APILoader.getInstance();
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
+        String lpPlayerPrefix = "";
+        String lpPlayerSuffix = "";
+        String playerDisplayName = player;
+        if (offlinePlayer != null && offlinePlayer.hasPlayedBefore()) {
+            if (apiLoader.isLuckPermsAPIEnabled()) {
+                lpPlayerPrefix = apiLoader.getLuckPermsAPI().getPrefix(offlinePlayer.getUniqueId().toString(), admin.getName());
+                lpPlayerSuffix = apiLoader.getLuckPermsAPI().getSuffix(offlinePlayer.getUniqueId().toString(), admin.getName());
+            }
+            if (offlinePlayer.getPlayer() != null) {
+                playerDisplayName = offlinePlayer.getPlayer().getDisplayName();
+            }
+        }
+        String lpAdminPrefix = apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getPrefix(admin.getUniqueId().toString(), admin.getName()):"";
+        String lpAdminSuffix = apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getSuffix(admin.getUniqueId().toString(), admin.getName()):"";
+        respondedInfoToStaff(message, player, lpPlayerPrefix, lpPlayerSuffix, playerDisplayName, admin.getName(), lpAdminPrefix, lpAdminSuffix, admin.getDisplayName());
+    }
+
+    public void respondedInfoToStaff(String message, String player, String lpPlayerPrefix, String lpPlayerSuffix, String playerDisplayName, String admin, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName) {
         ConfigData config = ConfigData.getInstance();
         String perm = config.getPerms("receive");
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getName().equalsIgnoreCase(admin) && p.hasPermission(perm)) {
-                p.sendMessage(FormatMessages.getInstance().getResponse(admin, player, message, lpAdminPrefix, lpAdminSuffix, adminDisplayName, true));
+                p.sendMessage(FormatMessages.getInstance().getResponse(message, player, lpPlayerPrefix, lpPlayerSuffix, playerDisplayName, admin, lpAdminPrefix, lpAdminSuffix, adminDisplayName, true));
             }
         }
     }
@@ -147,8 +187,11 @@ public class Functions {
     public void sendPluginConfigurationInfo(CommandSender sender) {
         FormatMessages format = FormatMessages.getInstance();
         ConfigData config = ConfigData.getInstance();
+        APILoader api = APILoader.getInstance();
+        HelpOPTB helpOPTB = HelpOPTB.getInstance();
         sender.sendMessage("");
         sender.sendMessage(format.addColors("&7[&dHelpOP&bTB&7] &aInformation about plugin configuration."));
+        sender.sendMessage(format.addColors("&7Basic information: &e"+helpOPTB.getDescription().getName()+" "+helpOPTB.getDescription().getVersion()+" by "+helpOPTB.getDescription().getAuthors()));
         sender.sendMessage(format.addColors("&7Displaying reports on the admin's screen (1.9+): &e"+(config.isScreenEnabled()?"YES":"NO")));
         sender.sendMessage(format.addColors("&7Sending reports with no admin on the server: &e"+(config.isSendingWithoutAdmin()?"YES":"NO")));
         sender.sendMessage(format.addColors("&7Receiving player's nickname: &e"+(config.isReceivedPlayerFormat()?"PLAYER'S":"ADMIN RECEIVER")+" SERVER"));
@@ -173,7 +216,10 @@ public class Functions {
         sender.sendMessage(format.addColors("&7Discord configuration:"));
         sender.sendMessage(format.addColors("&3 &7- status: &e"+(config.isDiscordEnabled()?"ENABLED":"DISABLED")));
         sender.sendMessage(format.addColors("&3 &7- sending player's head: &e"+(config.isDiscordEnabled()?(config.isDiscordPlayerAvatar()?"YES":"NO"):"---")));
-        sender.sendMessage(format.addColors("&7Founded additional plugins: &e"+(APILoader.getInstance().isLuckPermsAPIEnabled()?"LuckPerms":"---")));
+        sender.sendMessage(format.addColors("&7Founded additional plugins: &e"+
+                (api.isLuckPermsAPIEnabled()?"LuckPerms ":"")+
+                (api.isPlacehoderAPIEnabled()?"PlaceholderAPI ":"")
+        ));
     }
 
 

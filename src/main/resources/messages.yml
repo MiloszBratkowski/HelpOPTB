@@ -94,3 +94,9 @@ discord: #Available placeholders: <prefix>, <message>, <server>, <player>, <play
   title: "<message>"
   footer: "<date>"
   color: "red"
+
+#PlaceholderAPI placeholder labels
+placeholderapi:
+  notify_status:
+    enabled: "&aENABLED"
+    disabled: "&cDISABLED"

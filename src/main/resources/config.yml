@@ -17,6 +17,8 @@ cooldown:
   #vip: 1 #Permission: helpoptb.cooldown.vip
   #sponsor: 0 #Permission: helpoptb.cooldown.sponsor
 
+
+### DATABASE SECTION ###
 #History of messages, this option add features:
 # 1) if the administration solves the problem, can mark the report as solved
 # 2) history of messages
@@ -38,6 +40,8 @@ database:
   password: ''
   ssl: false
 
+
+### BUNGEECORD SECTION ###
 #This option enabling use this plugin on all bungee servers.
 #When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
 #WARNING! THAT FEATURE REQUIRES "BungeeChannelTB" PLUGIN!
@@ -54,6 +58,8 @@ server_name: this
 receive_player_nickname_format: true
 receive_admin_nickname_format: true
 
+
+### DISCORD SECTION ###
 #Discord webhook - this option enables sending reports on discord messages channel by webhook.
 discord:
   enable: false

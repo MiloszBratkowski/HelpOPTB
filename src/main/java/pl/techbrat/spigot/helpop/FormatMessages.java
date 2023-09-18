@@ -5,6 +5,8 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
@@ -122,21 +124,41 @@ public class FormatMessages {
     }
 
     public String getResponse(Player admin, String player, String message, boolean forAdmin) {
-        return getResponse(admin.getName(),
+        APILoader apiLoader = APILoader.getInstance();
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
+        String lpPlayerPrefix = "";
+        String lpPlayerSuffix = "";
+        String playerDisplayName = player;
+        if (offlinePlayer != null && offlinePlayer.hasPlayedBefore()) {
+            if (apiLoader.isLuckPermsAPIEnabled()) {
+                lpPlayerPrefix = apiLoader.getLuckPermsAPI().getPrefix(offlinePlayer.getUniqueId().toString(), admin.getName());
+                lpPlayerSuffix = apiLoader.getLuckPermsAPI().getSuffix(offlinePlayer.getUniqueId().toString(), admin.getName());
+            }
+            if (offlinePlayer.getPlayer() != null) {
+                playerDisplayName = offlinePlayer.getPlayer().getDisplayName();
+            }
+        }
+        return getResponse(message,
                 player,
-                message,
-                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getPrefix(admin.getUniqueId().toString(), admin.getName()):"",
-                APILoader.getInstance().isLuckPermsAPIEnabled()?APILoader.getInstance().getLuckPermsAPI().getSuffix(admin.getUniqueId().toString(), admin.getName()):"",
+                lpPlayerPrefix,
+                lpPlayerSuffix,
+                playerDisplayName,
+                admin.getName(),
+                apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getPrefix(admin.getUniqueId().toString(), admin.getName()):"",
+                apiLoader.isLuckPermsAPIEnabled()?apiLoader.getLuckPermsAPI().getSuffix(admin.getUniqueId().toString(), admin.getName()):"",
                 admin.getDisplayName(),
                 forAdmin);
     }
-    public String getResponse(String admin, String player, String message, String adminPrefix, String adminSuffix, String adminDisplayName, boolean forAdmin) {
+    public String getResponse(String message, String player, String lpPlayerPrefix, String lpPlayerSuffix, String playerDisplayName, String admin, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName, boolean forAdmin) {
         return addColors(replacePrefix(configData.getMsg(forAdmin?"admins.commands.response.format":"players.response").
-                replace("<admin>", admin).
-                replace("<player>", player).
                 replace("<message>", message).
-                replace("<lp_admin_prefix>", adminPrefix).
-                replace("<lp_admin_suffix>", adminSuffix).
+                replace("<player>", player).
+                replace("<lp_player_prefix>", lpPlayerPrefix).
+                replace("<lp_player_suffix>", lpPlayerSuffix).
+                replace("<player_display_name>", playerDisplayName).
+                replace("<admin>", admin).
+                replace("<lp_admin_prefix>", lpAdminPrefix).
+                replace("<lp_admin_suffix>", lpAdminSuffix).
                 replace("<admin_display_name>", adminDisplayName)));
     }
 

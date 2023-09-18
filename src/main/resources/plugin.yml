@@ -4,7 +4,7 @@ main: pl.techbrat.spigot.helpop.HelpOPTB
 authors: [TechBrat]
 description: ${project.description}
 website: ${project.url}
-soft depend: [LuckPerms]
+soft depend: [LuckPerms, PlaceholderAPI]
 commands:
   helpop:
     description: Main command to use

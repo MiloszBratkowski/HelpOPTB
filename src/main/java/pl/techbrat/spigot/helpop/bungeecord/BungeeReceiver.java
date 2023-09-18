@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import pl.techbrat.spigot.helpop.*;
@@ -41,7 +42,7 @@ public class BungeeReceiver implements PluginMessageListener {
         String type = in.readUTF();
 
         if (type.equals("response")) {
-            receiveResponse(in.readUTF(),in.readUTF(),  in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
+            receiveResponse(in.readUTF(),in.readUTF(),  in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         } else if (type.equals("helpop")) {
             receiveHelpop(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF());
         } else if (type.equals("receive")) {
@@ -64,23 +65,35 @@ public class BungeeReceiver implements PluginMessageListener {
         BungeeStaffInfo.getInstance().setStaffReportId(playerData, reportId);
     }
 
-    private void receiveResponse(String message, String admin, String adminUUID, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName, String player) {
-        Player user = Bukkit.getPlayer(player);
-        if (user != null && user.isOnline()) {
-            ConfigData config = ConfigData.getInstance();
-            if (!config.isReceivedAdminFormat()) {
-                APILoader apiLoader = APILoader.getInstance();
+    private void receiveResponse(String message, String player, String lpPlayerPrefix, String lpPlayerSuffix, String playerDisplayName, String admin, String lpAdminPrefix, String lpAdminSuffix, String adminDisplayName, String adminUUID) {
+        Bukkit.getLogger().info("odebrano");
+        OfflinePlayer user = Bukkit.getOfflinePlayer(player);
+        ConfigData config = ConfigData.getInstance();
+        APILoader apiLoader = APILoader.getInstance();
+        if (!config.isReceivedPlayerFormat()) {
+            if (user != null && user.hasPlayedBefore()) {
                 if (apiLoader.isLuckPermsAPIEnabled()) {
-                    lpAdminPrefix = apiLoader.getLuckPermsAPI().getPrefix(adminUUID, player);
-                    lpAdminSuffix = apiLoader.getLuckPermsAPI().getSuffix(adminUUID, player);
+                    lpPlayerPrefix = apiLoader.getLuckPermsAPI().getPrefix(user.getUniqueId().toString(), player);
+                    lpPlayerSuffix = apiLoader.getLuckPermsAPI().getSuffix(user.getUniqueId().toString(), player);
                 }
-                if (Bukkit.getOfflinePlayer(UUID.fromString(adminUUID)).getPlayer() != null) {
-                    adminDisplayName = Bukkit.getOfflinePlayer(UUID.fromString(adminUUID)).getPlayer().getDisplayName();
+                if (user.getPlayer() != null) {
+                    playerDisplayName = user.getPlayer().getDisplayName();
                 }
             }
-            Functions.getInstance().respondedInfoToStaff(admin, player, message, lpAdminPrefix, lpAdminSuffix, adminDisplayName);
-            user.sendMessage(FormatMessages.getInstance().getResponse(admin, player, message, lpAdminPrefix, lpAdminSuffix, adminDisplayName, false));
         }
+        if (!config.isReceivedAdminFormat()) {
+            if (apiLoader.isLuckPermsAPIEnabled()) {
+                lpAdminPrefix = apiLoader.getLuckPermsAPI().getPrefix(adminUUID, player);
+                lpAdminSuffix = apiLoader.getLuckPermsAPI().getSuffix(adminUUID, player);
+            }
+            if (Bukkit.getOfflinePlayer(UUID.fromString(adminUUID)).getPlayer() != null) {
+                adminDisplayName = Bukkit.getOfflinePlayer(UUID.fromString(adminUUID)).getPlayer().getDisplayName();
+            }
+        }
+        if (user != null && user.getPlayer() != null && user.getPlayer().isOnline()) {
+            user.getPlayer().sendMessage(FormatMessages.getInstance().getResponse(message, player, lpPlayerPrefix, lpPlayerSuffix, playerDisplayName, admin, lpAdminPrefix, lpAdminSuffix, adminDisplayName, false));
+        }
+        Functions.getInstance().respondedInfoToStaff(message, player, lpPlayerPrefix, lpPlayerSuffix, playerDisplayName, admin, lpAdminPrefix, lpAdminSuffix, adminDisplayName);
     }
 
     private void receiveHelpop(String localId, String message, String uuid, String player, String date, String solved, String serverName, String bungeeServerName, String playerLpPrefix, String playerLpSuffix, String playerDisplayName, String solverLpPrefix, String solverLpSuffix, String solverDisplayName) {

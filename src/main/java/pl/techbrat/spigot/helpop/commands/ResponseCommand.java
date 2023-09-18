@@ -37,7 +37,10 @@ public class ResponseCommand implements CommandExecutor {
         if (user != null && user.isOnline()) {
             user.sendMessage(formater.getResponse((Player) sender, args[0], message.toString(), false));
             sender.sendMessage(formater.getResponse((Player) sender, args[0], message.toString(), true));
-            Functions.getInstance().respondedInfoToStaff((Player) sender, args[0], String.valueOf(message));
+            Functions.getInstance().respondedInfoToStaff((Player) sender, user, String.valueOf(message));
+            if (config.isBungeeEnabled()) {
+                Functions.getInstance().sendResponse(args[0], String.valueOf(message), (Player) sender);
+            }
         } else {
             if (config.isBungeeEnabled()) {
                 BungeePlayerListDownloader bungeeList = BungeePlayerListDownloader.getInstance();

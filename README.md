@@ -34,7 +34,7 @@ Messages are sent using the */helpop message* command.
 ###### Administration | receiving messages
 - **helpoptb.receive** - displaying messages and responds on chat.
 - **helpoptb.receive.screen** - displaying messages on the screen (title with subtitle).
-###### Administration | BungeeCord functionality
+###### Administration | BungeeCord/Velocity functionality
 - **helpoptb.move** - Moving to bungee server after click on message and using */helpop back*.
 ###### Administration | commands
 - **helpoptb.command.response** - using */response*.
@@ -60,12 +60,18 @@ Helpop message can contain placeholders for prefix and suffix which will be repl
 
 All available placeholders are listed next to the massage in messages.yml.
 
-If you use BungeeCord you can **see on your server what player has prefix and suffix on the server from which he sends** the message. In the same way, the player sees your prefix that you have on the server where you executed the /response command.
+If you use BungeeCord/Velocity you can **see on your server what player has prefix and suffix on the server from which he sends** the message. In the same way, the player sees your prefix that you have on the server where you executed the /response command.
 
 ## BungeeCord
 First of all download library: ***[BungeeChannelTB](https://www.spigotmc.org/resources/bungeechanneltb.108382/)***.
 To enable BungeeCord messaging set option ***enable_bungee: true*** in config.yml.
 Remember to receiving reports on other servers, admin must have permission on the server where he is.
+
+## Velocity
+If server is based on Velocity Proxy you can use all features from BungeeCord support, but on Velocity server must be downloaded ***[VelocityChannelTB](https://www.spigotmc.org/resources/velocity-channel-tb.112745/)*** (not BungeeChannelTB).
+All configuration is the same as BungeeCord (enable_bungee: true, etc.).
+Don't worry about BungeeCord signatures in the plugin configuration file, these options also correspond to the Velocity system.
+
 
 ## Discord
 The plugin allows you to forward reports to the discord server using a webhook.

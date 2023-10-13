@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.techbrat.spigot.helpop.FormatMessages;
 import pl.techbrat.spigot.helpop.HelpOPTB;
-import pl.techbrat.spigot.helpop.PlayerData;
 import pl.techbrat.spigot.helpop.RawReport;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
 
@@ -18,8 +17,8 @@ import java.util.HashMap;
 
 public class BungeeStaffInfo implements Listener {
     private static BungeeStaffInfo instance;
-    private HashMap<String, String> staffBackServer = new HashMap<>();
-    private HashMap<String, Integer> staffReportId = new HashMap<>();
+    private final HashMap<String, String> staffBackServer = new HashMap<>();
+    private final HashMap<String, Integer> staffReportId = new HashMap<>();
 
     public BungeeStaffInfo() {
         instance = this;

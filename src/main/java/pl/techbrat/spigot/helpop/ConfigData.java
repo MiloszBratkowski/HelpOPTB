@@ -1,17 +1,10 @@
 package pl.techbrat.spigot.helpop;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Set;
@@ -44,21 +37,22 @@ public class ConfigData {
 
         plugin.getLogger().log(Level.INFO, "Loading config file...");
 
-        perms.put("notify", "helpoptb.command.notify"); //+
-        perms.put("info", "helpoptb.info"); //+
-        perms.put("update", "helpoptb.update"); //+
         perms.put("report", "helpoptb.report"); //+
+
         perms.put("receive", "helpoptb.receive"); //+
         perms.put("receive.screen", "helpoptb.receive.screen"); //+
         perms.put("move", "helpoptb.move"); //+
+
+        perms.put("response", "helpoptb.command.response"); //+
+        perms.put("notify", "helpoptb.command.notify"); //+
         perms.put("check", "helpoptb.command.check");
         perms.put("history", "helpoptb.command.history"); //+
         perms.put("clear.all", "helpoptb.command.clear.all"); //+
         perms.put("clear.solved", "helpoptb.command.clear.solved"); //+
-        perms.put("reload", "helpoptb.command.reload"); //+
         perms.put("help", "helpoptb.command.help"); //+
-
-        perms.put("response", "helpoptb.command.response"); //+
+        perms.put("reload", "helpoptb.command.reload"); //+
+        perms.put("info", "helpoptb.command.info"); //+
+        perms.put("update", "helpoptb.command.update"); //+
 
         File messagesFile = new File(plugin.getDataFolder()+"/messages.yml");
         messages = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(messagesFile).getConfigurationSection("").getValues(true);

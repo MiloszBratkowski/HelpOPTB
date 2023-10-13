@@ -25,7 +25,7 @@ public class HelpOPCommand implements CommandExecutor {
             FormatMessages formater = FormatMessages.getInstance();
             ConfigData config = ConfigData.getInstance();
             if (args.length == 0) {
-                if (sender.hasPermission(config.getPerms("report")) || sender.hasPermission("helpoptb.report")) { //TODO Remove old permission in next updates
+                if (sender.hasPermission(config.getPerms("report"))) {
                     sender.sendMessage(formater.formatMessage("players.incorrect_use"));
                 } else {
                     sender.sendMessage(formater.formatMessage("no_permission"));
@@ -202,7 +202,7 @@ public class HelpOPCommand implements CommandExecutor {
                     Functions.getInstance().sendPluginConfigurationInfo(sender);
                     return true;
                 }
-                else if (!sender.hasPermission(config.getPerms("report")) || !sender.hasPermission("helpoptb.report")) { //TODO Remove this old permission in next updates
+                else if (!sender.hasPermission(config.getPerms("report"))) {
                     sender.sendMessage(formater.formatMessage("no_permission"));
                 } else {
                     if (!(sender instanceof Player)) {

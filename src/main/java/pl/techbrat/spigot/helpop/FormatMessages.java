@@ -1,17 +1,13 @@
 package pl.techbrat.spigot.helpop;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import pl.techbrat.spigot.helpop.bungeecord.BungeeServerNameDownloader;
 import pl.techbrat.spigot.helpop.dependency.APILoader;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -195,7 +191,45 @@ public class FormatMessages {
     }
 
     public TextComponent getReportFormatWithHovers(String reportId, String server, String bungeeServer, String player, String message, String type, String lpPrefix, String lpSuffix, String displayName) {
-        TextComponent movebutton = new TextComponent(getMoveButton(server));
+        TextComponent movebutton = new TextComponent(TextComponent.fromLegacyText(getMoveButton(server)));
+        if (bungeeServer.equals(BungeeServerNameDownloader.getServerName())) {
+            movebutton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(getBungeeHoverCurrent(server))));
+        } else {
+            movebutton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(getBungeeHoverSend(server))));
+            movebutton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/helpop move " + reportId));
+        }
+
+
+        TextComponent responseButton = new TextComponent(TextComponent.fromLegacyText(getResponseButton(player, lpPrefix, lpSuffix, displayName)));
+        responseButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(getResponseHover(player, lpPrefix, lpSuffix, displayName))));
+        responseButton.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/response "+player+" "));
+
+        TextComponent finalMessage = new TextComponent();
+        String basic = configData.getMsg("admins.reports."+type).
+                replace("<message>", message).
+                replace("<player>", player).
+                replace("<server>", server).
+                replace("<lp_player_prefix>", lpPrefix).
+                replace("<lp_player_suffix>", lpSuffix).
+                replace("<player_display_name>", displayName);
+
+        String[] splitMoveButton = basic.split("<move_button>");
+        for (int i = 0; i < splitMoveButton.length; i++) {
+            String[] splitResponseButton = splitMoveButton[i].split("<response_button>");
+            for (int j = 0; j < splitResponseButton.length; j++) {
+                finalMessage.addExtra(new TextComponent(TextComponent.fromLegacyText(addColors(splitResponseButton[j]))));
+                if (j != splitResponseButton.length-1) {
+                    finalMessage.addExtra(responseButton);
+                }
+            }
+            if (i != splitMoveButton.length-1) {
+                finalMessage.addExtra(movebutton);
+            }
+        }
+
+        return finalMessage;
+
+        /*TextComponent movebutton = new TextComponent(getMoveButton(server));
         if (bungeeServer.equals(BungeeServerNameDownloader.getServerName())) {
             movebutton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(getBungeeHoverCurrent(server)).create()));
         } else {
@@ -229,11 +263,19 @@ public class FormatMessages {
             }
         }
         TextComponent mainText = new TextComponent("");
+        Functions.getInstance().getAnyPlayer().sendMessage("PPPPPPPPPPPPPPPPPPPPPPPP");
         for (TextComponent component : textElements) {
+            Functions.getInstance().getAnyPlayer().spigot().sendMessage(ChatMessageType.CHAT, component);
+            //Functions.getInstance().getAnyPlayer().sendMessage("1 - "+component.getText());
             mainText.addExtra(component);
         }
+        Functions.getInstance().getAnyPlayer().sendMessage("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
 
-        return mainText;
+
+        Functions.getInstance().getAnyPlayer().sendMessage(mainText.toString());
+
+        Functions.getInstance().getAnyPlayer().sendMessage("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+        return mainText;*/
     }
 
     public String getMoveButton(String server) {

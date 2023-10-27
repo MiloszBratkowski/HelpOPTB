@@ -98,7 +98,7 @@ public class Database {
             plugin.getLogger().log(Level.INFO, "Creating table "+type+" if not exist.");
             File file = new File(plugin.getDataFolder()+"/table.temp");
             Files.copy(plugin.getResource("database/"+this.type+"_helpop_create.sql"), file.toPath());
-            String query = Files.readString(file.toPath());
+            String query = String.join("\n", Files.readAllLines(file.toPath()));
             file.delete();
             query = query.replaceAll("helpop", table);
             update(query);
@@ -121,7 +121,7 @@ public class Database {
             }
             File file = new File(plugin.getDataFolder()+"/table_update.temp");
             Files.copy(plugin.getResource("database/"+this.type+"_helpop_update.sql"), file.toPath());
-            String query = Files.readString(file.toPath());
+            String query = String.join("\n", Files.readAllLines(file.toPath()));
             file.delete();
             query = query.replaceAll("helpop", table);
             update(query);

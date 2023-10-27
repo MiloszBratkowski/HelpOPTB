@@ -1,17 +1,17 @@
-#CONFIG GENERATED FOR VERSION:
-#${project.version}
+# CONFIG GENERATED FOR VERSION:
+# ${project.version}
 
-#Display information on the screen to admins (title/subtitle). Admin must have permission!
-#Only for 1.9+ versions!
+# Display information on the screen to admins (title/subtitle). Admin must have permission!
+# Only for 1.9+ versions!
 screen_information: true
 
-#Sending reports with no any administrator on the server.
+# Sending reports with no any administrator on the server.
 send_without_admin: true
 
-#Time between sending messages, it can be made dependent on permission.
-#The basic permission is "helpoptb.cooldown.normal", IF THE PLAYER DOESN'T HAVE IT, HIS COOLDOWN IS 0 SECONDS.
-#You can make your own time definitions, to refer to them set players permission "helpoptb.cooldown.name",
-#and replace the name with the group name defined below, e.g. vip, sponsor.
+# Time between sending messages, it can be made dependent on permission.
+# The basic permission is "helpoptb.cooldown.normal", IF THE PLAYER DOESN'T HAVE IT, HIS COOLDOWN IS 0 SECONDS.
+# You can make your own time definitions, to refer to them set players permission "helpoptb.cooldown.name",
+# and replace the name with the group name defined below, e.g. vip, sponsor.
 cooldown:
   normal: 3
   #vip: 1 #Permission: helpoptb.cooldown.vip
@@ -19,20 +19,20 @@ cooldown:
 
 
 ### DATABASE SECTION ###
-#History of messages, this option add features:
+# History of messages, this option add features:
 # 1) if the administration solves the problem, can mark the report as solved
 # 2) history of messages
 # 3) receiving messages sent during the absence of the administration on the server
 enable_history: false
 database:
-  #Avaiable databases: SQLite, MySQL (recommended).
+  # Avaiable databases: SQLite, MySQL (recommended).
   type: mysql
   table: helpop
 
-  #If you use SQLite, you can set file's name.
+  # If you use SQLite, you can set file's name.
   filename: helpoptb.db
 
-  #If you use MySQL, you have to set database parameters.
+  # If you use MySQL, you have to set database parameters.
   host: localhost
   port: 3306
   database: helpoptb
@@ -41,22 +41,34 @@ database:
   ssl: false
 
 
-### BUNGEECORD SECTION ###
-#This option enabling use this plugin on all bungee servers.
-#When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
-#WARNING! THAT FEATURE REQUIRES "BungeeChannelTB" PLUGIN!
-enable_bungee: false
+### GLOBAL SECTION ###
+# This option enabling use this plugin on multiple servers by BungeeCord or GlobalAPITB.
+# When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
+enable_global: false
+global:
+  # Available types:
+  #  GLOBAL_NETWORK - This is RECOMMENDED type of global system to use plugin inter-server. You can choose servers in your network based on GlobalAPITB.
+  #  BUNGEE - that feature requires "BungeeChannelTB" plugin (or VelocityChannelTB). Communication between servers is based on BungeeCord proxy server.
+  type: GLOBAL_NETWORK
 
-#Server name displaying on messages.
-#If you have bungee mode enabled and want the name to be the same as the bungee server name, type server_name: BUNGEE.
-server_name: this
+  # Server name displaying on messages.
+  # If you set 'type: BUNGEE' and want the name to be the same as the bungee server name, type server_name: BUNGEE.
+  # If you set 'type: GLOBAL_NETWORK' and want the name to be the same as in the GlobalAPITB -> global_netowrk, type server_name: GLOBAL_NETWORK.
+  server_name: This server
 
-#BungeeCord - player displayname, prefix or suffix (LuckPerms) taken from:
-#true - sender server (ex. staffs sees player's prefix taken from player's server and vice versa)
-#false - receiver server (ex. staffs sees player's prefix taken from the server they are on and vice versa)
-#That option isn't related with history - all values in history are taking from sender server
-receive_player_nickname_format: true
-receive_admin_nickname_format: true
+  # Player displayname, prefix or suffix (LuckPerms) taken from:
+  #  true - sender server (ex. staffs sees player's prefix taken from player's server and vice versa)
+  #  false - receiver server (ex. staffs sees player's prefix taken from the server they are on and vice versa)
+  # These options aren't related with history - all values in history are taking from sender server
+  receive_player_nickname_format: true
+  receive_admin_nickname_format: true
+
+  # If you set 'type: GLOBAL_NETWORK' you must enter the names of the servers that are to be included in the connection,
+  # i.e. those to which reports, responses, etc. are to be sent, declared in GlobalAPITB - > global_network.
+  # If you do not want the helpop system to be connected to all your servers, select only the ones you are interested in.
+  global_network_servers:
+    - lobby
+    - skyblock
 
 
 ### DISCORD SECTION ###

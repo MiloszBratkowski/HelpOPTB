@@ -1,6 +1,6 @@
 name: ${project.name}
 version: ${project.version}
-main: pl.techbrat.spigot.helpop.HelpOPTB
+main: pl.techbrat.spigot.helpopnew.HelpOPTB
 authors: [TechBrat]
 description: ${project.description}
 website: ${project.url}

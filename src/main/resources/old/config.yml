@@ -1,0 +1,67 @@
+#CONFIG GENERATED FOR VERSION:
+#${project.version}
+
+#Display information on the screen to admins (title/subtitle). Admin must have permission!
+#Only for 1.9+ versions!
+screen_information: true
+
+#Sending reports with no any administrator on the server.
+send_without_admin: true
+
+#Time between sending messages, it can be made dependent on permission.
+#The basic permission is "helpoptb.cooldown.normal", IF THE PLAYER DOESN'T HAVE IT, HIS COOLDOWN IS 0 SECONDS.
+#You can make your own time definitions, to refer to them set players permission "helpoptb.cooldown.name",
+#and replace the name with the group name defined below, e.g. vip, sponsor.
+cooldown:
+  normal: 3
+  #vip: 1 #Permission: helpoptb.cooldown.vip
+  #sponsor: 0 #Permission: helpoptb.cooldown.sponsor
+
+
+### DATABASE SECTION ###
+#History of messages, this option add features:
+# 1) if the administration solves the problem, can mark the report as solved
+# 2) history of messages
+# 3) receiving messages sent during the absence of the administration on the server
+enable_history: false
+database:
+  #Avaiable databases: SQLite, MySQL (recommended).
+  type: mysql
+  table: helpop
+
+  #If you use SQLite, you can set file's name.
+  filename: helpoptb.db
+
+  #If you use MySQL, you have to set database parameters.
+  host: localhost
+  port: 3306
+  database: helpoptb
+  username: root
+  password: ''
+  ssl: false
+
+
+### BUNGEECORD SECTION ###
+#This option enabling use this plugin on all bungee servers.
+#When player send report on server A and admin can see message on server B if he has permission "helpoptb.receive" on server B.
+#WARNING! THAT FEATURE REQUIRES "BungeeChannelTB" PLUGIN!
+enable_bungee: false
+
+#Server name displaying on messages.
+#If you have bungee mode enabled and want the name to be the same as the bungee server name, type server_name: BUNGEE.
+server_name: this
+
+#BungeeCord - player displayname, prefix or suffix (LuckPerms) taken from:
+#true - sender server (ex. staffs sees player's prefix taken from player's server and vice versa)
+#false - receiver server (ex. staffs sees player's prefix taken from the server they are on and vice versa)
+#That option isn't related with history - all values in history are taking from sender server
+receive_player_nickname_format: true
+receive_admin_nickname_format: true
+
+
+### DISCORD SECTION ###
+#Discord webhook - this option enables sending reports on discord messages channel by webhook.
+discord:
+  enable: false
+  webhook_url: ""
+  sender_avatar: true

@@ -1,7 +1,8 @@
-package pl.techbrat.spigot.helpop;
+package pl.techbrat.spigot.helpopnew.configuration;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import pl.techbrat.spigot.helpopnew.HelpOPTB;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -12,11 +13,6 @@ import java.util.logging.Level;
 
 public class ConfigData {
     private static final HelpOPTB plugin = HelpOPTB.getInstance();
-
-    private static ConfigData instance;
-    public static ConfigData getInstance() {
-        return instance;
-    }
 
     private final HashMap<String, String> perms = new HashMap<>();
 
@@ -29,7 +25,6 @@ public class ConfigData {
     private HashMap<String, Object> cooldownGroups = new HashMap<>();
 
     public ConfigData() {
-        instance = this;
 
         plugin.getDataFolder().mkdir();
 
@@ -54,16 +49,13 @@ public class ConfigData {
         perms.put("info", "helpoptb.command.info"); //+
         perms.put("update", "helpoptb.command.update"); //+
 
-        File messagesFile = new File(plugin.getDataFolder()+ "/old/messages.yml");
+        File messagesFile = new File(plugin.getDataFolder()+ "/messages.yml");
         messages = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(messagesFile).getConfigurationSection("").getValues(true);
         messages.put("disabled_database", "&cTo use history of reports you have to set enable_history: true in config.yml.");
         messages.put("disabled_bungee", "&cTo use that feature you have to set enable_bungee: true in config.yml");
         File temp = new File(plugin.getDataFolder()+"/messages.temp");
         try {
-            //FileUtils.copyInputStreamToFile(plugin.getResource("messages.yml"), temp);
-            //copyInputStreamToFile("src/main/resources/messages.yml", temp);
-            //IOUtils.copy(plugin.getResource("messages.yml"), new FileOutputStream(temp));
-            Files.copy(plugin.getResource("old/messages.yml"), temp.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(plugin.getResource("messages.yml"), temp.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {e.printStackTrace();}
         defaultMessages = (HashMap<String, Object>)YamlConfiguration.loadConfiguration(temp).getConfigurationSection("").getValues(true);
         temp.delete();
@@ -72,9 +64,6 @@ public class ConfigData {
         config = (HashMap<String, Object>) YamlConfiguration.loadConfiguration(configFile).getConfigurationSection("").getValues(true);
         temp = new File(plugin.getDataFolder()+"/config.temp");
         try {
-            //FileUtils.copyInputStreamToFile(plugin.getResource("config.yml"), temp);
-            //copyInputStreamToFile("src/main/resources/config.yml", temp);
-            //IOUtils.copy(plugin.getResource("config.yml"), new FileOutputStream(temp));
             Files.copy(plugin.getResource("config.yml"), temp.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {e.printStackTrace();}
         defaultConfig = (HashMap<String, Object>)YamlConfiguration.loadConfiguration(temp).getConfigurationSection("").getValues(true);
@@ -112,9 +101,105 @@ public class ConfigData {
         }
     }
 
+    // Config settings getters
+
+    // screen_information
+    public boolean isScreenEnabled() {
+        return ((boolean) getReliabilityConfig("screen_information")) && !Bukkit.getBukkitVersion().contains("1.8");
+    }
+
+
+    // send_without_admin
+    public boolean isSendingWithoutAdmin() {
+        return (boolean) getReliabilityConfig("send_without_admin");
+    }
+
+
+    /*
+        cooldown:
+            normal:
+            ...:
+     */
+    public double getCooldown(String group) {
+        if (cooldownGroups.containsKey(group)) return Double.parseDouble(cooldownGroups.get(group).toString());
+        else return 0.0;
+    }
+
+    public Set<String> getCooldownGroups() {
+        return cooldownGroups.keySet();
+    }
+
+
+    // enable_history
+    public boolean isHistoryEnabled() {
+        return (boolean) getReliabilityConfig("enable_history");
+    }
+
+
+    /*
+        database:
+            type:
+            table:
+            ...
+     */
     public String getDatabaseParams(String value) {
         return getReliabilityConfig("database."+value).toString();
     }
+
+
+    // enable_global
+    public boolean isGlobalEnabled() {
+        return (boolean) getReliabilityConfig("enable_global");
+    }
+
+
+    // global.type
+    public String getGlobalType() {
+        return getReliabilityConfig("global.type").toString();
+    }
+
+
+    // global.server_name
+    public String getGlobalServerName() {
+        return getReliabilityConfig("global.server_name").toString();
+    }
+
+
+    // global.receive_player_nickname_format
+    public boolean isGlobalReceivePlayerNickname() {
+        return (boolean) getReliabilityConfig("global.receive_player_nickname_format");
+    }
+
+
+    // global.receive_admin_nickname_format
+    public boolean isGlobalReceiveAdminNickname() {
+        return (boolean) getReliabilityConfig("global.receive_admin_nickname_format");
+    }
+
+
+    // global.global_network_servers
+    public String[] getGlobalNetworkServers() {
+        return (String[]) getReliabilityConfig("global.global_network_servers");
+    }
+
+
+    // enable_discord
+    public boolean isDiscordEnabled() {
+        return ((boolean) getReliabilityConfig("enable_discord"));
+    }
+
+
+    // discord.webhook_url
+    public String getDiscordWebhook() {
+        return (String) getReliabilityConfig("discord.webhook_url");
+    }
+
+
+    // discord.sender_avatar
+    public boolean isDiscordPlayerAvatar() {
+        return ((boolean) getReliabilityConfig("discord.sender_avatar"));
+    }
+
 
     public String getMsg(String value) {
         return getReliabilityMessage(value).toString().replace("\"", "").replace("<prefix>", getReliabilityMessage("prefix").toString());
@@ -124,84 +209,17 @@ public class ConfigData {
         return perms.get(value);
     }
 
-    public boolean isDatabaseEnabled() {
-        return (boolean) getReliabilityConfig("enable_history");
-    }
-
-    public boolean isScreenEnabled() {
-        return ((boolean) getReliabilityConfig("screen_information")) && !Bukkit.getBukkitVersion().contains("1.8");
-    }
-
-    public boolean isDiscordEnabled() {
-        return ((boolean) getReliabilityConfig("discord.enable"));
-    }
-    public String getDiscordWebhook() {
-        return (String) getReliabilityConfig("discord.webhook_url");
-    }
-    public boolean isDiscordPlayerAvatar() {
-        return ((boolean) getReliabilityConfig("discord.sender_avatar"));
-    }
-
-    public boolean isReceivedPlayerFormat() {
-        return (boolean) getReliabilityConfig("receive_player_nickname_format");
-    }
-    public boolean isReceivedAdminFormat() {
-        return (boolean) getReliabilityConfig("receive_admin_nickname_format");
-    }
-
-    public boolean isBungeeEnabled() {
-        return (boolean) getReliabilityConfig("enable_bungee");
-    }
-/*
-    public boolean isBungeeAutoVanish() {
-        return (boolean) getReliabilityConfig("auto_vanish");
-    }
-*/
-    protected boolean isSendingWithoutAdmin() {
-        return (boolean) getReliabilityConfig("send_without_admin");
-    }
-
-    public String getServerNameDeclaration() {
-        return (String) getReliabilityConfig("server_name");
-    }
-
-    protected double getCooldown(String group) {
-        if (cooldownGroups.containsKey(group)) return Double.parseDouble(cooldownGroups.get(group).toString());
-        else return 0.0;
-    }
-    protected Set<String> getCooldownGroups() {
-        return cooldownGroups.keySet();
-    }
-
     private void createConfigs(boolean forceCopy) {
-        String[] files = {"config.yml", "old/messages.yml"};
+        String[] files = {"config.yml", "messages.yml"};
         for (String element : files) {
             File file = new File(plugin.getDataFolder()+"/"+element);
             if (!file.isFile() || forceCopy) {
                 try {
                     plugin.getLogger().log(Level.INFO, "Creating "+element+" ...");
-                    //copyInputStreamToFile("src/main/resources/"+element, file);
-                    //FileUtils.copyInputStreamToFile(plugin.getResource(element), file);
-                    //IOUtils.copy(plugin.getResource(element), new FileOutputStream(file));
                     Files.copy(plugin.getResource(element), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     plugin.getLogger().log(Level.INFO, "File "+element+" created");
                 } catch (Exception e) {e.printStackTrace(); plugin.stopPlugin();}
             }
         }
     }
-
-    /* OLD FUNCTION TO COPY RESOURCES TO FILES
-    private void copyInputStreamToFile(String path, File file) {
-        try {
-            Path newPath = Paths.get(path);
-            byte[] buffer = Files.readAllBytes(newPath);
-            OutputStream outputStream = new FileOutputStream(file);
-            outputStream.write(buffer);
-            IOUtils.closeQuietly(outputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    */
-
 }
